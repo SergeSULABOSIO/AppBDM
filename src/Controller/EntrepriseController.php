@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Entreprise;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +26,24 @@ class EntrepriseController extends AbstractController
     }
 
     #[Route('/edit', name: 'entreprise.edit')]
-    public function edit(Request $request): Response
+    public function edit(ManagerRegistry $doctrine): Response
     {
-        $session = $request->getSession();
+        $entityManager = $doctrine->getManager();
+        $entreprise = new Entreprise();
+        $entreprise->setNom("AIB RDC SARL");
+        $entreprise->setTelephone("+243828727706");
+        $entreprise->setAdresse("Ave de la Gombe - Kinshasa / RDC");
+        $entreprise->setIdnat("IDNAT001245");
+        $entreprise->setNumipot("NUIMPO454578");
+        $entreprise->setRccm("RCCM457878-10/CDK");
+        //ajout de l'entreprise dans la transaction
+        $entityManager->persist($entreprise);
+        //On écrit le SQL dans la base de données
+        $entityManager->flush();
+
+
         $appTitreRubrique = "Entreprise / Edit";
-        $this->addFlash('success', "Bien venu sur BDM!");
+        $this->addFlash('success', "Bravo !" . $entreprise->getNom() . " vient d'être ajoutée dans la base de données.");
         
         return $this->render('entreprise/entreprise.edit.html.twig', 
         [
