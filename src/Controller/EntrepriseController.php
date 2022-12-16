@@ -13,59 +13,83 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/entreprise")]
 class EntrepriseController extends AbstractController
 {
-    #[Route('/list', name: 'entreprise.list')]
+
+
+
+
+
+    #[Route('/', name: 'entreprise.list')]
     public function list(Request $request): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Entreprise / List";
-        $this->addFlash('success', "Bien venu sur BDM!");
-        
-        return $this->render('entreprise/entreprise.edit.html.twig', 
-        [
-            'appTitreRubrique' => $appTitreRubrique
-        ]);
+        //$this->addFlash('success', "Bien venu sur BDM!");
+
+        return $this->render(
+            'entreprise/entreprise.list.html.twig',
+            [
+                'appTitreRubrique' => $appTitreRubrique
+            ]
+        );
     }
 
-    #[Route('/edit', name: 'entreprise.edit')]
-    public function edit(ManagerRegistry $doctrine): Response
+
+
+
+
+
+    #[Route('/edit/{id?0}', name: 'entreprise.edit')]
+    public function edit(Entreprise $entreprise = null, ManagerRegistry $doctrine, Request $request): Response
     {
 
-        $entityManager = $doctrine->getManager();
-        $entreprise = new Entreprise();
+        $appTitreRubrique = "";
+        $adjectif = "";
+        if($entreprise == null){
+            $appTitreRubrique = "Entreprise / Ajout";
+            $adjectif = "ajoutée";
+            $entreprise = new Entreprise();
+        }else{
+            $appTitreRubrique = "Entreprise / Edition";
+            $adjectif = "modifiée";
+        }
+        
         $form = $this->createForm(EntrepriseFormType::class, $entreprise);
-        
-        //$entreprise->setNom("AIB RDC SARL");
-        //$entreprise->setTelephone("+243828727706");
-        //$entreprise->setAdresse("Ave de la Gombe - Kinshasa / RDC");
-        //$entreprise->setIdnat("IDNAT001245");
-        //$entreprise->setNumipot("NUIMPO454578");
-        //$entreprise->setRccm("RCCM457878-10/CDK");
-        //ajout de l'entreprise dans la transaction
-        //$entityManager->persist($entreprise);
-        //On écrit le SQL dans la base de données
-        //$entityManager->flush();
+        //vérifions le contenu de l'objet requete
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($entreprise);
+            $entityManager->flush();
+            $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être ". $adjectif ." avec succès.");
+            return $this->redirectToRoute('entreprise.list');
+        } else {
 
-
-        $appTitreRubrique = "Entreprise / Edit";
-        $this->addFlash('success', "Bravo !" . $entreprise->getNom() . " vient d'être ajoutée dans la base de données.");
-        
-        return $this->render('entreprise/entreprise.edit.html.twig', 
-        [
-            'appTitreRubrique' => $appTitreRubrique,
-            'form' => $form->createView()
-        ]);
+            return $this->render(
+                'entreprise/entreprise.edit.html.twig',
+                [
+                    'appTitreRubrique' => $appTitreRubrique,
+                    'form' => $form->createView()
+                ]
+            );
+        }
     }
 
-    #[Route('/delete', name: 'entreprise.delete')]
-    public function delete(Request $request): Response
+
+
+
+
+
+    #[Route('/delete/{id?0}', name: 'entreprise.delete')]
+    public function delete(Entreprise $entreprise = null, ManagerRegistry $doctrine, Request $request): Response
     {
-        $session = $request->getSession();
-        $appTitreRubrique = "Entreprise / Delete";
-        $this->addFlash('success', "Bien venu sur BDM!");
-        
-        return $this->render('entreprise/entreprise.edit.html.twig', 
-        [
-            'appTitreRubrique' => $appTitreRubrique
-        ]);
+        if($entreprise != null){
+            $entityManager = $doctrine->getManager();
+            $entityManager->remove($entreprise);
+            $entityManager->flush();
+            $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être supprimée avec succès.");
+        }else{
+            $this->addFlash('error', "Désolé. Cet enregistrement n'existe pas.");
+        }
+        return $this->redirectToRoute('entreprise.list');
     }
 }
