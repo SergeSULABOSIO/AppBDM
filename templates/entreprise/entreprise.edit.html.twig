@@ -27,7 +27,20 @@
         </div>
     {% endfor %}
 
-    ICI NOUS METTRONS LE COPRS DE LA RUBRIQUE
+    {{ form_start(form) }}
+        <div class="row">
+            <div class="col-sm">{{ form_row(form.nom) }}</div>
+            <div class="col-sm">{{ form_row(form.adresse) }}</div>
+        </div>
+        <div class="row sm-1">
+            <div class="col-sm">{{ form_row(form.telephone) }}</div>
+            <div class="col-sm">{{ form_row(form.rccm) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-sm">{{ form_row(form.idnat) }}</div>
+            <div class="col-sm">{{ form_row(form.numimpot) }}</div>
+        </div>
+    {{ form_rest(form) }}
 
 
 {% endblock %}

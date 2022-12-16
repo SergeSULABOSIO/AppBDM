@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Entreprise;
+use App\Form\EntrepriseFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,18 +29,21 @@ class EntrepriseController extends AbstractController
     #[Route('/edit', name: 'entreprise.edit')]
     public function edit(ManagerRegistry $doctrine): Response
     {
+
         $entityManager = $doctrine->getManager();
         $entreprise = new Entreprise();
-        $entreprise->setNom("AIB RDC SARL");
-        $entreprise->setTelephone("+243828727706");
-        $entreprise->setAdresse("Ave de la Gombe - Kinshasa / RDC");
-        $entreprise->setIdnat("IDNAT001245");
-        $entreprise->setNumipot("NUIMPO454578");
-        $entreprise->setRccm("RCCM457878-10/CDK");
+        $form = $this->createForm(EntrepriseFormType::class, $entreprise);
+        
+        //$entreprise->setNom("AIB RDC SARL");
+        //$entreprise->setTelephone("+243828727706");
+        //$entreprise->setAdresse("Ave de la Gombe - Kinshasa / RDC");
+        //$entreprise->setIdnat("IDNAT001245");
+        //$entreprise->setNumipot("NUIMPO454578");
+        //$entreprise->setRccm("RCCM457878-10/CDK");
         //ajout de l'entreprise dans la transaction
-        $entityManager->persist($entreprise);
+        //$entityManager->persist($entreprise);
         //On écrit le SQL dans la base de données
-        $entityManager->flush();
+        //$entityManager->flush();
 
 
         $appTitreRubrique = "Entreprise / Edit";
@@ -47,7 +51,8 @@ class EntrepriseController extends AbstractController
         
         return $this->render('entreprise/entreprise.edit.html.twig', 
         [
-            'appTitreRubrique' => $appTitreRubrique
+            'appTitreRubrique' => $appTitreRubrique,
+            'form' => $form->createView()
         ]);
     }
 

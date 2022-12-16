@@ -29,7 +29,7 @@ class Entreprise
     private ?string $idnat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $numipot = null;
+    private ?string $numimpot = null;
 
     public function getId(): ?int
     {
@@ -96,15 +96,20 @@ class Entreprise
         return $this;
     }
 
-    public function getNumipot(): ?string
+    public function getNumimpot(): ?string
     {
-        return $this->numipot;
+        return $this->numimpot;
     }
 
-    public function setNumipot(?string $numipot): self
+    public function setNumimpot(?string $numimpot): self
     {
-        $this->numipot = $numipot;
+        $this->numimpot = $numimpot;
 
         return $this;
+    }
+
+    public function __toString() :string
+    {
+        return $this->nom;
     }
 }
