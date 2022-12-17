@@ -1,47 +1,47 @@
 {% extends "template.html.twig" %}
 
 {% block appTitre %}
-    BDM
+	BDM
 {% endblock %}
 
 {% block appTitreRubrique %}
-    {{appTitreRubrique}}
+	<i class="fa-solid fa-house-laptop"></i>
+	{{appTitreRubrique}}
 {% endblock %}
 
 {% block appCorps %}
 
 
-    {% for message in app.session.flashBag.get('info') %}
-            <div class="alert alert-info" role="alert">
-                {{ message }}
-            </div>
-    {% endfor %}
-    {% for message in app.session.flashBag.get('success') %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for message in app.session.flashBag.get('error') %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
+	{% for message in app.session.flashBag.get('info') %}
+		<div class="alert alert-info" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
+	{% for message in app.session.flashBag.get('success') %}
+		<div class="alert alert-success" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
+	{% for message in app.session.flashBag.get('error') %}
+		<div class="alert alert-danger" role="alert">
+			{{ message }}
+		</div>
+	{% endfor %}
 
-    {{ form_start(form) }}
-        <div class="row">
-            <div class="col-sm">{{ form_row(form.nom) }}</div>
-            <div class="col-sm">{{ form_row(form.adresse) }}</div>
-        </div>
-        <div class="row sm-1">
-            <div class="col-sm">{{ form_row(form.telephone) }}</div>
-            <div class="col-sm">{{ form_row(form.rccm) }}</div>
-        </div>
-        <div class="row">
-            <div class="col-sm">{{ form_row(form.idnat) }}</div>
-            <div class="col-sm">{{ form_row(form.numimpot) }}</div>
-        </div>
-    {{ form_rest(form) }}
+	{{ form_start(form) }}
+	<div class="row">
+		<div class="col-sm">{{ form_row(form.nom) }}</div>
+		<div class="col-sm">{{ form_row(form.adresse) }}</div>
+	</div>
+	<div class="row sm-1">
+		<div class="col-sm">{{ form_row(form.telephone) }}</div>
+		<div class="col-sm">{{ form_row(form.rccm) }}</div>
+	</div>
+	<div class="row">
+		<div class="col-sm">{{ form_row(form.idnat) }}</div>
+		<div class="col-sm">{{ form_row(form.numimpot) }}</div>
+	</div>
+	{{ form_rest(form) }}
 
 
 {% endblock %}
-

@@ -22,7 +22,7 @@ class EntrepriseController extends AbstractController
     public function list(Request $request): Response
     {
         $session = $request->getSession();
-        $appTitreRubrique = "Entreprise / List";
+        $appTitreRubrique = "Entreprises";
         //$this->addFlash('success', "Bien venu sur BDM!");
 
         return $this->render(
