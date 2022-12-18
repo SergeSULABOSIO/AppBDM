@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Secteur;
+use App\Form\SecteurFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,7 @@ class SecteurController extends AbstractController
         //$this->addFlash('success', "Bien venu sur BDM!");
 
         return $this->render(
-            'entreprise/secteur.list.html.twig',
+            'secteur/secteur.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique
             ]
@@ -55,7 +57,7 @@ class SecteurController extends AbstractController
             $entityManager->persist($secteur);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $secteur->getNom() . " vient d'être ". $adjectif ." avec succès.");
-            return $this->redirectToRoute('secteur.list');
+            return $this->redirectToRoute('secteur.edit');
         } else {
 
             return $this->render(

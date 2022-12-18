@@ -8,7 +8,7 @@
 		<meta name="author" content=""/>
 		<title>
 			{% block appTitre %}
-				Titre par défaut
+				BDM 1.0
 			{% endblock %}
 		</title>
 		<link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet"/>
@@ -61,9 +61,9 @@
 						<div class="nav">
 							<div class="sb-sidenav-menu-heading text-white">
 								<i class="fa-regular fa-folder-open"></i>
-								  Home
-                            </div>
-							<a class="nav-link" href="{{ path('entreprise.list') }}">
+								Home
+							</div>
+							<a class="nav-link" href="#">
 								<i class="fas fa-tachometer-alt"></i>
 								<div class="sb-nav-link-icon"></div>
 								Tableau de bord
@@ -76,8 +76,8 @@
 							</a>
 							<div class="sb-sidenav-menu-heading text-white">
 								<i class="fa-regular fa-folder-open"></i>
-								  Production
-                            </div>
+								Production
+							</div>
 							<a class="nav-link" href="#">
 								<i class="fa-solid fa-umbrella"></i>
 								<div class="sb-nav-link-icon"></div>
@@ -108,7 +108,7 @@
 								<div class="sb-nav-link-icon"></div>
 								Contacts
 							</a>
-							<a class="nav-link" href="#">
+							<a class="nav-link" href="{{ path('secteur.list') }}">
 								<i class="fa-solid fa-users-viewfinder"></i>
 								<div class="sb-nav-link-icon"></div>
 								Secteurs d'activité
@@ -117,8 +117,8 @@
 
 							<div class="sb-sidenav-menu-heading text-white">
 								<i class="fa-regular fa-folder-open"></i>
-								  Finances
-                            </div>
+								Finances
+							</div>
 							<a class="nav-link" href="#">
 								<i class="fa-solid fa-scale-balanced"></i>
 								<div class="sb-nav-link-icon"></div>
@@ -159,6 +159,25 @@
 								Titre Rubrique
 							{% endblock %}
 						</h2>
+
+						{% block appMessageFlashBag %}
+							{% for message in app.session.flashBag.get('info') %}
+								<div class="alert alert-info" role="alert">
+									{{ message }}
+								</div>
+							{% endfor %}
+							{% for message in app.session.flashBag.get('success') %}
+								<div class="alert alert-success" role="alert">
+									{{ message }}
+								</div>
+							{% endfor %}
+							{% for message in app.session.flashBag.get('error') %}
+								<div class="alert alert-danger" role="alert">
+									{{ message }}
+								</div>
+							{% endfor %}
+						{% endblock %}
+
 						<div class="card mb-4">
 							<div class="card-body">
 								<p class="mb-0">

@@ -61,7 +61,7 @@ class EntrepriseController extends AbstractController
             $entityManager->persist($entreprise);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être ". $adjectif ." avec succès.");
-            return $this->redirectToRoute('entreprise.list');
+            return $this->redirectToRoute('entreprise.edit');
         } else {
 
             return $this->render(

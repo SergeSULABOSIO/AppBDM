@@ -1,35 +1,16 @@
 {% extends "template.html.twig" %}
 
-{% block appTitre %}
-    BDM
-{% endblock %}
-
 {% block appTitreRubrique %}
-    <i class="fa-solid fa-house-laptop"></i>
-    {{appTitreRubrique}}
+	<i class="fa-solid fa-house-laptop"></i>
+	{{appTitreRubrique}}
+	<div>
+		<a href="{{ path('entreprise.edit') }}" type="button" class="btn btn-success">
+			<i class="fa-solid fa-circle-plus"></i>
+			Nouveau
+		</a>
+	</div>
 {% endblock %}
 
 {% block appCorps %}
-
-
-    {% for message in app.session.flashBag.get('info') %}
-            <div class="alert alert-info" role="alert">
-                {{ message }}
-            </div>
-    {% endfor %}
-    {% for message in app.session.flashBag.get('success') %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for message in app.session.flashBag.get('error') %}
-        <div class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-    {% endfor %}
-
-    VOICI LA LISTE DES ENTREPRISES
-
-
+	VOICI LA LISTE DES ENTREPRISES
 {% endblock %}
-
