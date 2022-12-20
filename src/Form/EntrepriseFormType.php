@@ -21,13 +21,7 @@ class EntrepriseFormType extends AbstractType
             ->add('rccm')
             ->add('idnat')
             ->add('numimpot')
-            ->add('secteurs', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Secteur::class,
-                // used to render a select box, check boxes or radios
-                 'multiple' => true,
-                 'expanded' => false
-            ])
+            ->add('secteurs')
             ->add('Enregistrer', SubmitType::class)
         ;
     }
