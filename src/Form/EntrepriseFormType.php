@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Entreprise;
+use App\Entity\Secteur;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +21,13 @@ class EntrepriseFormType extends AbstractType
             ->add('rccm')
             ->add('idnat')
             ->add('numimpot')
+            ->add('secteurs', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Secteur::class,
+                // used to render a select box, check boxes or radios
+                 'multiple' => true,
+                 'expanded' => false
+            ])
             ->add('Enregistrer', SubmitType::class)
         ;
     }
