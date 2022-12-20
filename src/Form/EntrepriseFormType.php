@@ -21,7 +21,11 @@ class EntrepriseFormType extends AbstractType
             ->add('rccm')
             ->add('idnat')
             ->add('numimpot')
-            ->add('secteurs')
+            ->add('secteurs', EntityType::class, [
+                'class' => Secteur::class,
+                'expanded' => true,
+                'multiple' => true
+            ])
             ->add('Enregistrer', SubmitType::class)
         ;
     }
