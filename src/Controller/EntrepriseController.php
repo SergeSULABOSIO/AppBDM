@@ -10,13 +10,27 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
+$_TAB_SECTEURS = array(
+    1 => 'Assurance et Réassurances',
+    'Banques et Institutions financières' => 2,
+    'Transport' => 3,
+    'Importation' => 4,
+    'Distrbution' => 5,
+    'Télécommunication' => 6,
+    'Média' => 7,
+    'ONG' => 8,
+    'Services Publics' => 9,
+    'Santé' => 10,
+    'Cabinet et Conseil' => 11,
+    'Sécurité et Gardienage' => 12,
+    'Construction et Travaux publics' => 13,
+    'Autres' => 14
+);
+
 #[Route("/entreprise")]
 class EntrepriseController extends AbstractController
 {
-
-
-
-
 
     #[Route('/', name: 'entreprise.list')]
     public function list(Request $request): Response
@@ -44,15 +58,15 @@ class EntrepriseController extends AbstractController
 
         $appTitreRubrique = "";
         $adjectif = "";
-        if($entreprise == null){
+        if ($entreprise == null) {
             $appTitreRubrique = "Entreprise / Ajout";
             $adjectif = "ajoutée";
             $entreprise = new Entreprise();
-        }else{
+        } else {
             $appTitreRubrique = "Entreprise / Edition";
             $adjectif = "modifiée";
         }
-        
+
         $form = $this->createForm(EntrepriseFormType::class, $entreprise);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
@@ -60,7 +74,7 @@ class EntrepriseController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($entreprise);
             $entityManager->flush();
-            $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être ". $adjectif ." avec succès.");
+            $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être " . $adjectif . " avec succès.");
             return $this->redirectToRoute('entreprise.edit');
         } else {
 
@@ -82,12 +96,12 @@ class EntrepriseController extends AbstractController
     #[Route('/delete/{id?0}', name: 'entreprise.delete')]
     public function delete(Entreprise $entreprise = null, ManagerRegistry $doctrine, Request $request): Response
     {
-        if($entreprise != null){
+        if ($entreprise != null) {
             $entityManager = $doctrine->getManager();
             $entityManager->remove($entreprise);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $entreprise->getNom() . " vient d'être supprimée avec succès.");
-        }else{
+        } else {
             $this->addFlash('error', "Désolé. Cet enregistrement n'existe pas.");
         }
         return $this->redirectToRoute('entreprise.list');

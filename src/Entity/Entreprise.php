@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\EntrepriseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EntrepriseRepository::class)]
@@ -29,17 +27,12 @@ class Entreprise
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $idnat = null;
-
+    
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $numimpot = null;
 
-    #[ORM\OneToMany(mappedBy: 'entreprise', targetEntity: Secteur::class, orphanRemoval: true)]
-    private Collection $secteurs;
-
-    public function __construct()
-    {
-        $this->secteurs = new ArrayCollection();
-    }
+    #[ORM\Column(nullable: true)]
+    private ?int $secteur = null;
 
     public function getId(): ?int
     {
@@ -123,32 +116,14 @@ class Entreprise
         return $this->nom;
     }
 
-    /**
-     * @return Collection<int, Secteur>
-     */
-    public function getSecteurs(): Collection
+    public function getSecteur(): ?int
     {
-        return $this->secteurs;
+        return $this->secteur;
     }
 
-    public function addSecteur(Secteur $secteur): self
+    public function setSecteur(?int $secteur): self
     {
-        if (!$this->secteurs->contains($secteur)) {
-            $this->secteurs->add($secteur);
-            $secteur->setEntreprise($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSecteur(Secteur $secteur): self
-    {
-        if ($this->secteurs->removeElement($secteur)) {
-            // set the owning side to null (unless already changed)
-            if ($secteur->getEntreprise() === $this) {
-                $secteur->setEntreprise(null);
-            }
-        }
+        $this->secteur = $secteur;
 
         return $this;
     }
