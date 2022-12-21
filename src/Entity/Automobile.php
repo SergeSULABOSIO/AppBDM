@@ -42,6 +42,12 @@ class Automobile
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $plaque = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $chassis = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +157,30 @@ class Automobile
     public function setEntreprise(?Entreprise $entreprise): self
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getPlaque(): ?string
+    {
+        return $this->plaque;
+    }
+
+    public function setPlaque(string $plaque): self
+    {
+        $this->plaque = $plaque;
+
+        return $this;
+    }
+
+    public function getChassis(): ?string
+    {
+        return $this->chassis;
+    }
+
+    public function setChassis(string $chassis): self
+    {
+        $this->chassis = $chassis;
 
         return $this;
     }

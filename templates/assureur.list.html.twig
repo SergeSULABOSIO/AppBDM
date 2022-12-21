@@ -1,0 +1,16 @@
+{% extends "template.html.twig" %}
+
+{% block appTitreRubrique %}
+	<i class="fa-solid fa-house-laptop"></i>
+	{{appTitreRubrique}}
+	<div>
+		<a href="{{ path('assureur.edit') }}" type="button" class="btn btn-success">
+			<i class="fa-solid fa-circle-plus"></i>
+			Nouveau
+		</a>
+	</div>
+{% endblock %}
+
+{% block appCorps %}
+	VOICI LA LISTE DES ASSUREURS
+{% endblock %}

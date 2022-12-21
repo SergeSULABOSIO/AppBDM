@@ -11,23 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-$_TAB_SECTEURS = array(
-    1 => 'Assurance et Réassurances',
-    'Banques et Institutions financières' => 2,
-    'Transport' => 3,
-    'Importation' => 4,
-    'Distrbution' => 5,
-    'Télécommunication' => 6,
-    'Média' => 7,
-    'ONG' => 8,
-    'Services Publics' => 9,
-    'Santé' => 10,
-    'Cabinet et Conseil' => 11,
-    'Sécurité et Gardienage' => 12,
-    'Construction et Travaux publics' => 13,
-    'Autres' => 14
-);
-
 #[Route("/entreprise")]
 class EntrepriseController extends AbstractController
 {
@@ -40,7 +23,7 @@ class EntrepriseController extends AbstractController
         //$this->addFlash('success', "Bien venu sur BDM!");
 
         return $this->render(
-            'entreprise/entreprise.list.html.twig',
+            'entreprise.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique
             ]
@@ -79,7 +62,7 @@ class EntrepriseController extends AbstractController
         } else {
 
             return $this->render(
-                'entreprise/entreprise.edit.html.twig',
+                'entreprise.edit.html.twig',
                 [
                     'appTitreRubrique' => $appTitreRubrique,
                     'form' => $form->createView()
