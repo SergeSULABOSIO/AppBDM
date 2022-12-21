@@ -24,7 +24,7 @@ class Assureur
 
     #[ORM\Column(length: 255)]
     private ?string $email = null;
-
+    
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $siteweb = null;
 
@@ -42,6 +42,10 @@ class Assureur
 
     #[ORM\Column]
     private ?bool $isreassureur = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprise $entreprise = null;
 
     public function getId(): ?int
     {
@@ -164,6 +168,18 @@ class Assureur
     public function setIsreassureur(bool $isreassureur): self
     {
         $this->isreassureur = $isreassureur;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
 
         return $this;
     }

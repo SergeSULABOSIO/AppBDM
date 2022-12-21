@@ -26,6 +26,10 @@ class PaiementTaxe
     #[ORM\Column(length: 255)]
     private ?string $refnotededebit = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprise $entreprise = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,18 @@ class PaiementTaxe
     public function setRefnotededebit(string $refnotededebit): self
     {
         $this->refnotededebit = $refnotededebit;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
 
         return $this;
     }

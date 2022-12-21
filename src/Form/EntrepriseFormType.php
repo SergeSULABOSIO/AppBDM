@@ -21,6 +21,12 @@ class EntrepriseFormType extends AbstractType
             ->add('idnat')
             ->add('numimpot')
             ->add('secteur', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'select2'
+                ],
                 'choices'  => [
                     "Administrations publiques" => 0,
                     "Agriculture, foresterie, pêche et chasse" => 1,

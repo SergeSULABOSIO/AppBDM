@@ -74,6 +74,10 @@ class Police
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $remarques = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Entreprise $entreprise = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -315,6 +319,18 @@ class Police
     public function setRemarques(?string $remarques): self
     {
         $this->remarques = $remarques;
+
+        return $this;
+    }
+
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): self
+    {
+        $this->entreprise = $entreprise;
 
         return $this;
     }
