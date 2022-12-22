@@ -44,6 +44,9 @@ class Client
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column]
+    private ?int $secteur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class Client
     public function setEntreprise(?Entreprise $entreprise): self
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getSecteur(): ?int
+    {
+        return $this->secteur;
+    }
+
+    public function setSecteur(int $secteur): self
+    {
+        $this->secteur = $secteur;
 
         return $this;
     }
