@@ -50,7 +50,8 @@ class EntrepriseFormType extends AbstractType
                     "Autres" => 19
                 ]
             ])
-            ->add('Enregistrer', SubmitType::class);
+            ->add('Enregistrer', SubmitType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

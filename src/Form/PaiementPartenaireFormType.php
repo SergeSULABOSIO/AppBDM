@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\PaiementPartenaire;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,7 @@ class PaiementPartenaireFormType extends AbstractType
             ->add('montant')
             ->add('refnotededebit')
             ->add('entreprise')
+            ->add('Enregistrer', SubmitType::class);
         ;
     }
 
