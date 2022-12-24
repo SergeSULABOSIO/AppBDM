@@ -1,3 +1,5 @@
 {
-    "editor.guides.bracketPairs": "active"
+    "editor.guides.bracketPairs": "active",
+    "symfony-vscode.phpExecutablePath": "E:\\xamp installed\\php\\php.exe"
+    "symfony-vscode.consolePath": ""
 }

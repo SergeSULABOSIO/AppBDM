@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Police;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,7 +29,19 @@ class PoliceFormType extends AbstractType
             ->add('fraisadmin')
             ->add('primetotale')
             ->add('discount')
-            ->add('modepaiement')
+            ->add('modepaiement', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'choices'  => [
+                    "Paiement Annuel" => 0,
+                    "Paiement Semestriel" => 1,
+                    "Paiement Trimestriel" => 2
+                ]
+            ])
             ->add('ricom')
             ->add('localcom')
             ->add('frontingcom')

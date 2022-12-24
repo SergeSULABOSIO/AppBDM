@@ -1,4 +1,4 @@
-{% extends "template.html.twig" %}
+{% extends "template.menu.user.html.twig" %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-umbrella"></i>
@@ -6,13 +6,54 @@
 {% endblock %}
 
 {% block appCorps %}
-	{{ form(form) }}
+	{{ form_start(form) }}
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.reference) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.dateoperation) }}</div>
+			<div class="col-sm">{{ form_row(form.dateemission) }}</div>
+			<div class="col-sm">{{ form_row(form.dateeffet) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.dateexpiration) }}</div>
+			<div class="col-sm">{{ form_row(form.idavenant) }}</div>
+			<div class="col-sm">{{ form_row(form.typeavenant) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.capital) }}</div>
+			<div class="col-sm">{{ form_row(form.primenette) }}</div>
+			<div class="col-sm">{{ form_row(form.fronting) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.arca) }}</div>
+			<div class="col-sm">{{ form_row(form.tva) }}</div>
+			<div class="col-sm">{{ form_row(form.fraisadmin) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.primetotale) }}</div>
+			<div class="col-sm">{{ form_row(form.discount) }}</div>
+			<div class="col-sm">{{ form_row(form.modepaiement) }}</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">{{ form_row(form.ricom) }}</div>
+			<div class="col-sm">{{ form_row(form.localcom) }}</div>
+			<div class="col-sm">{{ form_row(form.frontingcom) }}</div>
+		</div>
+		<div class="row">
+			
+			<div class="col-sm">{{ form_row(form.entreprise) }}</div>
+			<div class="col-sm">{{ form_row(form.remarques) }}</div>
+		</div>
+	{{ form_rest(form) }}
+
+
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		$(document).ready(function() {
-			$('.select2').select2();
-		});
+		$(document).ready(function () {
+$('.select2').select2();
+});
 	</script>
 {% endblock %}
