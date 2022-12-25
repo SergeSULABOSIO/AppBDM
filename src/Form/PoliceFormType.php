@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -110,7 +111,7 @@ class PoliceFormType extends AbstractType
             ->add('frontingcom', NumberType::class, [
                 'label' => "Commission (ht) / Fronting"
             ])
-            ->add('remarques', TextType::class, [
+            ->add('remarques', TextareaType::class, [
                 'label' => "Rémarques",
                 'required' => false
             ])
