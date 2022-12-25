@@ -53,7 +53,7 @@ class PoliceController extends AbstractController
         $form = $this->createForm(PoliceFormType::class, $police);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($police);
             $entityManager->flush();

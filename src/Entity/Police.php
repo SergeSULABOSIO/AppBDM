@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\PoliceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -28,9 +29,11 @@ class Police
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateexpiration = null;
 
+    #[Assert\NotBlank(message:"Veuillez fournir la référence de la police.")]
     #[ORM\Column(length: 255)]
     private ?string $reference = null;
 
+    #[Assert\NotBlank(message:"Veuillez préciser l'ID de cet avenant.")]
     #[ORM\Column]
     private ?int $idavenant = null;
 
