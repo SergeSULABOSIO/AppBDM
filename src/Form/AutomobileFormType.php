@@ -23,6 +23,7 @@ class AutomobileFormType extends AbstractType
             ->add('nbsieges')
             ->add('utilite')
             ->add('nature')
+            ->add('polices')
             ->add('entreprise')
             ->add('Enregistrer', SubmitType::class);
     }

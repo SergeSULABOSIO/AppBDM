@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PoliceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -77,6 +79,32 @@ class Police
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Monnaie $monnaie = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Client $client = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Produit $produit = null;
+
+    #[ORM\ManyToMany(targetEntity: Assureur::class)]
+    private Collection $assureurs;
+
+    #[ORM\ManyToOne]
+    private ?Partenaire $partenaire = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reassureurs = null;
+
+    public function __construct()
+    {
+        $this->assureurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -331,6 +359,95 @@ class Police
     public function setEntreprise(?Entreprise $entreprise): self
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getMonnaie(): ?Monnaie
+    {
+        return $this->monnaie;
+    }
+
+    public function setMonnaie(?Monnaie $monnaie): self
+    {
+        $this->monnaie = $monnaie;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): self
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Assureur>
+     */
+    public function getAssureurs(): Collection
+    {
+        return $this->assureurs;
+    }
+
+    public function addAssureur(Assureur $assureur): self
+    {
+        if (!$this->assureurs->contains($assureur)) {
+            $this->assureurs->add($assureur);
+        }
+
+        return $this;
+    }
+
+    public function removeAssureur(Assureur $assureur): self
+    {
+        $this->assureurs->removeElement($assureur);
+
+        return $this;
+    }
+
+    public function getPartenaire(): ?Partenaire
+    {
+        return $this->partenaire;
+    }
+
+    public function setPartenaire(?Partenaire $partenaire): self
+    {
+        $this->partenaire = $partenaire;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->reference;
+    }
+
+    public function getReassureurs(): ?string
+    {
+        return $this->reassureurs;
+    }
+
+    public function setReassureurs(?string $reassureurs): self
+    {
+        $this->reassureurs = $reassureurs;
 
         return $this;
     }

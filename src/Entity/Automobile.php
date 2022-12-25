@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AutomobileRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,18 @@ class Automobile
 
     #[ORM\Column(length: 255)]
     private ?string $chassis = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Monnaie $monnaie = null;
+
+    #[ORM\ManyToMany(targetEntity: Police::class)]
+    private Collection $polices;
+
+    public function __construct()
+    {
+        $this->polices = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -181,6 +195,47 @@ class Automobile
     public function setChassis(string $chassis): self
     {
         $this->chassis = $chassis;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->marque . " - " . $this->plaque;
+    }
+
+    public function getMonnaie(): ?Monnaie
+    {
+        return $this->monnaie;
+    }
+
+    public function setMonnaie(?Monnaie $monnaie): self
+    {
+        $this->monnaie = $monnaie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Police>
+     */
+    public function getPolices(): Collection
+    {
+        return $this->polices;
+    }
+
+    public function addPolice(Police $police): self
+    {
+        if (!$this->polices->contains($police)) {
+            $this->polices->add($police);
+        }
+
+        return $this;
+    }
+
+    public function removePolice(Police $police): self
+    {
+        $this->polices->removeElement($police);
 
         return $this;
     }

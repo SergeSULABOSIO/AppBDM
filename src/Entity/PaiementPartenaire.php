@@ -79,4 +79,9 @@ class PaiementPartenaire
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->montant . " - " . $this->refnotededebit;
+    }
 }

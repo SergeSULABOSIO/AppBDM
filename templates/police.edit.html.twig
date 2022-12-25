@@ -7,45 +7,90 @@
 
 {% block appCorps %}
 	{{ form_start(form) }}
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.reference) }}</div>
+
+	<div class="container">
+		<div class="card mt-5">
+			<h5 class="card-header">Section 1/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.reference) }}</div>
+						<div class="col-sm">{{ form_row(form.idavenant) }}</div>
+						<div class="col-sm">{{ form_row(form.typeavenant) }}</div>
+						<div class="col-sm">{{ form_row(form.monnaie) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 2/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.dateoperation) }}</div>
+						<div class="col-sm">{{ form_row(form.dateemission) }}</div>
+						<div class="col-sm">{{ form_row(form.dateeffet) }}</div>
+						<div class="col-sm">{{ form_row(form.dateexpiration) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 3/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.capital) }}</div>
+						<div class="col-sm">{{ form_row(form.primenette) }}</div>
+						<div class="col-sm">{{ form_row(form.fronting) }}</div>
+						<div class="col-sm">{{ form_row(form.arca) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 4/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.tva) }}</div>
+						<div class="col-sm">{{ form_row(form.fraisadmin) }}</div>
+						<div class="col-sm">{{ form_row(form.primetotale) }}</div>
+						<div class="col-sm">{{ form_row(form.discount) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 5/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.ricom) }}</div>
+						<div class="col-sm">{{ form_row(form.localcom) }}</div>
+						<div class="col-sm">{{ form_row(form.frontingcom) }}</div>
+						<div class="col-sm">{{ form_row(form.modepaiement) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 6/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.produit) }}</div>
+						<div class="col-sm">{{ form_row(form.partenaire) }}</div>
+						<div class="col-sm">{{ form_row(form.assureurs) }}</div>
+						<div class="col-sm">{{ form_row(form.reassureurs) }}</div>
+					</div>
+				</p>
+			</div>
+			<h5 class="card-header">Section 7/7</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.entreprise) }}</div>
+						<div class="col-sm">{{ form_row(form.client) }}</div>
+						<div class="col-sm">{{ form_row(form.remarques) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					{{ form_rest(form) }}
+				</p>
+			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.dateoperation) }}</div>
-			<div class="col-sm">{{ form_row(form.dateemission) }}</div>
-			<div class="col-sm">{{ form_row(form.dateeffet) }}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.dateexpiration) }}</div>
-			<div class="col-sm">{{ form_row(form.idavenant) }}</div>
-			<div class="col-sm">{{ form_row(form.typeavenant) }}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.capital) }}</div>
-			<div class="col-sm">{{ form_row(form.primenette) }}</div>
-			<div class="col-sm">{{ form_row(form.fronting) }}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.arca) }}</div>
-			<div class="col-sm">{{ form_row(form.tva) }}</div>
-			<div class="col-sm">{{ form_row(form.fraisadmin) }}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.primetotale) }}</div>
-			<div class="col-sm">{{ form_row(form.discount) }}</div>
-			<div class="col-sm">{{ form_row(form.modepaiement) }}</div>
-		</div>
-		<div class="row">
-			<div class="col-sm">{{ form_row(form.ricom) }}</div>
-			<div class="col-sm">{{ form_row(form.localcom) }}</div>
-			<div class="col-sm">{{ form_row(form.frontingcom) }}</div>
-		</div>
-		<div class="row">
-			
-			<div class="col-sm">{{ form_row(form.entreprise) }}</div>
-			<div class="col-sm">{{ form_row(form.remarques) }}</div>
-		</div>
-	{{ form_rest(form) }}
+	</div>
 
 
 {% endblock %}

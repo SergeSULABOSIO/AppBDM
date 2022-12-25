@@ -17,6 +17,7 @@ class ContactFormType extends AbstractType
             ->add('poste')
             ->add('telephone')
             ->add('email')
+            ->add('client')
             ->add('entreprise')
             ->add('Enregistrer', SubmitType::class);
         ;
