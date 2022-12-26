@@ -17,7 +17,8 @@ class Police
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message:"Veuillez préciser la date.")]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateoperation = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]

@@ -27,7 +27,7 @@ class BDMFixture extends Fixture
         $tabNomsPartenaires = array("AFINBRO", "BOLLORE LUSHI", "MARSH", "O'NEILS");
         $tabMarquesAutomobiles = array("TOYOTA", "NISSAN", "MAZDA", "SUZUKI", "MERCEDES");
         $tabNomsTaxes = array("TVA", "ARCA");
-        $tabCodesMonnaies = array("CDF", "USD");
+        $tabCodesMonnaies = array("USD", "CDF");
         $tabNomsAssureurs = array("SFA CONGO SA", "ACTIVA", "SUNU", "MAYFAIRE", "RAWSUR", "SONAS");
         $tabNomsProduits = array(
             "INCENDIE ET RISQUES DIVERS / ASSET",
