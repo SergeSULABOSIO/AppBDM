@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
 use App\Entity\Assureur;
 use App\Entity\Automobile;
 use App\Entity\Client;
@@ -14,13 +15,33 @@ use App\Entity\Taxe;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+
 class BDMFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
 
+
+        $faker = Factory::create();
+
+        $tabNomsPartenaires = array("AFINBRO", "BOLLORE LUSHI", "MARSH", "O'NEILS");
+        $tabMarquesAutomobiles = array("TOYOTA", "NISSAN", "MAZDA", "SUZUKI", "MERCEDES");
+        $tabNomsTaxes = array("TVA", "ARCA");
+        $tabCodesMonnaies = array("CDF", "USD");
+        $tabNomsAssureurs = array("SFA CONGO SA", "ACTIVA", "SUNU", "MAYFAIRE", "RAWSUR", "SONAS");
+        $tabNomsProduits = array(
+            "INCENDIE ET RISQUES DIVERS / ASSET",
+            "RC AUTOMOBILE / MOTOR TPL",
+            "TOUS RISQUES AUTOMOBILE / MOTOR COMP",
+            "RC GENERALE OU D'EXPLOITATION / GL",
+            "RC EMPLOYEUR / EMPL",
+            "ACCIDENT DU TRAVAIL / GPA",
+            "DEGATS MATERIELS ET PERTES D'EXPLOITATION / PDBI",
+            "GLOBALE DES BANQUES / BBB",
+            "TRANSPORT DES FRONDS / CIT",
+            "TRANSPORT DES FACULTES / GIT",
+            "RISQUES POLITIQUES ET TERRORISME / PVT"
+        );
 
         //ENTREPRISE
         $entreprise = new Entreprise();
@@ -31,240 +52,158 @@ class BDMFixture extends Fixture
         $entreprise->setRccm("RCCM045CDKIN");
         $entreprise->setSecteur(2);
         $entreprise->setTelephone("+243828727706");
-
         $manager->persist($entreprise);
 
-        //ASSUREURS - ACTIVA
-        $activa = new Assureur();
-        $activa->setNom("ACTIVA ASSURANCE");
-        $activa->setAdresse("Gombe / Kinshasa");
-        $activa->setTelephone("+243828727706");
-        $activa->setEmail("info@activa.com");
-        $activa->setSiteweb("http://www.activa.com");
-        $activa->setRccm("RCCM4545454545");
-        $activa->setIdnat("IDNAT4545454545");
-        $activa->setLicence("LICARCA454545");
-        $activa->setNumimpot("IMPO7878784545");
-        $activa->setIsreassureur(false);
-        $activa->setEntreprise($entreprise);
+        //MONNAIES
+        $monnaieUSD = null;
+        foreach ($tabCodesMonnaies as $codeMonnaie) {
+            //Pour chaque element du tableau
+            $monnaie = new Monnaie();
+            if ($codeMonnaie == "CDF") {
+                $monnaie->setNom("Franc Congolais");
+                $monnaie->setTauxusd(2050);
+                $monnaie->setIslocale(true);
+            } else {
+                $monnaie->setNom("Dollars Américains");
+                $monnaie->setTauxusd(1);
+                $monnaie->setIslocale(false);
+                $monnaieUSD = $monnaie;
+            }
+            $monnaie->setCode($codeMonnaie);
+            $monnaie->setEntreprise($entreprise);
+            $manager->persist($monnaie);
+        }
 
-        $manager->persist($activa);
-
-
-        //ASSUREURS - RAWSUR
-        $rawsure = new Assureur();
-        $rawsure->setNom("RAWSUR ASSURANCE");
-        $rawsure->setAdresse("Gombe / Kinshasa");
-        $rawsure->setTelephone("+243828727706");
-        $rawsure->setEmail("info@rawsur.com");
-        $rawsure->setSiteweb("http://www.rawsur.com");
-        $rawsure->setRccm("RCCM4545454545");
-        $rawsure->setIdnat("IDNAT4545454545");
-        $rawsure->setLicence("LICARCA454545");
-        $rawsure->setNumimpot("IMPO7878784545");
-        $rawsure->setIsreassureur(false);
-        $rawsure->setEntreprise($entreprise);
-
-        $manager->persist($rawsure);
-
-
-        //ASSUREURS - SFA
-        $sfa = new Assureur();
-        $sfa->setNom("SFA CONGO SA");
-        $sfa->setAdresse("Gombe / Kinshasa");
-        $sfa->setTelephone("+243828727706");
-        $sfa->setEmail("info@sfa.com");
-        $sfa->setSiteweb("http://www.sfa.com");
-        $sfa->setRccm("RCCM4545454545");
-        $sfa->setIdnat("IDNAT4545454545");
-        $sfa->setLicence("LICARCA454545");
-        $sfa->setNumimpot("IMPO7878784545");
-        $sfa->setIsreassureur(false);
-        $sfa->setEntreprise($entreprise);
-
-        $manager->persist($sfa);
-
-
-        //ASSUREURS - SUNU
-        $sunu = new Assureur();
-        $sunu->setNom("SUNU ASSURANCE IARD");
-        $sunu->setAdresse("Gombe / Kinshasa");
-        $sunu->setTelephone("+243828727706");
-        $sunu->setEmail("info@sunu.com");
-        $sunu->setSiteweb("http://www.sunu.com");
-        $sunu->setRccm("RCCM4545454545");
-        $sunu->setIdnat("IDNAT4545454545");
-        $sunu->setLicence("LICARCA454545");
-        $sunu->setNumimpot("IMPO7878784545");
-        $sunu->setIsreassureur(false);
-        $sunu->setEntreprise($entreprise);
-
-        $manager->persist($sunu);
-
-
-        //ASSUREURS - MAYFAIR
-        $mayfair = new Assureur();
-        $mayfair->setNom("MAYFAIR INSURANCE COMPANY RDC SARL");
-        $mayfair->setAdresse("Gombe / Kinshasa");
-        $mayfair->setTelephone("+243828727706");
-        $mayfair->setEmail("info@mayfair.com");
-        $mayfair->setSiteweb("http://www.mayfair.com");
-        $mayfair->setRccm("RCCM4545454545");
-        $mayfair->setIdnat("IDNAT4545454545");
-        $mayfair->setLicence("LICARCA454545");
-        $mayfair->setNumimpot("IMPO7878784545");
-        $mayfair->setIsreassureur(false);
-        $mayfair->setEntreprise($entreprise);
-
-        $manager->persist($mayfair);
-
-
-
-        $monnaieCDF = new Monnaie();
-        $monnaieCDF->setNom("Franc Congolais");
-        $monnaieCDF->setCode("CDF");
-        $monnaieCDF->setTauxusd(2050);
-        $monnaieCDF->setIslocale(true);
-        $monnaieCDF->setEntreprise($entreprise);
-
-        $manager->persist($monnaieCDF);
-
-
-        $monnaieUSD = new Monnaie();
-        $monnaieUSD->setNom("Dollars Américains");
-        $monnaieUSD->setCode("USD");
-        $monnaieUSD->setTauxusd(1);
-        $monnaieUSD->setIslocale(false);
-        $monnaieUSD->setEntreprise($entreprise);
-
-        $manager->persist($monnaieUSD);
-
-
-        $client = new Client();
-        $client->setNom("Bolloré Transport et Logistics RDC");
-        $client->setAdresse("Limeté - KINSHASA / RDC");
-        $client->setTelephone("+243828727706");
-        $client->setEmail("info@bollore.com");
-        $client->setSiteweb("http://www.bollore.com");
-        $client->setIspersonnemorale(true);
-        $client->setRccm("RCCM4545454545");
-        $client->setIdnat("ID47878787878");
-        $client->setNumipot("IMP4787878000");
-        $client->setSecteur(0);
-        $client->setEntreprise($entreprise);
-
-        $manager->persist($client);
-
-
-
-        $client2 = new Client();
-        $client2->setNom("Serge SULA BOSIO");
-        $client2->setAdresse("Limeté - KINSHASA / RDC");
-        $client2->setTelephone("+243828727706");
-        $client2->setEmail("ssula@aib-brokers.com");
-        $client2->setSiteweb("http://www.tuminvite.com");
-        $client2->setIspersonnemorale(false);
-        $client2->setRccm("");
-        $client2->setIdnat("");
-        $client2->setNumipot("");
-        $client2->setSecteur(0);
-        $client2->setEntreprise($entreprise);
-
-        $manager->persist($client2);
-
-
-        for ($i = 0; $i < 100; $i++) {
-            $client3 = new Client();
-            $client3->setNom($i."_CLIENT".$i);
-            $client3->setAdresse($i."_Adresse".$i);
-            $client3->setTelephone("+24382872770".$i);
-            $client3->setEmail("cli".$i."@gmail.com");
-            $client3->setSiteweb("http://www.cli" . $i . ".com");
-            $client3->setIspersonnemorale(false);
-            $client3->setRccm("");
-            $client3->setIdnat("");
-            $client3->setNumipot("");
-            $client3->setSecteur(0);
-            $client3->setEntreprise($entreprise);
-
-            $manager->persist($client3);
+        //TAXES
+        foreach ($tabNomsTaxes as $nomTaxes) {
+            //Pour chaque element du tableau
+            $taxe = new Taxe();
+            $taxe->setNom($nomTaxes);
+            if ($nomTaxes == "TVA") {
+                $taxe->setDescription("Taxe sur la Valeur Ajoutée");
+                $taxe->setTaux(0.16);
+                $taxe->setOrganisation("DGI - Direction Générale des Impôts");
+            } else {
+                $taxe->setDescription("Frais de surveillance");
+                $taxe->setTaux(0.02);
+                $taxe->setOrganisation("ARCA - Autorité de Régulation des Assurances");
+            }
+            $taxe->setEntreprise($entreprise);
+            $manager->persist($taxe);
         }
 
 
+        //PARTENAIRES
+        foreach ($tabNomsPartenaires as $nomPartenaire) {
+            $partenaire = new Partenaire();
+            $partenaire->setNom($nomPartenaire);
+            $partenaire->setAdresse($faker->address());
+            $partenaire->setEmail($faker->email());
+            $partenaire->setSiteweb($faker->url());
+            $partenaire->setRccm("RCCM" . $faker->randomNumber(5, true));
+            $partenaire->setIdnat("IDNAT" . $faker->randomNumber(5, true));
+            $partenaire->setNumimpot("IMP" . $faker->randomNumber(5, true));
+            $partenaire->setPart(0.50);
+            $partenaire->setEntreprise($entreprise);
+            $manager->persist($partenaire);
+        }
 
-        $produit = new Produit();
-        $produit->setNom("INCENDIE ET RISQUES DIVERS");
-        $produit->setDescription("Couvre les risques liés à l'incendie, dégâts des eaux, chuttes de corps aéronef, éléments naturels et autres.");
-        $produit->setIsobligatoire(true);
-        $produit->setIsabonnement(false);
-        $produit->setTauxarca(0.10);
-        $produit->setEntreprise($entreprise);
+        //ASSUREURS
+        foreach ($tabNomsAssureurs as $nomAssureur) {
+            $assureur = new Assureur();
+            $assureur->setNom($nomAssureur);
+            $assureur->setAdresse($faker->address());
+            $assureur->setTelephone($faker->phoneNumber());
+            $assureur->setEmail($faker->email());
+            $assureur->setSiteweb($faker->url());
+            $assureur->setRccm("RCCM" . $faker->randomNumber(5, true));
+            $assureur->setIdnat("IDNAT" . $faker->randomNumber(5, true));
+            $assureur->setLicence("ARCA" . $faker->randomNumber(3, true));
+            $assureur->setNumimpot("IMP" . $faker->randomNumber(5, true));
+            $assureur->setIsreassureur(false);
+            $assureur->setEntreprise($entreprise);
+            $manager->persist($assureur);
+        }
 
-        $manager->persist($produit);
+        //PRODUIT
+        $compteur = 0;
+        foreach ($tabNomsProduits as $nomProduit) {
+            $produit = new Produit();
+            $produit->setNom($nomProduit);
+            $produit->setDescription($faker->sentence(5));
+            if ($compteur % 2) {
+                $produit->setIsobligatoire(true);
+                $produit->setTauxarca(0.10);
+            } else {
+                $produit->setIsobligatoire(false);
+                $produit->setTauxarca(0.15);
+            }
+            $produit->setIsabonnement(false);
+            $produit->setEntreprise($entreprise);
+            $manager->persist($produit);
+            $compteur++;
+        }
 
+        //CLIENTS
+        $compteur = 0;
+        for ($i = 0; $i < 100; $i++) {
+            $client = new Client();
+            $client->setAdresse($faker->address());
+            $client->setTelephone($faker->phoneNumber());
+            $client->setEmail($faker->email());
+            $client->setSiteweb($faker->url());
+            if ($compteur < 30) {
+                $client->setNom($faker->name());
+                $client->setIspersonnemorale(false);
+                $client->setRccm("");
+                $client->setIdnat("");
+                $client->setNumipot("");
+                $client->setSecteur(0);
+            } else {
+                $client->setNom($faker->company());
+                $client->setIspersonnemorale(true);
+                $client->setRccm("RCCM" . $faker->randomNumber(5, true));
+                $client->setIdnat("IDNAT" . $faker->randomNumber(5, true));
+                $client->setNumipot("IMP" . $faker->randomNumber(5, true));
+                $client->setSecteur(2);
+            }
+            $client->setEntreprise($entreprise);
+            $manager->persist($client);
+            $compteur++;
 
+            //Chaque client a des contacts
+            for ($j = 0; $j < 3; $j++) {
+                $contact = new Contact();
+                $contact->setNom($faker->name());
+                $contact->setPoste($faker->jobTitle());
+                $contact->setTelephone($faker->phoneNumber());
+                $contact->setEmail($faker->email());
+                $contact->setClient($client);
+                $contact->setEntreprise($entreprise);
+                $manager->persist($contact);
+            }
+        }
 
-        $partenaire = new Partenaire();
-        $partenaire->setNom("AFINBRO");
-        $partenaire->setAdresse("Zambie");
-        $partenaire->setEmail("info@afinbro.com");
-        $partenaire->setSiteweb("http://www.afinbro.com");
-        $partenaire->setRccm("RCCM44787878");
-        $partenaire->setIdnat("IDNAT78787844");
-        $partenaire->setNumimpot("IMP88878545400");
-        $partenaire->setPart(0.50);
-        $partenaire->setEntreprise($entreprise);
-
-        $manager->persist($partenaire);
-
-
-        $taxeTVA = new Taxe();
-        $taxeTVA->setNom("TVA");
-        $taxeTVA->setDescription("Taxe sur la Valeur Ajoutée");
-        $taxeTVA->setTaux(0.16);
-        $taxeTVA->setOrganisation("DGI");
-        $taxeTVA->setEntreprise($entreprise);
-
-        $manager->persist($taxeTVA);
-
-
-        $taxeARCA = new Taxe();
-        $taxeARCA->setNom("ARCA");
-        $taxeARCA->setDescription("Frais de surveillance ARCA");
-        $taxeARCA->setTaux(0.02);
-        $taxeARCA->setOrganisation("ARCA");
-        $taxeARCA->setEntreprise($entreprise);
-
-        $manager->persist($taxeARCA);
-
-
-        $contactSerge = new Contact();
-        $contactSerge->setNom("Mme. Joelle SULA FALA");
-        $contactSerge->setPoste("Directrice Admin & Financière");
-        $contactSerge->setTelephone("+243828727706");
-        $contactSerge->setEmail("joellefala1@gmail.com");
-        $contactSerge->setClient($client);
-        $contactSerge->setEntreprise($entreprise);
-
-        $manager->persist($contactSerge);
-
-
-        $auto = new Automobile();
-        $auto->setAnnee("2001");
-        $auto->setModel("RAV4 Intermédiaire");
-        $auto->setMarque("TOYOTA");
-        $auto->setPuissance("9CV");
-        $auto->setValeur(7600);
-        $auto->setMonnaie($monnaieUSD);
-        $auto->setNbsieges(5);
-        $auto->setNature(1);
-        $auto->setUtilite(1);
-        $auto->setPlaque("6087BJ/01");
-        $auto->setChassis("XCD4545114711455877770");
-        $auto->setEntreprise($entreprise);
-
-        $manager->persist($auto);
-
+        
+        //AUTOMOBILES
+        foreach ($tabMarquesAutomobiles as $marqueAuto) {
+            for ($a = 0; $a < 5; $a++) {
+                $auto = new Automobile();
+                $auto->setAnnee($faker->numberBetween(2001, 2022));
+                $auto->setModel($faker->numerify('MODEL-####'));
+                $auto->setMarque($marqueAuto);
+                $auto->setPuissance($faker->numberBetween(8, 20) . "CV");
+                $auto->setValeur($faker->numberBetween(1000, 25000));
+                $auto->setMonnaie($monnaieUSD);
+                $auto->setNbsieges($faker->numberBetween(4, 8));
+                $auto->setNature(1);
+                $auto->setUtilite(1);
+                $auto->setPlaque($faker->randomNumber(4, true) . "BG/0". $a);
+                $auto->setChassis("XCD4" . $faker->randomNumber(5, true));
+                $auto->setEntreprise($entreprise);
+                $manager->persist($auto);
+            }
+        }
 
         $manager->flush();
     }
