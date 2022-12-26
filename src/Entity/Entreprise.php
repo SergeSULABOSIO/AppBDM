@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\EntrepriseRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,6 +15,7 @@ class Entreprise
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message:"Veuillez fournir le nom de l'entreprise.")]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
