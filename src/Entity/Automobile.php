@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\AutomobileRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,15 +18,19 @@ class Automobile
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $model = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $marque = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $annee = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $puissance = null;
 

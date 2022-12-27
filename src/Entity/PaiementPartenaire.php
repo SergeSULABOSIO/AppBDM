@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\PaiementPartenaireRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,6 +22,7 @@ class PaiementPartenaire
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $montant = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $refnotededebit = null;
 

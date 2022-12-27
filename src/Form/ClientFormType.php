@@ -5,7 +5,10 @@ namespace App\Form;
 use App\Entity\Client;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,7 +17,9 @@ class ClientFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
+            ->add('nom', TextType::class, [
+                'label' => "Nom du client"
+            ])
             ->add('secteur', ChoiceType::class, [
                 'expanded' => false,
                 'multiple' => false,
@@ -45,14 +50,36 @@ class ClientFormType extends AbstractType
                     "Autres" => 19
                 ]
             ])
-            ->add('adresse')
-            ->add('telephone')
-            ->add('email')
-            ->add('siteweb')
-            ->add('ispersonnemorale')
-            ->add('rccm')
-            ->add('idnat')
-            ->add('numipot')
+            ->add('adresse', TextType::class, [
+                'label' => "Adresse physique"
+            ])
+            ->add('telephone', TextType::class, [
+                'label' => "N° de téléphone"
+            ])
+            ->add('email', EmailType::class, [
+                'label' => "Adresse mail"
+            ])
+            ->add('siteweb', UrlType::class, [
+                'label' => "Site Internet"
+            ])
+            ->add('ispersonnemorale', ChoiceType::class, [
+                'label' => "Est-il une personne morale?",
+                'required' => true,
+                'expanded' => false,
+                'choices' => array(
+                    'Non' => false,
+                    'Oui' => true
+                )
+            ])
+            ->add('rccm', TextType::class, [
+                'label' => "N° RCCM"
+            ])
+            ->add('idnat', TextType::class, [
+                'label' => "Id. Nationale"
+            ])
+            ->add('numipot', TextType::class, [
+                'label' => "N° Impôt"
+            ])
             ->add('entreprise')
             ->add('Enregistrer', SubmitType::class)
         ;
