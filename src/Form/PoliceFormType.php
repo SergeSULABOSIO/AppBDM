@@ -27,19 +27,27 @@ class PoliceFormType extends AbstractType
         $builder
             ->add('dateoperation', DateType::class, [
                 'label' => "Date de l'opération",
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => null
             ])
             ->add('dateemission', DateType::class, [
                 'label' => "Date d'émission",
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => null
             ])
             ->add('dateeffet', DateType::class, [
                 'label' => "Date d'effet",
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => null
             ])
             ->add('dateexpiration', DateType::class, [
                 'label' => "Date d'expiration",
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'required' => false,
+                'empty_data' => null
             ])
             ->add('reference', TextType::class, [
                 'label' => "Référence de la police"
@@ -170,8 +178,7 @@ class PoliceFormType extends AbstractType
                 'class'  => Assureur::class,
                 'label' => "Assureurs"
             ])
-            ->add('Enregistrer', SubmitType::class);
-        ;
+            ->add('Enregistrer', SubmitType::class);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
