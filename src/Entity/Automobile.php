@@ -37,6 +37,7 @@ class Automobile
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $valeur = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column]
     private ?int $nbsieges = null;
 
@@ -50,9 +51,11 @@ class Automobile
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $plaque = null;
 
+    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $chassis = null;
 

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Automobile;
+use App\Entity\Monnaie;
 use App\Entity\Police;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -77,6 +78,16 @@ class AutomobileFormType extends AbstractType
                 ],
                 'class'  => Police::class,
                 'label' => "Police d'assurance"
+            ])
+            ->add('monnaie', EntityType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'class'  => Monnaie::class,
+                'label' => "Monnaie"
             ])
             ->add('entreprise')
             ->add('Enregistrer', SubmitType::class);

@@ -6,13 +6,43 @@
 {% endblock %}
 
 {% block appCorps %}
-	{{ form(form) }}
+	{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+	<div class="container">
+		<div class="card mt-5">
+			<h5 class="card-header">Information générale</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.plaque) }}</div>
+						<div class="col-sm">{{ form_row(form.chassis) }}</div>
+						<div class="col-sm">{{ form_row(form.model) }}</div>
+						<div class="col-sm">{{ form_row(form.marque) }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.nbsieges) }}</div>
+						<div class="col-sm">{{ form_row(form.puissance) }}</div>
+						<div class="col-sm">{{ form_row(form.valeur) }}</div>
+						<div class="col-sm">{{ form_row(form.monnaie) }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.nature) }}</div>
+						<div class="col-sm">{{ form_row(form.utilite) }}</div>
+						<div class="col-sm">{{ form_row(form.annee) }}</div>
+						<div class="col-sm">{{ form_row(form.polices) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					{{ form_rest(form) }}
+				</p>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		$(document).ready(function() {
-			$('.select2').select2();
-		});
+		$(document).ready(function () {
+$('.select2').select2();
+});
 	</script>
 {% endblock %}
