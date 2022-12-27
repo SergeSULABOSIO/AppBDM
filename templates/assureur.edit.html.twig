@@ -6,13 +6,42 @@
 {% endblock %}
 
 {% block appCorps %}
-	{{ form(form) }}
+	{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+	<div class="container">
+		<div class="card mt-5">
+			<h5 class="card-header">Information générale</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.nom) }}</div>
+						<div class="col-sm">{{ form_row(form.adresse) }}</div>
+						<div class="col-sm">{{ form_row(form.entreprise) }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.isreassureur) }}</div>
+						<div class="col-sm">{{ form_row(form.email) }}</div>
+						<div class="col-sm">{{ form_row(form.siteweb) }}</div>
+						<div class="col-sm">{{ form_row(form.telephone) }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.licence) }}</div>
+						<div class="col-sm">{{ form_row(form.rccm) }}</div>
+						<div class="col-sm">{{ form_row(form.idnat) }}</div>
+						<div class="col-sm">{{ form_row(form.numimpot) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					{{ form_rest(form) }}
+				</p>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		$(document).ready(function() {
-			$('.select2').select2();
-		});
+		$(document).ready(function () {
+$('.select2').select2();
+});
 	</script>
 {% endblock %}
