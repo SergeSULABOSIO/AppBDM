@@ -139,6 +139,7 @@ class BDMFixture extends Fixture
                 $produit->setTauxarca(0.15);
             }
             $produit->setIsabonnement(false);
+            $produit->setCategorie(0);
             $produit->setEntreprise($entreprise);
             $manager->persist($produit);
             $compteur++;

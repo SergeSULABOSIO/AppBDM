@@ -38,6 +38,9 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column]
+    private ?int $categorie = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -118,5 +121,17 @@ class Produit
     public function __toString()
     {
         return $this->nom;
+    }
+
+    public function getCategorie(): ?int
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(int $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
     }
 }

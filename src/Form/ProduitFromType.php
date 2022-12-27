@@ -24,7 +24,7 @@ class ProduitFromType extends AbstractType
                 'label' => "Brève description"
             ])
             ->add('tauxarca', NumberType::class, [
-                'label' => "Taux / Commission de courtage"
+                'label' => "Taux / Commission de courtage (%)"
             ])
             ->add('isobligatoire', ChoiceType::class, [
                 'label' => "Est-elle une assurance obligatoire?",
@@ -33,6 +33,16 @@ class ProduitFromType extends AbstractType
                 'choices' => array(
                     'Non' => false,
                     'Oui' => true
+                )
+            ])
+            ->add('categorie', ChoiceType::class, [
+                'label' => "Catégorie d'assurance",
+                'required' => true,
+                'expanded' => false,
+                'choices' => array(
+                    'Assurances des Responsabilités' => 0,
+                    'Assurances des Biens' => 1,
+                    'Assurances vie' => 2
                 )
             ])
             ->add('isabonnement', ChoiceType::class, [
