@@ -53,7 +53,7 @@ class ContactController extends AbstractController
         $form = $this->createForm(ContactFormType::class, $contact);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($contact);
             $entityManager->flush();

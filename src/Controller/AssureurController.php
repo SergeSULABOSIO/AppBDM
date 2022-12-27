@@ -53,7 +53,7 @@ class AssureurController extends AbstractController
         $form = $this->createForm(AssureurFormType::class, $assureur);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($assureur);
             $entityManager->flush();

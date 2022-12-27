@@ -53,7 +53,7 @@ class ProduitController extends AbstractController
         $form = $this->createForm(ProduitFromType::class, $produit);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();

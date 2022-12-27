@@ -53,7 +53,7 @@ class PaiementTaxeController extends AbstractController
         $form = $this->createForm(PaiementTaxeFormType::class, $poptaxe);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($poptaxe);
             $entityManager->flush();

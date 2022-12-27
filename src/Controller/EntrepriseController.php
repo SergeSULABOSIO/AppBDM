@@ -53,7 +53,7 @@ class EntrepriseController extends AbstractController
         $form = $this->createForm(EntrepriseFormType::class, $entreprise);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($entreprise);
             $entityManager->flush();

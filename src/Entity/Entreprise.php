@@ -19,9 +19,11 @@ class Entreprise
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[Assert\NotBlank(message:"Veuillez fournir l'adresse'.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse = null;
 
+    #[Assert\NotBlank(message:"Veuillez fournir le numéro de téléphone.")]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $telephone = null;
 
@@ -34,6 +36,7 @@ class Entreprise
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $numimpot = null;
 
+    #[Assert\NotBlank(message:"Veuillez préciser le domaine d'activité.")]
     #[ORM\Column(nullable: true)]
     private ?int $secteur = null;
 

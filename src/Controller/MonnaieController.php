@@ -53,7 +53,7 @@ class MonnaieController extends AbstractController
         $form = $this->createForm(MonnaieFormType::class, $monnaie);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($monnaie);
             $entityManager->flush();

@@ -53,7 +53,7 @@ class AutomobileController extends AbstractController
         $form = $this->createForm(AutomobileFormType::class, $automobile);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($automobile);
             $entityManager->flush();

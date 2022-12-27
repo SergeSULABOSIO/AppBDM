@@ -53,7 +53,7 @@ class TaxeController extends AbstractController
         $form = $this->createForm(TaxeFormType::class, $taxe);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($taxe);
             $entityManager->flush();

@@ -53,7 +53,7 @@ class ClientController extends AbstractController
         $form = $this->createForm(ClientFormType::class, $client);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($client);
             $entityManager->flush();

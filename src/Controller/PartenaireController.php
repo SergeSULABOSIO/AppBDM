@@ -53,7 +53,7 @@ class PartenaireController extends AbstractController
         $form = $this->createForm(PartenaireFormType::class, $partenaire);
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $doctrine->getManager();
             $entityManager->persist($partenaire);
             $entityManager->flush();
