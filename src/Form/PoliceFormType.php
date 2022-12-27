@@ -96,6 +96,22 @@ class PoliceFormType extends AbstractType
             ->add('discount', NumberType::class, [
                 'label' => "Rabais"
             ])
+            ->add('commissionpartageable', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'choices'  => [
+                    "Toutes les commissions" => 0,
+                    "La commission de reassurance" => 1,
+                    "La commission locale / Arca" => 2,
+                    "La commission sur le Fronting" => 3,
+                    "Aucune commission" => 4
+                ],
+                'label' => "Quelle commission partager?"
+            ])
             ->add('modepaiement', ChoiceType::class, [
                 'expanded' => false,
                 'multiple' => false,

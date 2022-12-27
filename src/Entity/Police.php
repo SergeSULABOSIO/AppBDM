@@ -113,6 +113,9 @@ class Police
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reassureurs = null;
 
+    #[ORM\Column]
+    private ?int $commissionpartageable = null;
+
     public function __construct()
     {
         $this->assureurs = new ArrayCollection();
@@ -460,6 +463,18 @@ class Police
     public function setReassureurs(?string $reassureurs): self
     {
         $this->reassureurs = $reassureurs;
+
+        return $this;
+    }
+
+    public function getCommissionpartageable(): ?int
+    {
+        return $this->commissionpartageable;
+    }
+
+    public function setCommissionpartageable(int $commissionpartageable): self
+    {
+        $this->commissionpartageable = $commissionpartageable;
 
         return $this;
     }
