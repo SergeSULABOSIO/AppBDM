@@ -13,4 +13,20 @@
 
 {% block appCorps %}
 	VOICI LA LISTE DES ASSUREURS
+
+	{% for assureur in assureurs %}
+		<div class="row">
+			<div class="card mb-2" style="width: 18rem;">
+				<div class="card-body">
+					<h5 class="card-title">{{assureur.nom}}</h5>
+					<h6 class="card-subtitle mb-2 text-muted">{{assureur.telephone}}</h6>
+					<p class="card-text">{{assureur.adresse}}</p>
+					<a href="#" class="card-link">Détails</a>
+					<a href="#" class="card-link">Modifier</a>
+					<a href="#" class="card-link">Supprimer</a>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+
 {% endblock %}

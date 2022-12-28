@@ -16,16 +16,20 @@ class AssureurController extends AbstractController
 {
 
     #[Route('/', name: 'assureur.list')]
-    public function list(Request $request): Response
+    public function list(Request $request, ManagerRegistry $doctrine): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Assureur";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        
+        $repository = $doctrine->getRepository(Assureur::class);
+        $assureurs = $repository->findAll();
 
+        
         return $this->render(
             'assureur.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'assureurs' => $assureurs
             ]
         );
     }
