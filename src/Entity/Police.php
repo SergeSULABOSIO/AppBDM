@@ -452,7 +452,7 @@ class Police
 
     public function __toString()
     {
-        return $this->reference;
+        return "Réf. Police: " . $this->getReference() . " | Prime TTC: " . $this->getPrimetotale() . " " . $this->monnaie->getCode(). " | Client: " . $this->client->getNom();
     }
 
     public function getReassureurs(): ?string

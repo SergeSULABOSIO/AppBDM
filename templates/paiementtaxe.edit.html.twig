@@ -6,13 +6,37 @@
 {% endblock %}
 
 {% block appCorps %}
-	{{ form(form) }}
+	{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
+	<div class="container">
+		<div class="card mt-5">
+			<h5 class="card-header">Information générale</h5>
+			<div class="card-body">
+				<p class="card-text">
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.date) }}</div>
+						<div class="col-sm">{{ form_row(form.refnotededebit) }}</div>
+						<div class="col-sm">{{ form_row(form.montant) }}</div>
+						<div class="col-sm">{{ form_row(form.monnaie) }}</div>
+					</div>
+					<div class="row">
+						<div class="col-sm">{{ form_row(form.exercice) }}</div>
+						<div class="col-sm">{{ form_row(form.polices) }}</div>
+						<div class="col-sm">{{ form_row(form.entreprise) }}</div>
+						<div class="col-sm"></div>
+					</div>
+				</p>
+				<p class="card-text">
+					{{ form_rest(form) }}
+				</p>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}
 	<script>
-		$(document).ready(function() {
-			$('.select2').select2();
-		});
+		$(document).ready(function () {
+$('.select2').select2();
+});
 	</script>
 {% endblock %}
