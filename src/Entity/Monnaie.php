@@ -102,6 +102,6 @@ class Monnaie
 
     public function __toString()
     {
-        return $this->nom;
+        return $this->code . " - " . $this->nom;
     }
 }

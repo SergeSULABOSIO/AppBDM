@@ -21,16 +21,16 @@
 					<div class="row">
 						<div class="col-sm">{{ form_row(form.reference) }}</div>
 						<div class="col-sm">{{ form_row(form.client) }}</div>
-						<div class="col-sm">{{ form_row(form.partenaire) }}</div>
-						<div class="col-sm">{{ form_row(form.monnaie) }}</div>
+						<div class="col-sm">{{ form_row(form.idavenant) }}</div>
+						<div class="col-sm">{{ form_row(form.typeavenant) }}</div>
 					</div>
 				</p>
 				<p class="card-text">
 					<div class="row">
-						<div class="col-sm">{{ form_row(form.idavenant) }}</div>
-						<div class="col-sm">{{ form_row(form.typeavenant) }}</div>
 						<div class="col-sm">{{ form_row(form.assureurs) }}</div>
 						<div class="col-sm">{{ form_row(form.reassureurs) }}</div>
+						<div class="col-sm"></div>
+						<div class="col-sm"></div>
 					</div>
 				</p>
 			</div>
@@ -49,39 +49,44 @@
 			<div class="card-body">
 				<p class="card-text">
 					<div class="row">
+						<div class="col-sm">{{ form_row(form.monnaie) }}</div>
 						<div class="col-sm">{{ form_row(form.capital) }}</div>
 						<div class="col-sm">{{ form_row(form.primenette) }}</div>
 						<div class="col-sm">{{ form_row(form.fronting) }}</div>
-						<div class="col-sm">{{ form_row(form.arca) }}</div>
 					</div>
 				</p>
 				<p class="card-text">
 					<div class="row">
 						<div class="col-sm">{{ form_row(form.tva) }}</div>
 						<div class="col-sm">{{ form_row(form.fraisadmin) }}</div>
+						<div class="col-sm">{{ form_row(form.arca) }}</div>
 						<div class="col-sm">{{ form_row(form.primetotale) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					<div class="row">
 						<div class="col-sm">{{ form_row(form.discount) }}</div>
+						<div class="col-sm">{{ form_row(form.modepaiement) }}</div>
+						<div class="col-sm">{{ form_row(form.remarques) }}</div>
+						<div class="col-sm">{{ form_row(form.entreprise) }}</div>
 					</div>
 				</p>
 			</div>
-			<h5 class="card-header">Revenu du courtier</h5>
+			<h5 class="card-header">Commissions et partage</h5>
 			<div class="card-body">
 				<p class="card-text">
 					<div class="row">
 						<div class="col-sm">{{ form_row(form.ricom) }}</div>
 						<div class="col-sm">{{ form_row(form.localcom) }}</div>
 						<div class="col-sm">{{ form_row(form.frontingcom) }}</div>
-						<div class="col-sm">{{ form_row(form.commissionpartageable) }}</div>
+						<div class="col-sm">{{ form_row(form.partenaire) }}</div>
 					</div>
 				</p>
-			</div>
-			<h5 class="card-header">Autres</h5>
-			<div class="card-body">
 				<p class="card-text">
 					<div class="row">
-						<div class="col-sm">{{ form_row(form.modepaiement) }}</div>
-						<div class="col-sm">{{ form_row(form.entreprise) }}</div>
-						<div class="col-sm">{{ form_row(form.remarques) }}</div>
+						<div class="col-sm">{{ form_row(form.commissionpartageable) }}</div>
+						<div class="col-sm"></div>
+						<div class="col-sm"></div>
 						<div class="col-sm"></div>
 					</div>
 				</p>

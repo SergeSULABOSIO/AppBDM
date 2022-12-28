@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Monnaie;
 use App\Entity\PaiementCommission;
+use App\Entity\Police;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -32,6 +35,26 @@ class PaiementCommissionFormType extends AbstractType
                 'label' => "Description"
             ])
             ->add('entreprise')
+            ->add('monnaie', EntityType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'class'  => Monnaie::class,
+                'label' => "Monnaie"
+            ])
+            ->add('polices', EntityType::class, [
+                'expanded' => false,
+                'multiple' => true,
+                'required' => false,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'class'  => Police::class,
+                'label' => "Polices"
+            ])
             ->add('Enregistrer', SubmitType::class);
         ;
     }
