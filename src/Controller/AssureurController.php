@@ -5,10 +5,11 @@ namespace App\Controller;
 use App\Entity\Assureur;
 use App\Form\AssureurFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/assureur")]
@@ -93,14 +94,23 @@ class AssureurController extends AbstractController
 
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'assureur.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Assureur";
-
         $repository = $doctrine->getRepository(Assureur::class);
         //$assureurs = $repository->findAll();
-        $assureurs = $repository->findBy([], ['id' => 'DESC'], $nbre, ($page - 1) * $nbre);
+        $data = $repository->findBy([], ['id' => 'DESC'], $nbre, ($page - 1) * $nbre);
+
+
+        //Pagination avec KnpPaginator Bundle
+        //dd($assureurs);
+        $assureurs = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+
+
+
 
         return $this->render(
             'assureur.list.html.twig',
