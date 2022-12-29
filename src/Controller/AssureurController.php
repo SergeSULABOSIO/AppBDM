@@ -15,34 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssureurController extends AbstractController
 {
 
-    #[Route('/{page?1}/{nbre?20}', name: 'assureur.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
-    {
-        $session = $request->getSession();
-        $appTitreRubrique = "Assureur";
-
-        $repository = $doctrine->getRepository(Assureur::class);
-        //$assureurs = $repository->findAll();
-        $assureurs = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
-
-        return $this->render(
-            'assureur.list.html.twig',
-            [
-                'appTitreRubrique' => $appTitreRubrique,
-                'assureurs' => $assureurs
-            ]
-        );
-    }
-
-
-
-
-
-
+    
     #[Route('/edit/{id?0}', name: 'assureur.edit')]
     public function edit(Assureur $assureur = null, ManagerRegistry $doctrine, Request $request): Response
     {
-
         $appTitreRubrique = "";
         $adjectif = "";
         if ($assureur == null) {
@@ -98,7 +74,9 @@ class AssureurController extends AbstractController
 
 
 
-    #[Route('/{id<\d+>}', name: 'assureur.details')]
+
+
+    #[Route('/details/{id<\d+>}', name: 'assureur.details')]
     public function detail(Assureur $assureur = null): Response
     {
         if ($assureur) {
@@ -107,5 +85,29 @@ class AssureurController extends AbstractController
             $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
             return $this->redirectToRoute('assureur.list');
         }
+    }
+
+
+
+
+    
+
+    #[Route('/list/{page?1}/{nbre?20}', name: 'assureur.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
+    {
+        $session = $request->getSession();
+        $appTitreRubrique = "Assureur";
+
+        $repository = $doctrine->getRepository(Assureur::class);
+        //$assureurs = $repository->findAll();
+        $assureurs = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
+
+        return $this->render(
+            'assureur.list.html.twig',
+            [
+                'appTitreRubrique' => $appTitreRubrique,
+                'assureurs' => $assureurs
+            ]
+        );
     }
 }
