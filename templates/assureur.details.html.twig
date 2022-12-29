@@ -1,0 +1,21 @@
+{% extends "template.menu.user.html.twig" %}
+
+{% block appTitreRubrique %}
+	<i class="fa-solid fa-shield-halved"></i>
+	{{assureur.nom}}
+{% endblock %}
+
+{% block appCorps %}
+	<div class="row">
+		<div class="card mb-2" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">{{assureur.nom}}</h5>
+				<h6 class="card-subtitle mb-2 text-muted">{{assureur.telephone}}</h6>
+				<p class="card-text">{{assureur.adresse}}</p>
+				<a href="{{ path('assureur.list') }}" class="card-link">Liste</a>
+				<a href="{{ path('assureur.edit', {id:assureur.id}) }}" class="card-link">Modifier</a>
+				<a href="{{ path('assureur.delete', {id:assureur.id}) }}" class="card-link">Supprimer</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

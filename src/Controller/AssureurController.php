@@ -20,11 +20,11 @@ class AssureurController extends AbstractController
     {
         $session = $request->getSession();
         $appTitreRubrique = "Assureur";
-        
+
         $repository = $doctrine->getRepository(Assureur::class);
         $assureurs = $repository->findAll();
 
-        
+
         return $this->render(
             'assureur.list.html.twig',
             [
@@ -62,7 +62,8 @@ class AssureurController extends AbstractController
             $entityManager->persist($assureur);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $assureur->getNom() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('assureur.edit');
+            //return $this->redirectToRoute('assureur.edit');
+            return $this->redirectToRoute('assureur.list');
         } else {
 
             return $this->render(
@@ -92,5 +93,19 @@ class AssureurController extends AbstractController
             $this->addFlash('error', "Désolé. Cet enregistrement n'existe pas.");
         }
         return $this->redirectToRoute('assureur.list');
+    }
+
+
+
+
+    #[Route('/{id<\d+>}', name: 'assureur.details')]
+    public function detail(Assureur $assureur = null): Response
+    {
+        if ($assureur) {
+            return $this->render('assureur.details.html.twig', ['assureur' => $assureur]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('assureur.list');
+        }
     }
 }
