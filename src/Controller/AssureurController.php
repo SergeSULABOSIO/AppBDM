@@ -90,7 +90,7 @@ class AssureurController extends AbstractController
 
 
 
-    
+
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'assureur.list')]
     public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
@@ -100,7 +100,7 @@ class AssureurController extends AbstractController
 
         $repository = $doctrine->getRepository(Assureur::class);
         //$assureurs = $repository->findAll();
-        $assureurs = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
+        $assureurs = $repository->findBy([], ['id' => 'DESC'], $nbre, ($page - 1) * $nbre);
 
         return $this->render(
             'assureur.list.html.twig',
