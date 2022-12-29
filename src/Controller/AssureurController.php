@@ -15,15 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssureurController extends AbstractController
 {
 
-    #[Route('/', name: 'assureur.list')]
-    public function list(Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/{page?1}/{nbre?20}', name: 'assureur.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Assureur";
 
         $repository = $doctrine->getRepository(Assureur::class);
-        $assureurs = $repository->findAll();
-
+        //$assureurs = $repository->findAll();
+        $assureurs = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
 
         return $this->render(
             'assureur.list.html.twig',
