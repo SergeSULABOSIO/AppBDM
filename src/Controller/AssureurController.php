@@ -100,12 +100,12 @@ class AssureurController extends AbstractController
         $appTitreRubrique = "Assureur";
         $repository = $doctrine->getRepository(Assureur::class);
         //$assureurs = $repository->findAll();
-        $data = $repository->findBy([], ['id' => 'DESC'], $nbre, ($page - 1) * $nbre);
+        //$data = $repository->findBy([], ['id' => 'DESC'], $nbre, ($page - 1) * $nbre);
 
 
         //Pagination avec KnpPaginator Bundle
         //dd($assureurs);
-        $assureurs = $paginatorInterface->paginate($data, $page, $nbre);
+        $assureurs = $paginatorInterface->paginate($repository->findAll(), $page, $nbre);
 
 
 
