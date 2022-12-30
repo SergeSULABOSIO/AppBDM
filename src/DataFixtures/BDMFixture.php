@@ -125,6 +125,23 @@ class BDMFixture extends Fixture
             $manager->persist($assureur);
         }
 
+        //Autres assureurs
+        for ($i=0; $i < 50 ; $i++) { 
+            $assureur = new Assureur();
+            $assureur->setNom($faker->company()." Insurance LTD");
+            $assureur->setAdresse($faker->address());
+            $assureur->setTelephone($faker->phoneNumber());
+            $assureur->setEmail($faker->email());
+            $assureur->setSiteweb($faker->url());
+            $assureur->setRccm("RCCM" . $faker->randomNumber(5, true));
+            $assureur->setIdnat("IDNAT" . $faker->randomNumber(5, true));
+            $assureur->setLicence("ARCA" . $faker->randomNumber(3, true));
+            $assureur->setNumimpot("IMP" . $faker->randomNumber(5, true));
+            $assureur->setIsreassureur(true);
+            $assureur->setEntreprise($entreprise);
+            $manager->persist($assureur);
+        }
+
         //PRODUIT
         $compteur = 0;
         foreach ($tabNomsProduits as $nomProduit) {
