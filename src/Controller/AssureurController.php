@@ -93,7 +93,7 @@ class AssureurController extends AbstractController
 
 
 
-    #[Route('/list/{page?1}/{nbre?20}', name: 'assureur.list')]
+    #[Route('/list/{page?1}/{nbre?2}', name: 'assureur.list')]
     public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
@@ -105,7 +105,8 @@ class AssureurController extends AbstractController
 
         //Pagination avec KnpPaginator Bundle
         //dd($assureurs);
-        $assureurs = $paginatorInterface->paginate($repository->findAll(), $page, $nbre);
+        $data = $repository->findAll();
+        $assureurs = $paginatorInterface->paginate($data, $page, $nbre);
 
 
 
