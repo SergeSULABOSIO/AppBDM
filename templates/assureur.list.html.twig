@@ -12,19 +12,47 @@
 {% endblock %}
 
 {% block appCorps %}
-	<div class="navigation flex justify-content-center mb-8">
+	<div class="navigation">
 		{{ knp_pagination_render(assureurs) }}
 	</div>
-	<div class="row">
+	<div class="row justify-content-center">
 		{% for assureur in assureurs %}
-			<div class="card m-2" style="width: 18rem;">
+			<div class="card m-2 p-0" style="width: 18rem;">
+				<h5 class="card-header">
+					<i class="fa-solid fa-shield-halved"></i>
+					{{assureur.nom}}
+				</h5>
 				<div class="card-body">
-					<h5 class="card-title">{{assureur.nom}}</h5>
-					<h6 class="card-subtitle mb-2 text-muted">{{assureur.telephone}}</h6>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-phone"></i>
+						{{assureur.telephone}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-envelope-open-text"></i>
+						{{assureur.email}}
+					</div>
 					<p class="card-text">{{assureur.adresse}}</p>
-					<a href="{{ path('assureur.details', {id:assureur.id}) }}" class="card-link">Détails</a>
-					<a href="{{ path('assureur.edit', {id:assureur.id}) }}" class="card-link">Modifier</a>
-					<a href="{{ path('assureur.delete', {id:assureur.id}) }}" class="card-link">Supprimer</a>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('assureur.details', {id:assureur.id}) }}">
+						<i class="fa-solid fa-circle-info"></i>
+						Voir les détails
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('assureur.edit', {id:assureur.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('assureur.delete', {id:assureur.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
 				</div>
 			</div>
 		{% endfor %}

@@ -1,21 +1,47 @@
 {% extends "template.menu.user.html.twig" %}
 
-{% block appTitreRubrique %}
-	<i class="fa-solid fa-shield-halved"></i>
-	{{assureur.nom}}
-{% endblock %}
+{% block appTitreRubrique %}{% endblock %}
 
 {% block appCorps %}
 	<div class="row">
-		<div class="card mb-2" style="width: 18rem;">
-			<div class="card-body">
-				<h5 class="card-title">{{assureur.nom}}</h5>
-				<h6 class="card-subtitle mb-2 text-muted">{{assureur.telephone}}</h6>
-				<p class="card-text">{{assureur.adresse}}</p>
-				<a href="{{ path('assureur.list') }}" class="card-link">Liste</a>
-				<a href="{{ path('assureur.edit', {id:assureur.id}) }}" class="card-link">Modifier</a>
-				<a href="{{ path('assureur.delete', {id:assureur.id}) }}" class="card-link">Supprimer</a>
+		<div class="row justify-content-center">
+			<div class="card m-2 p-0">
+				<h5 class="card-header">
+					<i class="fa-solid fa-shield-halved"></i>
+					{{assureur.nom}}
+				</h5>
+				<div class="card-body">
+					<h6 class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-phone"></i>
+						{{assureur.telephone}}
+					</h6>
+					<h6 class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-envelope-open-text"></i>
+						{{assureur.email}}
+					</h6>
+					<p class="card-text">{{assureur.adresse}}</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('assureur.list') }}">
+						<i class="fa-solid fa-rectangle-list"></i>
+						Retour à la liste
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('assureur.edit', {id:assureur.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('assureur.delete', {id:assureur.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
+				</div>
 			</div>
 		</div>
-	</div>
-{% endblock %}
+	{% endblock %}
