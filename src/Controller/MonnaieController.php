@@ -5,29 +5,48 @@ namespace App\Controller;
 use App\Entity\Monnaie;
 use App\Form\MonnaieFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/monnaie")]
 class MonnaieController extends AbstractController
 {
 
-    #[Route('/', name: 'monnaie.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'monnaie.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Monnaie";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(Monnaie::class);
+        $data = $repository->findAll();
+        $monnaies = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'monnaie.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'monnaies' => $monnaies
             ]
         );
+    }
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'monnaie.details')]
+    public function detail(Monnaie $monnaie = null): Response
+    {
+        if ($monnaie) {
+            return $this->render('monnaie.details.html.twig', ['monnaie' => $monnaie]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('monnaie.list');
+        }
     }
 
 
@@ -58,7 +77,7 @@ class MonnaieController extends AbstractController
             $entityManager->persist($monnaie);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $monnaie->getNom() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('monnaie.edit');
+            return $this->redirectToRoute('monnaie.list');
         } else {
 
             return $this->render(

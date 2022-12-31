@@ -12,5 +12,56 @@
 {% endblock %}
 
 {% block appCorps %}
-	VOICI LA LISTE DES MONNAIES
+	<div class="navigation">
+		{{ knp_pagination_render(monnaies) }}
+	</div>
+	<div class="row">
+		{% for monnaie in monnaies %}
+			<div class="card m-2 p-0" style="width: 20rem;">
+				<h5 class="card-header">
+					<i class="fa-solid fa-money-check-dollar"></i>
+					{{monnaie.nom}} ({{monnaie.code}})
+				</h5>
+				<div class="card-body">
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-brands fa-slack"></i>
+						Symbole: {{monnaie.code}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-brands fa-slack"></i>
+						{{monnaie.tauxusd|number_format(2, ',', '.')}}
+						(en monnaie locale)
+					</div>
+					<p class="card-text">
+						{% if monnaie.islocale == 1 %}
+							Monnaie locale.
+						{% else %}
+							Monnaie étrangère.
+						{% endif %}
+					</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('monnaie.details', {id:monnaie.id}) }}">
+						<i class="fa-solid fa-circle-info"></i>
+						Voir les détails
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('monnaie.edit', {id:monnaie.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('monnaie.delete', {id:monnaie.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

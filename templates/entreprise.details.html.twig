@@ -1,23 +1,11 @@
 {% extends "template.menu.user.html.twig" %}
 
-{% block appTitreRubrique %}
-	<i class="fa-solid fa-house-laptop"></i>
-	{{appTitreRubrique}}
-	<div>
-		<a href="{{ path('entreprise.edit') }}" type="button" class="btn btn-success">
-			<i class="fa-solid fa-circle-plus"></i>
-			Nouveau
-		</a>
-	</div>
-{% endblock %}
+{% block appTitreRubrique %}{% endblock %}
 
 {% block appCorps %}
-	<div class="navigation">
-		{{ knp_pagination_render(entreprises) }}
-	</div>
 	<div class="row">
-		{% for entreprise in entreprises %}
-			<div class="card m-2 p-0" style="width: 18rem;">
+		<div class="row justify-content-center">
+			<div class="card m-2 p-0">
 				<h5 class="card-header">
 					<i class="fa-solid fa-house-laptop"></i>
 					{{entreprise.nom}}
@@ -25,16 +13,23 @@
 				<div class="card-body">
 					<div class="card-subtitle mb-2 text-muted">
 						<i class="fa-solid fa-phone"></i>
+						Téléphone:
 						{{entreprise.telephone}}
 					</div>
 					<div class="card-subtitle mb-2 text-muted">
 						<i class="fa-solid fa-envelope-open-text"></i>
-						{{entreprise.rccm}} | {{entreprise.idnat}} | {{entreprise.numimpot}}
+						Secteur:
+						{{entreprise.secteur}}
 					</div>
-					<p class="card-text">Adresse: {{entreprise.adresse}}</p>
-					<a class="btn btn-light btn-sm card-link" href="{{ path('entreprise.details', {id:entreprise.id}) }}">
-						<i class="fa-solid fa-circle-info"></i>
-						Voir les détails
+					<p class="card-text">Adresse:
+						{{entreprise.adresse}}
+						| RCCM:
+						{{entreprise.rccm}}
+						| Id. Nat:
+						{{entreprise.idnat}}</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('entreprise.list') }}">
+						<i class="fa-solid fa-rectangle-list"></i>
+						Retour à la liste
 					</a>
 					<span class="dropdown show">
 						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,6 +50,6 @@
 					</span>
 				</div>
 			</div>
-		{% endfor %}
+		</div>
 	</div>
 {% endblock %}

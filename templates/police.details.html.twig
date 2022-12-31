@@ -1,23 +1,11 @@
 {% extends "template.menu.user.html.twig" %}
 
-{% block appTitreRubrique %}
-	<i class="fa-solid fa-umbrella"></i>
-	{{appTitreRubrique}}
-	<div>
-		<a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
-			<i class="fa-solid fa-circle-plus"></i>
-			Nouveau
-		</a>
-	</div>
-{% endblock %}
+{% block appTitreRubrique %}{% endblock %}
 
 {% block appCorps %}
-	<div class="navigation">
-		{{ knp_pagination_render(polices) }}
-	</div>
 	<div class="row">
-		{% for police in polices %}
-			<div class="card m-2 p-0" style="width: 18rem;">
+		<div class="row justify-content-center">
+			<div class="card m-2 p-0">
 				<h5 class="card-header">
 					<i class="fa-solid fa-umbrella"></i>
 					{{police.reference}}
@@ -25,13 +13,14 @@
 				<div class="card-body">
 					<div class="card-subtitle mb-2 text-muted">
 						<i class="fa-solid fa-calendar-day"></i>
-						Du
+						Période de couverture: du
 						{{police.dateeffet|date("d/m/Y")}}
 						au
 						{{police.dateexpiration|date("d/m/Y")}}
 					</div>
 					<div class="card-subtitle mb-2 text-muted">
 						<i class="fa-solid fa-people-roof"></i>
+						Client: 
 						{{police.client.nom}}
 					</div>
 					<div class="card-subtitle mb-2 text-muted">
@@ -42,15 +31,16 @@
 							{% endif %}
 						{% endfor %}
 					</div>
-					<p class="card-text">{{police.typeavenant}}
-						|
+					<p class="card-text">Type d'avenant:
+						{{police.typeavenant}}
+						| Prime Totale:
 						{{police.monnaie.code}}
 						{{police.primetotale|number_format(2, ',', '.')}}
-						|
+						| Couverture:
 						{{police.produit.nom}}</p>
-					<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:police.id}) }}">
-						<i class="fa-solid fa-circle-info"></i>
-						Voir les détails
+					<a class="btn btn-light btn-sm card-link" href="{{ path('police.list') }}">
+						<i class="fa-solid fa-rectangle-list"></i>
+						Retour à la liste
 					</a>
 					<span class="dropdown show">
 						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,6 +61,6 @@
 					</span>
 				</div>
 			</div>
-		{% endfor %}
+		</div>
 	</div>
 {% endblock %}

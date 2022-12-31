@@ -12,5 +12,61 @@
 {% endblock %}
 
 {% block appCorps %}
-	VOICI LA LISTE DES PRODUITS
+	<div class="navigation">
+		{{ knp_pagination_render(produits) }}
+	</div>
+	<div class="row">
+		{% for produit in produits %}
+			<div class="card m-2 p-0" style="width: 20rem;">
+				<h5 class="card-header">
+					<i class="fa-solid fa-hands-holding-child"></i>
+					{{produit.nom}}
+				</h5>
+				<div class="card-body">
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-gear"></i>
+						Commission nette:
+						<span class="badge bg-secondary">{{produit.tauxarca|number_format(2, ',', '.')}}%</span>
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-gear"></i>
+						{% if produit.isobligatoire == 0 %}
+							<span class="badge bg-success">Non obligatoire</span>
+						{% else %}
+							<span class="badge bg-danger">Obligatoire</span>
+						{% endif %}
+						{% if produit.isabonnement == 0 %}
+							| Sans abonnement
+						{% else %}
+							<span class="badge bg-warning">| Abonnement</span>
+						{% endif %}
+					</div>
+					<p class="card-text">
+						{{produit.description}}
+					</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('produit.details', {id:produit.id}) }}">
+						<i class="fa-solid fa-circle-info"></i>
+						Voir les détails
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('produit.edit', {id:produit.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('produit.delete', {id:produit.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}

@@ -61,11 +61,11 @@ class BDMFixture extends Fixture
             $monnaie = new Monnaie();
             if ($codeMonnaie == "CDF") {
                 $monnaie->setNom("Franc Congolais");
-                $monnaie->setTauxusd(2050);
+                $monnaie->setTauxusd(1);
                 $monnaie->setIslocale(true);
             } else {
                 $monnaie->setNom("Dollars Américains");
-                $monnaie->setTauxusd(1);
+                $monnaie->setTauxusd(2050);
                 $monnaie->setIslocale(false);
                 $monnaieUSD = $monnaie;
             }
@@ -150,10 +150,10 @@ class BDMFixture extends Fixture
             $produit->setDescription($faker->sentence(5));
             if ($compteur % 2) {
                 $produit->setIsobligatoire(true);
-                $produit->setTauxarca(0.10);
+                $produit->setTauxarca(10);
             } else {
                 $produit->setIsobligatoire(false);
-                $produit->setTauxarca(0.15);
+                $produit->setTauxarca(15);
             }
             $produit->setIsabonnement(false);
             $produit->setCategorie(0);

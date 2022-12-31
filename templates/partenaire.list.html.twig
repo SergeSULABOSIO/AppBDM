@@ -15,7 +15,7 @@
 	<div class="navigation">
 		{{ knp_pagination_render(partenaires) }}
 	</div>
-	<div class="row justify-content-center">
+	<div class="row">
 		{% for partenaire in partenaires %}
 			<div class="card m-2 p-0" style="width: 18rem;">
 				<h5 class="card-header">
@@ -31,7 +31,7 @@
 						<i class="fa-solid fa-envelope-open-text"></i>
 						{{partenaire.siteweb}}
 					</div>
-					<p class="card-text"><span class="badge bg-secondary">Part: {{partenaire.part}}%</span> | Adresse: {{partenaire.adresse}}</p>
+					<p class="card-text"><span class="badge bg-secondary">Part: {{partenaire.part|number_format(2, ',', '.')}}%</span> | Adresse: {{partenaire.adresse}}</p>
 					<a class="btn btn-light btn-sm card-link" href="{{ path('partenaire.details', {id:partenaire.id}) }}">
 						<i class="fa-solid fa-circle-info"></i>
 						Voir les détails

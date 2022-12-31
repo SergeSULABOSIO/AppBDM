@@ -23,7 +23,7 @@
 					</div>
 					<p class="card-text">
 						<span class="badge bg-secondary">Part:
-							{{partenaire.part}}%</span>
+							{{partenaire.part|number_format(2, ',', '.')}}%</span>
 						| Adresse:
 						{{partenaire.adresse}}</p>
 					<a class="btn btn-light btn-sm card-link" href="{{ path('partenaire.list') }}">
