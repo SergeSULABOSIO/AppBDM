@@ -2,36 +2,53 @@
 
 namespace App\Controller;
 
+use App\Entity\Automobile;
 use App\Entity\Partenaire;
 use App\Form\PartenaireFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/partenaire")]
 class PartenaireController extends AbstractController
 {
 
-    #[Route('/', name: 'partenaire.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'partenaire.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Partenaire";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(Partenaire::class);
+        $data = $repository->findAll();
+        $partenaires = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'partenaire.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'partenaires' => $partenaires
             ]
         );
     }
 
 
 
+
+    #[Route('/details/{id<\d+>}', name: 'partenaire.details')]
+    public function detail(Partenaire $partenaire = null): Response
+    {
+        if ($partenaire) {
+            return $this->render('partenaire.details.html.twig', ['partenaire' => $partenaire]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('partenaire.list');
+        }
+    }
 
 
 
@@ -58,7 +75,7 @@ class PartenaireController extends AbstractController
             $entityManager->persist($partenaire);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $partenaire->getNom() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('partenaire.edit');
+            return $this->redirectToRoute('partenaire.list');
         } else {
 
             return $this->render(
