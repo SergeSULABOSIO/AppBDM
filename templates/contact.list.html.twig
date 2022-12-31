@@ -12,5 +12,55 @@
 {% endblock %}
 
 {% block appCorps %}
-	VOICI LA LISTE DES CONTACTS
+	<div class="navigation">
+		{{ knp_pagination_render(contacts) }}
+	</div>
+	<div class="row">
+		{% for contact in contacts %}
+			<div class="card m-2 p-0" style="width: 18rem;">
+				<h5 class="card-header">
+					<i class="fa-solid fa-address-book"></i>
+					{{contact.nom}}
+				</h5>
+				<div class="card-body">
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-phone"></i>
+						{{contact.telephone}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-envelope-open-text"></i>
+						{{contact.email}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-people-roof"></i>
+						{{contact.client.nom}}
+					</div>
+					<p class="card-text">
+						{{contact.poste}}
+					</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('contact.details', {id:contact.id}) }}">
+						<i class="fa-solid fa-circle-info"></i>
+						Voir les détails
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('contact.edit', {id:contact.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('contact.delete', {id:contact.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}
