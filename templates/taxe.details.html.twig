@@ -1,0 +1,49 @@
+{% extends "template.menu.user.html.twig" %}
+
+{% block appTitreRubrique %}{% endblock %}
+
+{% block appCorps %}
+	<div class="row">
+		<div class="card m-2 p-0" style="width: 18rem;">
+			<h5 class="card-header">
+				<i class="fa-solid fa-scale-balanced"></i>
+				{{taxe.nom}}
+			</h5>
+			<div class="card-body">
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-money-check-dollar"></i>
+					Taux:
+					{{taxe.taux|number_format(2, ',', '.')}}%
+				</div>
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-city"></i>
+					Organisation:
+					{{taxe.organisation}}
+				</div>
+				<p class="card-text">
+					{{taxe.description}}
+				</p>
+				<a class="btn btn-light btn-sm card-link" href="{{ path('taxe.list') }}">
+					<i class="fa-solid fa-rectangle-list"></i>
+					Retour à la liste
+				</a>
+				<span class="dropdown show">
+					<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa-solid fa-screwdriver-wrench"></i>
+						Actions
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a class="dropdown-item" href="{{ path('taxe.edit', {id:taxe.id}) }}">
+							<i class="fa-solid fa-pen-to-square"></i>
+							Modifier
+						</a>
+						<a class="dropdown-item text-danger" href="{{ path('taxe.delete', {id:taxe.id}) }}">
+							<i class="fa-solid fa-trash-can"></i>
+							Supprimer
+						</a>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -5,29 +5,49 @@ namespace App\Controller;
 use App\Entity\Taxe;
 use App\Form\TaxeFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/taxe")]
 class TaxeController extends AbstractController
 {
 
-    #[Route('/', name: 'taxe.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'taxe.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Taxe";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(Taxe::class);
+        $data = $repository->findAll();
+        $taxes = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'taxe.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'taxes' => $taxes
             ]
         );
+    }
+
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'taxe.details')]
+    public function detail(Taxe $taxe = null): Response
+    {
+        if ($taxe) {
+            return $this->render('taxe.details.html.twig', ['taxe' => $taxe]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('taxe.list');
+        }
     }
 
 
@@ -58,7 +78,7 @@ class TaxeController extends AbstractController
             $entityManager->persist($taxe);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $taxe->getNom() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('taxe.edit');
+            return $this->redirectToRoute('taxe.list');
         } else {
 
             return $this->render(
