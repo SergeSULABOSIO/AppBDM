@@ -5,29 +5,48 @@ namespace App\Controller;
 use App\Entity\PaiementCommission;
 use App\Form\PaiementCommissionFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/popcommission")]
 class PaiementCommissionController extends AbstractController
 {
 
-    #[Route('/', name: 'popcommission.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'popcommission.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Paiement de Commission";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(PaiementCommission::class);
+        $data = $repository->findAll();
+        $paiementcommissions = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'paiementcommission.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'paiementcommissions' => $paiementcommissions
             ]
         );
+    }
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'popcommission.details')]
+    public function detail(PaiementCommission $paiementCommission = null): Response
+    {
+        if ($paiementCommission) {
+            return $this->render('paiementCommission.details.html.twig', ['paiementcommission' => $paiementCommission]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('popcommission.list');
+        }
     }
 
 
@@ -58,7 +77,7 @@ class PaiementCommissionController extends AbstractController
             $entityManager->persist($popcommission);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $popcommission->getMontant() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('popcommission.edit');
+            return $this->redirectToRoute('popcommission.list');
         } else {
 
             return $this->render(

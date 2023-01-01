@@ -12,5 +12,55 @@
 {% endblock %}
 
 {% block appCorps %}
-	VOICI LA LISTE DES POP COMMISSION
+	<div class="navigation">
+		{{ knp_pagination_render(paiementcommissions) }}
+	</div>
+	<div class="row">
+		{% for paiementcommission in paiementcommissions %}
+			<div class="card m-2 p-0" style="width: 18rem;">
+				<h5 class="card-header">
+					<i class="fa-solid fa-filter-circle-dollar"></i>
+					{{paiementcommission.refnotededebit}}
+				</h5>
+				<div class="card-body">
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-money-check-dollar"></i>
+						{{paiementcommission.monnaie.code}}
+						{{paiementcommission.montant|number_format(2, ',', '.')}}
+						/
+						{{paiementcommission.description}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-umbrella"></i>
+						Polices concernées:
+						<span class="badge bg-secondary">{{paiementcommission.polices|length}}</span>
+					</div>
+					<p class="card-text">
+						Encaissée le
+						{{paiementcommission.date|date("d/m/Y")}}
+					</p>
+					<a class="btn btn-light btn-sm card-link" href="{{ path('popcommission.details', {id:paiementcommission.id}) }}">
+						<i class="fa-solid fa-circle-info"></i>
+						Voir les détails
+					</a>
+					<span class="dropdown show">
+						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="fa-solid fa-screwdriver-wrench"></i>
+							Actions
+						</a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" href="{{ path('popcommission.edit', {id:paiementcommission.id}) }}">
+								<i class="fa-solid fa-pen-to-square"></i>
+								Modifier
+							</a>
+							<a class="dropdown-item text-danger" href="{{ path('popcommission.delete', {id:paiementcommission.id}) }}">
+								<i class="fa-solid fa-trash-can"></i>
+								Supprimer
+							</a>
+						</div>
+					</span>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}
