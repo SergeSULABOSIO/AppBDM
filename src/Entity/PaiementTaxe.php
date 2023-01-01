@@ -42,6 +42,10 @@ class PaiementTaxe
     #[ORM\ManyToMany(targetEntity: Police::class)]
     private Collection $polices;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Taxe $taxe = null;
+
     public function __construct()
     {
         $this->polices = new ArrayCollection();
@@ -149,6 +153,18 @@ class PaiementTaxe
     public function removePolice(Police $police): self
     {
         $this->polices->removeElement($police);
+
+        return $this;
+    }
+
+    public function getTaxe(): ?Taxe
+    {
+        return $this->taxe;
+    }
+
+    public function setTaxe(?Taxe $taxe): self
+    {
+        $this->taxe = $taxe;
 
         return $this;
     }

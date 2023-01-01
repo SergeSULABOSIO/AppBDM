@@ -5,31 +5,49 @@ namespace App\Controller;
 use App\Entity\PaiementTaxe;
 use App\Form\PaiementTaxeFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/poptaxe")]
 class PaiementTaxeController extends AbstractController
 {
 
-    #[Route('/', name: 'poptaxe.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'poptaxe.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Paiement de Taxe";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(PaiementTaxe::class);
+        $data = $repository->findAll();
+        $paiementtaxes = $paginatorInterface->paginate($data, $page, $nbre);
 
         return $this->render(
             'paiementtaxe.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'paiementtaxes' => $paiementtaxes
             ]
         );
     }
 
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'poptaxe.details')]
+    public function detail(PaiementTaxe $paiementTaxe = null): Response
+    {
+        if ($paiementTaxe) {
+            return $this->render('paiementtaxe.details.html.twig', ['paiementtaxe' => $paiementTaxe]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('poptaxe.list');
+        }
+    }
 
 
 
@@ -58,7 +76,7 @@ class PaiementTaxeController extends AbstractController
             $entityManager->persist($poptaxe);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $poptaxe->getMontant() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('poptaxe.edit');
+            return $this->redirectToRoute('poptaxe.list');
         } else {
 
             return $this->render(

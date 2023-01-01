@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Monnaie;
 use App\Entity\PaiementTaxe;
 use App\Entity\Police;
+use App\Entity\Taxe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -48,12 +49,22 @@ class PaiementTaxeFormType extends AbstractType
             ->add('polices', EntityType::class, [
                 'expanded' => false,
                 'multiple' => true,
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'select2'
                 ],
                 'class'  => Police::class,
                 'label' => "Polices"
+            ])
+            ->add('taxe', EntityType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'select2'
+                ],
+                'class'  => Taxe::class,
+                'label' => "Taxe payée"
             ])
             ->add('Enregistrer', SubmitType::class);
         ;

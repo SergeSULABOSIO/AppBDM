@@ -81,11 +81,11 @@ class BDMFixture extends Fixture
             $taxe->setNom($nomTaxes);
             if ($nomTaxes == "TVA") {
                 $taxe->setDescription("Taxe sur la Valeur Ajoutée");
-                $taxe->setTaux(0.16);
+                $taxe->setTaux(16);
                 $taxe->setOrganisation("DGI - Direction Générale des Impôts");
             } else {
                 $taxe->setDescription("Frais de surveillance");
-                $taxe->setTaux(0.02);
+                $taxe->setTaux(2);
                 $taxe->setOrganisation("ARCA - Autorité de Régulation des Assurances");
             }
             $taxe->setEntreprise($entreprise);
