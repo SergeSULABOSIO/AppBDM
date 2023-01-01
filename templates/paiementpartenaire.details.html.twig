@@ -1,0 +1,68 @@
+{% extends "template.menu.user.html.twig" %}
+
+{% block appTitreRubrique %}{% endblock %}
+
+{% block appCorps %}
+	<div class="row">
+		<div class="card m-2 p-0">
+			<h5 class="card-header">
+				<i class="fa-solid fa-filter-circle-dollar"></i>
+				{{paiementpartenaire.refnotededebit}}
+			</h5>
+			<div class="card-body">
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-money-check-dollar"></i>
+					{{paiementpartenaire.monnaie.code}}
+					{{paiementpartenaire.montant|number_format(2, ',', '.')}}
+				</div>
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-handshake"></i>
+					Partenaire(s):
+					{% if paiementpartenaire.polices|length > 1 %}
+						<span class="badge bg-secondary">{{paiementpartenaire.polices|length}}</span>
+					{% else %}
+						{% if paiementpartenaire.polices[0].partenaire != null %}
+							<span class="badge bg-secondary">{{paiementpartenaire.polices[0].partenaire.nom}}</span>
+						{% else %}
+							<span class="badge bg-secondary">Aucun</span>
+						{% endif %}
+
+					{% endif %}
+				</div>
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-umbrella"></i>
+					{% if paiementpartenaire.polices|length == 1 %}
+						Police:<span class="badge bg-secondary">{{paiementpartenaire.polices[0].reference}}</span>
+					{% else %}
+						Polices:<span class="badge bg-secondary">{{paiementpartenaire.polices|length}}</span>
+					{% endif %}
+
+				</div>
+				<p class="card-text">
+					Payée le
+					{{paiementpartenaire.date|date("d/m/Y")}}
+				</p>
+				<a class="btn btn-light btn-sm card-link" href="{{ path('poppartenaire.list') }}">
+					<i class="fa-solid fa-rectangle-list"></i>
+					Retour à la liste
+				</a>
+				<span class="dropdown show">
+					<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa-solid fa-screwdriver-wrench"></i>
+						Actions
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a class="dropdown-item" href="{{ path('poppartenaire.edit', {id:paiementpartenaire.id}) }}">
+							<i class="fa-solid fa-pen-to-square"></i>
+							Modifier
+						</a>
+						<a class="dropdown-item text-danger" href="{{ path('poppartenaire.delete', {id:paiementpartenaire.id}) }}">
+							<i class="fa-solid fa-trash-can"></i>
+							Supprimer
+						</a>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+{% endblock %}

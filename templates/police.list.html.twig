@@ -42,11 +42,35 @@
 							{% endif %}
 						{% endfor %}
 					</div>
-					<p class="card-text">{{police.typeavenant}}
-						|
+					{% if police.partenaire != null %}
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-handshake"></i>
+							{{police.partenaire.nom}}
+						</div>
+					{% endif %}
+					<p class="card-text">
+						{% if police.typeavenant == 0 %}
+							SOUSCRIPTION
+						{% endif %}
+						{% if police.typeavenant == 1 %}
+							RENOUVELLEMENT
+						{% endif %}
+						{% if police.typeavenant == 2 %}
+							ANNULATION
+						{% endif %}
+						{% if police.typeavenant == 3 %}
+							RESILIATION
+						{% endif %}
+						{% if police.typeavenant == 4 %}
+							RISTOURNE
+						{% endif %}
+						{% if police.typeavenant == 5 %}
+							PROROGATION
+						{% endif %}
+						::
 						{{police.monnaie.code}}
 						{{police.primetotale|number_format(2, ',', '.')}}
-						|
+						::
 						{{police.produit.nom}}</p>
 					<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:police.id}) }}">
 						<i class="fa-solid fa-circle-info"></i>

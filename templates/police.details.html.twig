@@ -31,12 +31,29 @@
 							{% endif %}
 						{% endfor %}
 					</div>
-					<p class="card-text">Type d'avenant:
-						{{police.typeavenant}}
-						| Prime Totale:
+					<p class="card-text">
+						{% if police.typeavenant == 0 %}
+							SOUSCRIPTION
+						{% endif %}
+						{% if police.typeavenant == 1 %}
+							RENOUVELLEMENT
+						{% endif %}
+						{% if police.typeavenant == 2 %}
+							ANNULATION
+						{% endif %}
+						{% if police.typeavenant == 3 %}
+							RESILIATION
+						{% endif %}
+						{% if police.typeavenant == 4 %}
+							RISTOURNE
+						{% endif %}
+						{% if police.typeavenant == 5 %}
+							PROROGATION
+						{% endif %}
+						::
 						{{police.monnaie.code}}
 						{{police.primetotale|number_format(2, ',', '.')}}
-						| Couverture:
+						::
 						{{police.produit.nom}}</p>
 					<a class="btn btn-light btn-sm card-link" href="{{ path('police.list') }}">
 						<i class="fa-solid fa-rectangle-list"></i>

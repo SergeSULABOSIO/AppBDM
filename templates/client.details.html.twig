@@ -1,0 +1,64 @@
+{% extends "template.menu.user.html.twig" %}
+
+{% block appTitreRubrique %}{% endblock %}
+
+{% block appCorps %}
+	<div class="row">
+		<div class="card m-2 p-0">
+			<h5 class="card-header">
+				<i class="fa-solid fa-people-roof"></i>
+				{{client.nom}}
+			</h5>
+			<div class="card-body">
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-phone"></i>
+					Téléphone: {{client.telephone}}
+				</div>
+				<div class="card-subtitle mb-2 text-muted">
+					<i class="fa-solid fa-envelope-open-text"></i>
+					Email: {{client.email}}
+				</div>
+
+				{% if client.ispersonnemorale == 1 %}
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-house-laptop"></i>
+						Rccm: {{client.rccm}}
+						|
+						Id.Nat: {{client.idnat}}
+						|
+						Num. Impôt: {{client.numipot}}
+					</div>
+					<div class="card-subtitle mb-2 text-muted">
+						<i class="fa-solid fa-house-laptop"></i>
+						Secteur:
+						{{client.secteur}}
+					</div>
+				{% endif %}
+
+				<p class="card-text">Adresse:
+					{{client.adresse}}</p>
+				<a class="btn btn-light btn-sm card-link" href="{{ path('client.list') }}">
+					<i class="fa-solid fa-rectangle-list"></i>
+					Retour à la liste
+				</a>
+				<span class="dropdown show">
+					<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa-solid fa-screwdriver-wrench"></i>
+						Actions
+					</a>
+
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a class="dropdown-item" href="{{ path('client.edit', {id:client.id}) }}">
+							<i class="fa-solid fa-pen-to-square"></i>
+							Modifier
+						</a>
+						<a class="dropdown-item text-danger" href="{{ path('client.delete', {id:client.id}) }}">
+							<i class="fa-solid fa-trash-can"></i>
+							Supprimer
+						</a>
+					</div>
+				</span>
+			</div>
+		</div>
+	</div>
+{% endblock %}

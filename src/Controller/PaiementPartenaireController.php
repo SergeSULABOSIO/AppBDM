@@ -2,32 +2,52 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use App\Entity\PaiementPartenaire;
 use App\Form\PaiementPartenaireFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/poppartenaire")]
 class PaiementPartenaireController extends AbstractController
 {
 
-    #[Route('/', name: 'poppartenaire.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'poppartenaire.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
         $appTitreRubrique = "Paiement de Partenaire";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $repository = $doctrine->getRepository(PaiementPartenaire::class);
+        $data = $repository->findAll();
+        $paiementpartenaires = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'paiementpartenaire.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'paiementpartenaires' => $paiementpartenaires
             ]
         );
+    }
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'poppartenaire.details')]
+    public function detail(PaiementPartenaire $paiementpartenaire = null): Response
+    {
+        if ($paiementpartenaire) {
+            return $this->render('paiementpartenaire.details.html.twig', ['paiementpartenaire' => $paiementpartenaire]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('poppartenaire.list');
+        }
     }
 
 
@@ -58,7 +78,7 @@ class PaiementPartenaireController extends AbstractController
             $entityManager->persist($poppartenaire);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $poppartenaire->getMontant() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('poppartenaire.edit');
+            return $this->redirectToRoute('poppartenaire.list');
         } else {
 
             return $this->render(

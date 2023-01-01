@@ -3,31 +3,51 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Entity\Produit;
 use App\Form\ClientFormType;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/client")]
 class ClientController extends AbstractController
 {
 
-    #[Route('/', name: 'client.list')]
-    public function list(Request $request): Response
+    #[Route('/list/{page?1}/{nbre?20}', name: 'client.list')]
+    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
         $session = $request->getSession();
-        $appTitreRubrique = "Clients";
-        //$this->addFlash('success', "Bien venu sur BDM!");
+        $appTitreRubrique = "Client";
+        $repository = $doctrine->getRepository(Client::class);
+        $data = $repository->findAll();
+        $clients = $paginatorInterface->paginate($data, $page, $nbre);
+
 
         return $this->render(
             'client.list.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'clients' => $clients
             ]
         );
+    }
+
+
+
+
+    #[Route('/details/{id<\d+>}', name: 'client.details')]
+    public function detail(Client $client = null): Response
+    {
+        if ($client) {
+            return $this->render('client.details.html.twig', ['client' => $client]);
+        } else {
+            $this->addFlash('error', "Désolé. Cet enregistrement est introuvable.");
+            return $this->redirectToRoute('client.list');
+        }
     }
 
 
@@ -58,7 +78,7 @@ class ClientController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
             $this->addFlash('success', "Bravo ! " . $client->getNom() . " vient d'être " . $adjectif . " avec succès.");
-            return $this->redirectToRoute('client.edit');
+            return $this->redirectToRoute('client.list');
         } else {
 
             return $this->render(
