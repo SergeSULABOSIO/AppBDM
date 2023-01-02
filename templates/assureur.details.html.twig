@@ -1,11 +1,15 @@
 {% extends "template.ui.html.twig" %}
 
+{% block activerAssureurs %}
+	active
+{% endblock %}
+
 {% block appTitreRubrique %}{% endblock %}
 
 {% block appCorps %}
 	<div class="row">
 		<div class="row justify-content-center">
-			<div class="card m-2 p-0">
+			<div class="card p-0">
 				<h5 class="card-header">
 					<i class="fa-solid fa-shield-halved"></i>
 					{{assureur.nom}}
@@ -44,4 +48,5 @@
 				</div>
 			</div>
 		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

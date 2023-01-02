@@ -110,73 +110,79 @@
 								</a>
 								<ul class="nav nav-treeview">
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('entreprise.list') }}">
+										<a class="nav-link {% block activerEntreprises %}{% endblock %}" href="{{ path('entreprise.list') }}">
 											<i class="fa-solid fa-house-laptop"></i>
 											<p>Entreprises</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('police.list') }}">
+										<a class="nav-link {% block activerPolices %}{% endblock %}" href="{{ path('police.list') }}">
 											<i class="fa-solid fa-umbrella"></i>
 											<p>Polices</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('client.list') }}">
+										<a class="nav-link {% block activerClients %}{% endblock %}" href="{{ path('client.list') }}">
 											<i class="fa-solid fa-people-roof"></i>
 											<p>Clients</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('partenaire.list') }}">
+										<a class="nav-link {% block activerPartenaires %}{% endblock %}" href="{{ path('partenaire.list') }}">
 											<i class="fa-solid fa-handshake"></i>
 											<p>Partenaires</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('assureur.list') }}">
+										<a class="nav-link {% block activerAssureurs %}{% endblock %}" href="{{ path('assureur.list') }}">
 											<i class="fa-solid fa-shield-halved"></i>
 											<p>Assureurs</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('automobile.list') }}">
+										<a class="nav-link {% block activerAutomobiles %}{% endblock %}" href="{{ path('automobile.list') }}">
 											<i class="fa-solid fa-car"></i>
 											<p>Automobiles</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('produit.list') }}">
+										<a class="nav-link {% block activerProduits %}{% endblock %}" href="{{ path('produit.list') }}">
 											<i class="fa-solid fa-hands-holding-child"></i>
 											<p>Produits</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('taxe.list') }}">
+										<a class="nav-link {% block activerContacts %}{% endblock %}" href="{{ path('contact.list') }}">
+											<i class="fa-solid fa-address-book"></i>
+											<p>Contacts</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {% block activerTaxes %}{% endblock %}" href="{{ path('taxe.list') }}">
 											<i class="fa-solid fa-scale-balanced"></i>
 											<p>Impôts / Taxes</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('poptaxe.list') }}">
+										<a class="nav-link {% block activerPopTaxes %}{% endblock %}" href="{{ path('poptaxe.list') }}">
 											<i class="fa-solid fa-filter-circle-dollar"></i>
 											<p>POP - Taxes</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('poppartenaire.list') }}">
+										<a class="nav-link {% block activerPopPartenaires %}{% endblock %}" href="{{ path('poppartenaire.list') }}">
 											<i class="fa-solid fa-filter-circle-dollar"></i>
 											<p>POP - Partenaires</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('popcommission.list') }}">
+										<a class="nav-link {% block activerPopCommissions %}{% endblock %}" href="{{ path('popcommission.list') }}">
 											<i class="fa-solid fa-filter-circle-dollar"></i>
 											<p>POP - Commissions</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" href="{{ path('monnaie.list') }}">
+										<a class="nav-link {% block activerMonnaies %}{% endblock %}" href="{{ path('monnaie.list') }}">
 											<i class="fa-solid fa-money-check-dollar"></i>
 											<p>Monnaies</p>
 										</a>

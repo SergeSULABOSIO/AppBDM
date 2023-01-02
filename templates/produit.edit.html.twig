@@ -1,5 +1,9 @@
 {% extends "template.ui.html.twig" %}
 
+{% block activerProduits %}
+	active
+{% endblock %}
+
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-hands-holding-child"></i>
 	{{appTitreRubrique}}
@@ -36,7 +40,7 @@
 {% block javascripts %}
 	<script>
 		$(document).ready(function () {
-$('.select2').select2();
-});
+			$('.select2').select2();
+		});
 	</script>
 {% endblock %}
