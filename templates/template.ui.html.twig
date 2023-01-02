@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block appTitre %}
+				BDM
+			{% endblock %}
+		</title>
+
+		<!-- Google Font: Source Sans Pro -->
+		<link
+		rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+		<!-- Font Awesome Icons -->
+		<link
+		rel="stylesheet" href="{{ asset('node_modules/adminlte/plugins/fontawesome-free/css/all.min.css')}}">
+		<!-- IonIcons -->
+		<link
+		rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{{ asset('node_modules/adminlte/dist/css/adminlte.min.css')}}">
+
+		
+		<link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet"/>
+		<link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}">
+		<link href="{{ asset('node_modules/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
+		<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+	</head>
+	<!--
+														`body` tag options:
+														
+														  Apply one or more of the following classes to to the body tag
+														  to get the desired effect
+														
+														  * sidebar-collapse
+														  * sidebar-mini
+														-->
+	<body class="hold-transition sidebar-mini">
+		<div
+			class="wrapper">
+			<!-- Navbar -->
+			<nav
+				class="main-header navbar navbar-expand navbar-white navbar-light">
+				<!-- Left navbar links -->
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" data-widget="pushmenu" href="#" role="button">
+							<i class="fas fa-bars"></i>
+						</a>
+					</li>
+					<li class="nav-item d-none d-sm-inline-block">
+						<a href="#" class="nav-link">Acceuil</a>
+					</li>
+					<li class="nav-item d-none d-sm-inline-block">
+						<a href="#" class="nav-link">Contact</a>
+					</li>
+				</ul>
+
+			</nav>
+			<!-- /.navbar -->
+
+			<!-- Main Sidebar Container -->
+			<aside
+				class="main-sidebar sidebar-dark-primary elevation-4">
+				<!-- Brand Logo -->
+				<div class="brand-link">
+					<span class="brand-text font-weight-light">BDM</span>
+				</div>
+
+				<!-- Sidebar -->
+				<div
+					class="sidebar">
+					<!-- Sidebar user panel (optional) -->
+					<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+						<div class="image">
+							<img src="{{ asset('node_modules/adminlte/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+						</div>
+						<div class="info">
+							<a href="#" class="d-block nav-link">Serge SULA BOSIO</a>
+						</div>
+					</div>
+
+					<!-- Sidebar Menu -->
+					<nav class="mt-2">
+						<ul
+							class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+							<!-- Add icons to the links using the .nav-icon class
+																																																																																																		               with font-awesome or any other icon font library -->
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-tachometer-alt"></i>
+									<p>
+										Tableau de bord
+									</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link active">
+									<i class="nav-icon fas fa-th"></i>
+									<p>
+										Listes
+										<i class="right fas fa-angle-left"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('entreprise.list') }}">
+											<i class="fa-solid fa-house-laptop"></i>
+											<p>Entreprises</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('police.list') }}">
+											<i class="fa-solid fa-umbrella"></i>
+											<p>Polices</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('client.list') }}">
+											<i class="fa-solid fa-people-roof"></i>
+											<p>Clients</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('partenaire.list') }}">
+											<i class="fa-solid fa-handshake"></i>
+											<p>Partenaires</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('assureur.list') }}">
+											<i class="fa-solid fa-shield-halved"></i>
+											<p>Assureurs</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('automobile.list') }}">
+											<i class="fa-solid fa-car"></i>
+											<p>Automobiles</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('produit.list') }}">
+											<i class="fa-solid fa-hands-holding-child"></i>
+											<p>Produits</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('taxe.list') }}">
+											<i class="fa-solid fa-scale-balanced"></i>
+											<p>Impôts / Taxes</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('poptaxe.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>POP - Taxes</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('poppartenaire.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>POP - Partenaires</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('popcommission.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>POP - Commissions</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{{ path('monnaie.list') }}">
+											<i class="fa-solid fa-money-check-dollar"></i>
+											<p>Monnaies</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-item">
+								<a href="#" class="nav-link">
+									<i class="nav-icon fas fa-table"></i>
+									<p>
+										Outstanding
+										<i class="fas fa-angle-left right"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item">
+										<a href="pages/tables/simple.html" class="nav-link">
+											<i class="far fa-circle nav-icon"></i>
+											<p>Commissions<span class="right badge badge-danger">12</span>
+											</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="pages/tables/data.html" class="nav-link">
+											<i class="far fa-circle nav-icon"></i>
+											<p>Retrocoms<span class="right badge badge-danger">0</span>
+											</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="pages/tables/jsgrid.html" class="nav-link">
+											<i class="far fa-circle nav-icon"></i>
+											<p>Taxes<span class="right badge badge-danger">5</span>
+											</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-header">PARAMETRES</li>
+							<li class="nav-item">
+								<a href="pages/calendar.html" class="nav-link">
+									<i class="nav-icon fas fa-calendar-alt"></i>
+									<p>
+										Utilisateur
+										<span class="badge badge-info right">12</span>
+									</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="pages/gallery.html" class="nav-link">
+									<i class="nav-icon far fa-image"></i>
+									<p>
+										Entreprise
+										<span class="badge badge-info right">2</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<!-- /.sidebar-menu -->
+				</div>
+				<!-- /.sidebar -->
+			</aside>
+
+			<!-- Content Wrapper. Contains page content -->
+			<div
+				class="content-wrapper">
+				<!-- Content Header (Page header) -->
+				<div class="content-header">
+					<div class="container-fluid">
+						<div class="row mb-1">
+							<div class="col">
+								<h4 class="m-0">
+									{% block appTitreRubrique %}
+										Titre Rubrique
+									{% endblock %}
+								</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.content-header -->
+
+				<!-- Main content -->
+				<div class="content">
+					<div class="container-fluid">
+						<div>
+							{% block appMessageFlashBag %}
+								{% for message in app.session.flashBag.get('info') %}
+									<div class="alert alert-info" role="alert">
+										{{ message }}
+									</div>
+								{% endfor %}
+								{% for message in app.session.flashBag.get('success') %}
+									<div class="alert alert-success" role="alert">
+										{{ message }}
+									</div>
+								{% endfor %}
+								{% for message in app.session.flashBag.get('error') %}
+									<div class="alert alert-danger" role="alert">
+										{{ message }}
+									</div>
+								{% endfor %}
+							{% endblock %}
+						</div>
+						<div>
+							{% block appCorps %}
+								AppCorps de l'application
+							{% endblock %}
+						</div>
+					</div>
+					<!-- /.container-fluid -->
+				</div>
+				<!-- /.content -->
+			</div>
+			<!-- /.content-wrapper -->
+
+
+			<!-- Main Footer -->
+			<footer class="main-footer">
+				<strong>Copyright &copy; 2023
+					<a href="#">BDM</a>.</strong>
+				All rights reserved.
+				<div class="float-right d-none d-sm-inline-block">
+					<b>Version</b>
+					1.0.0</div>
+			</footer>
+		</div>
+		<!-- ./wrapper -->
+
+		<!-- REQUIRED SCRIPTS -->
+
+		<!-- jQuery -->
+		<script src="{{ asset('node_modules/adminlte/plugins/jquery/jquery.min.js')}}"> </script>
+		<!-- AdminLTE -->
+		<script src="{{ asset('node_modules/adminlte/dist/js/adminlte.js')}}"></script>
+		<!-- OPTIONAL SCRIPTS -->
+		<script src="{{ asset('node_modules/adminlte/plugins/chart.js/Chart.min.js')}}"></script>
+		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+		<script src="{{ asset('node_modules/adminlte/dist/js/pages/dashboard3.js')}}"></script>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+		<script src="{{ asset('assets/js/scripts.js') }}"></script>
+		<script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+		<script src="{{ asset('node_modules/select2/dist/js/select2.min.js') }}"></script>
+
+		{% block javascripts %}{% endblock %}
+	</body>
+</html>

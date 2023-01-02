@@ -4,7 +4,7 @@
 	<i class="fa-solid fa-hands-holding-child"></i>
 	{{appTitreRubrique}}
 	<div>
-		<a href="{{ path('produit.edit') }}" type="button" class="btn btn-success">
+		<a href="{{ path('produit.edit') }}" type="button" class="btn btn-primary">
 			<i class="fa-solid fa-circle-plus"></i>
 			Nouveau
 		</a>
@@ -17,7 +17,7 @@
 	</div>
 	<div class="row">
 		{% for produit in produits %}
-			<div class="card m-2 p-0" style="width: 20rem;">
+			<div class="card m-2 p-0" style="width: 20rem">
 				<h5 class="card-header">
 					<i class="fa-solid fa-hands-holding-child"></i>
 					{{produit.nom}}

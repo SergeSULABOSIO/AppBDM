@@ -1,10 +1,10 @@
-{% extends "template.menu.user.html.twig" %}
+{% extends "template.ui.html.twig" %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-people-roof"></i>
 	{{appTitreRubrique}}
 	<div>
-		<a href="{{ path('client.edit') }}" type="button" class="btn btn-success">
+		<a href="{{ path('client.edit') }}" type="button" class="btn btn-primary">
 			<i class="fa-solid fa-circle-plus"></i>
 			Nouveau
 		</a>

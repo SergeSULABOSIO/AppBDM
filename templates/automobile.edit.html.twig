@@ -1,4 +1,4 @@
-{% extends "template.menu.user.html.twig" %}
+{% extends "template.ui.html.twig" %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-car"></i>
@@ -8,7 +8,7 @@
 {% block appCorps %}
 	{{ form_start(form, {'attr': {'novalidate':'novalidate'}}) }}
 	<div class="container">
-		<div class="card mt-5">
+		<div class="card">
 			<h5 class="card-header">Information générale</h5>
 			<div class="card-body">
 				<p class="card-text">
