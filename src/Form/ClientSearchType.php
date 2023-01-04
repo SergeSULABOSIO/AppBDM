@@ -1,6 +1,8 @@
 <?php
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ClientSearchType extends AbstractType
@@ -8,6 +10,11 @@ class ClientSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add("motcle");
+        ->add("motcle", TextType::class, [
+            'label' => "Mot clé",
+            'required' => false
+        ])
+        ->add("Recherche", SubmitType::class)
+        ;
     }
 }

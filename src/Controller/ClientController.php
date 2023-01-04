@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Produit;
 use App\Form\ClientFormType;
+use App\Repository\ClientRepository;
+use ClientSearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +33,32 @@ class ClientController extends AbstractController
             'client.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'clients' => $clients
+            ]
+        );
+    }
+
+
+    #[Route('/search/{page?1}/{nbre?20}', name: 'client.search')]
+    public function search(Request $request, $page, $nbre, ClientRepository $clientRepository, PaginatorInterface $paginatorInterface)
+    {
+        $searchClientForm = $this->createForm(ClientSearchType::class);
+        $searchClientForm = $searchClientForm->handleRequest($request);
+
+        $data = [];
+        if($searchClientForm->isSubmitted() && $searchClientForm->isValid()){
+            $criteres = $searchClientForm->getData();
+            //dd($criteres);
+            $data = $clientRepository->findByNom($criteres);
+            //dd($clients);
+        }
+        $clients = $paginatorInterface->paginate($data, $page, $nbre);
+
+        $appTitreRubrique = "Client - Résultat de la recherche";
+        return $this->render('client.resultat.html.twig',
+            [
+                'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchClientForm->createView(),
                 'clients' => $clients
             ]
         );

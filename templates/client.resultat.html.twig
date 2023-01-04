@@ -1,0 +1,95 @@
+{% extends "template.ui.html.twig" %}
+
+{% block classeActiveListe %}active
+{% endblock %}
+{% block classeOpenListe %}menu-open
+{% endblock %}
+{% block classeActiveListeClients %}active
+{% endblock %}
+
+{% block appTitreRubrique %}
+	<i class="fa-solid fa-people-roof"></i>
+	{{appTitreRubrique}}
+	<div>
+		<a href="{{ path('client.edit') }}" type="button" class="btn btn-primary">
+			<i class="fa-solid fa-circle-plus"></i>
+			Nouveau
+		</a>
+	</div>
+{% endblock %}
+
+{% block appCorps %}
+	{{ form(search_form) }}
+		{% if (app.request.method == 'POST') %}
+			{% if (clients|length > 0)%}
+				<div class="navigation">
+					{{ knp_pagination_render(clients) }}
+				</div>
+				<div class="row">
+					{% for client in clients %}
+						<div class="card m-2 p-0" style="width: 18rem;">
+							<h5 class="card-header">
+								<i class="fa-solid fa-people-roof"></i>
+								{{client.nom}}
+							</h5>
+							<div class="card-body">
+								<div class="card-subtitle mb-2 text-muted">
+									<i class="fa-solid fa-phone"></i>
+									{{client.telephone}}
+								</div>
+								<div class="card-subtitle mb-2 text-muted">
+									<i class="fa-solid fa-envelope-open-text"></i>
+									{{client.email}}
+								</div>
+
+								{% if client.ispersonnemorale == 1 %}
+									<div class="card-subtitle mb-2 text-muted">
+										<i class="fa-solid fa-house-laptop"></i>
+										{{client.rccm}}
+										|
+										{{client.idnat}}
+										|
+										{{client.numipot}}
+									</div>
+								{% endif %}
+
+								<p class="card-text">Adresse:
+									{{client.adresse}}</p>
+								<a class="btn btn-light btn-sm card-link" href="{{ path('client.details', {id:client.id}) }}">
+									<i class="fa-solid fa-circle-info"></i>
+									Voir les détails
+								</a>
+								<span class="dropdown show">
+									<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i class="fa-solid fa-screwdriver-wrench"></i>
+										Actions
+									</a>
+
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="{{ path('client.edit', {id:client.id}) }}">
+											<i class="fa-solid fa-pen-to-square"></i>
+											Modifier
+										</a>
+										<a class="dropdown-item text-danger" href="{{ path('client.delete', {id:client.id}) }}">
+											<i class="fa-solid fa-trash-can"></i>
+											Supprimer
+										</a>
+									</div>
+								</span>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% else %}
+				Aucun résultat.
+			{% endif %}
+		{% endif %}
+	{% endblock %}
+
+	{% block javascripts %}
+		<script>
+			$(document).ready(function () {
+$('.select2').select2();
+});
+		</script>
+	{% endblock %}

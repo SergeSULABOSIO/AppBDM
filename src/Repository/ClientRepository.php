@@ -39,6 +39,23 @@ class ClientRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * @return Client[] Returns an array of Client objects
+     */
+    public function findByNom($criteres): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.nom like :valNom')
+            ->setParameter('valNom', '%'.$criteres['motcle'].'%')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+
 //    /**
 //     * @return Client[] Returns an array of Client objects
 //     */
