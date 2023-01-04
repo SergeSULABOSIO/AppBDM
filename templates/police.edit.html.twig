@@ -1,8 +1,11 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActiveListe %}active{% endblock %}
-{% block classeOpenListe %}menu-open{% endblock %}
-{% block classeActiveListePolices %}active{% endblock %}
+{% block classeActiveListe %}active
+{% endblock %}
+{% block classeOpenListe %}menu-open
+{% endblock %}
+{% block classeActiveListePolices %}active
+{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-umbrella"></i>
@@ -100,14 +103,12 @@
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}
 
 {% block javascripts %}
 	<script>
 		$(document).ready(function () {
-$('.select2').select2();
-});
+			$('.select2').select2();
+		});
 	</script>
 {% endblock %}
