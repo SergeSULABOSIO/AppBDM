@@ -15,7 +15,7 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message:"Ce champ ne peut pas être vide.")]
+    #[Assert\NotBlank(message: "Ce champ ne peut pas être vide.")]
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 

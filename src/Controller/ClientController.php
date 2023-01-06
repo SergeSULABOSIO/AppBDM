@@ -46,16 +46,15 @@ class ClientController extends AbstractController
         $searchClientForm = $searchClientForm->handleRequest($request);
 
         $data = [];
-        if($searchClientForm->isSubmitted() && $searchClientForm->isValid()){
+        if ($searchClientForm->isSubmitted() && $searchClientForm->isValid()) {
             $criteres = $searchClientForm->getData();
-            //dd($criteres);
-            $data = $clientRepository->findByNom($criteres);
-            //dd($clients);
+            $data = $clientRepository->findByMotCle($criteres);
         }
         $clients = $paginatorInterface->paginate($data, $page, $nbre);
-
+        //dd($clients);
         $appTitreRubrique = "Client - Résultat de la recherche";
-        return $this->render('client.resultat.html.twig',
+        return $this->render(
+            'client.resultat.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchClientForm->createView(),

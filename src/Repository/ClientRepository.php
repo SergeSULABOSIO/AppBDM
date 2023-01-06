@@ -43,12 +43,16 @@ class ClientRepository extends ServiceEntityRepository
     /**
      * @return Client[] Returns an array of Client objects
      */
-    public function findByNom($criteres): array
+    public function findByMotCle($criteres): array
     {
         return $this->createQueryBuilder('c')
-            ->where('c.nom like :valNom')
-            ->setParameter('valNom', '%'.$criteres['motcle'].'%')
-            ->orderBy('c.id', 'ASC')
+            ->where('c.nom like :valMotCle')
+            ->orWhere('c.adresse like :valMotCle')
+            ->orWhere('c.telephone like :valMotCle')
+            ->orWhere('c.email like :valMotCle')
+            ->orWhere('c.siteweb like :valMotCle')
+            ->setParameter('valMotCle', '%'.$criteres['motcle'].'%')
+            ->orderBy('c.id', 'DESC')
             ->getQuery()
             ->getResult()
         ;
