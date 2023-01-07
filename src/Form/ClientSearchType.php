@@ -11,6 +11,7 @@ class ClientSearchType extends AbstractType
 {
 
     const SECTEUR = [
+        "Tous" => -1,
         "Administrations publiques" => 0,
         "Agriculture, foresterie, pêche et chasse" => 1,
         "Assurances" => 2,
@@ -40,7 +41,7 @@ class ClientSearchType extends AbstractType
                 'label' => "Mot Clé",
                 'required' => false,
                 'row_attr' => [
-                    'class' => 'input-group',
+                    'class' => 'input-group'
                 ]
             ])
             ->add("secteur", ChoiceType::class, [
@@ -49,7 +50,7 @@ class ClientSearchType extends AbstractType
                 'row_attr' => [
                     'class' => 'input-group',
                 ]
-            ])
-            ->add("Rechercher", SubmitType::class);
+            ]);
+        //->add("Rechercher", SubmitType::class);
     }
 }
