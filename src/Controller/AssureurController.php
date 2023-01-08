@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Assureur;
 use App\Form\AssureurFormType;
+use App\Repository\AssureurRepository;
+use AssureurSearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AssureurController extends AbstractController
 {
 
-    
+
     #[Route('/edit/{id?0}', name: 'assureur.edit')]
     public function edit(Assureur $assureur = null, ManagerRegistry $doctrine, Request $request): Response
     {
@@ -94,23 +96,38 @@ class AssureurController extends AbstractController
 
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'assureur.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, AssureurRepository $assureurRepository, PaginatorInterface $paginatorInterface): Response
     {
+        $searchAssureursForm = $this->createForm(AssureurSearchType::class);
+        $searchAssureursForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Assureur";
-        $repository = $doctrine->getRepository(Assureur::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchAssureursForm->isSubmitted() && $searchAssureursForm->isValid()) {
+            $page = 1;
+            $criteres = $searchAssureursForm->getData();
+            $data = $assureurRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_assureur", $criteres);
+        } else {
+            if ($session->has("criteres_liste_assureur")) {
+                $data = $assureurRepository->findByMotCle($session->get("criteres_liste_assureur"));
+                $criteres = new AssureurSearchType();
+                $searchAssureursForm = $this->createForm(AssureurSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_assureur")['motcle']
+                ]);
+            } else {
+                $data = $assureurRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $assureurs = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-
-
-
-
+        //dd($clients);
+        $appTitreRubrique = "Assureur";
         return $this->render(
             'assureur.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchAssureursForm->createView(),
                 'assureurs' => $assureurs
             ]
         );

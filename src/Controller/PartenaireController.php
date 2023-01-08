@@ -54,22 +54,6 @@ class PartenaireController extends AbstractController
                 'partenaires' => $partenaires
             ]
         );
-
-
-        // $session = $request->getSession();
-        // $appTitreRubrique = "Partenaire";
-        // $repository = $doctrine->getRepository(Partenaire::class);
-        // $data = $repository->findAll();
-        // $partenaires = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        // return $this->render(
-        //     'partenaire.list.html.twig',
-        //     [
-        //         'appTitreRubrique' => $appTitreRubrique,
-        //         'partenaires' => $partenaires
-        //     ]
-        // );
     }
 
 

@@ -39,28 +39,36 @@ class AssureurRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Assureur[] Returns an array of Assureur objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Assureur[] Returns an array of Assureur objects
+     */
+    public function findByMotCle($criteres): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->where('a.nom like :valMotCle')
+            ->orWhere('a.adresse like :valMotCle')
+            ->orWhere('a.telephone like :valMotCle')
+            ->orWhere('a.email like :valMotCle')
+            ->orWhere('a.rccm like :valMotCle')
+            ->orWhere('a.idnat like :valMotCle')
+            ->orWhere('a.numimpot like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('a.id', 'DESC');
 
-//    public function findOneBySomeField($value): ?Assureur
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    //    public function findOneBySomeField($value): ?Assureur
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
