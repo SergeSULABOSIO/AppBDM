@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use ClientSearchType;
+use EntrepriseSearchType;
 use App\Entity\Automobile;
 use App\Entity\Entreprise;
 use App\Form\EntrepriseFormType;
+use App\Repository\EntrepriseRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,22 +21,59 @@ class EntrepriseController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'entreprise.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, EntrepriseRepository $entrepriseRepository, PaginatorInterface $paginatorInterface): Response
     {
+
+        $searchEntrepriseForm = $this->createForm(EntrepriseSearchType::class);
+        $searchEntrepriseForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Entreprise";
-        $repository = $doctrine->getRepository(Entreprise::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchEntrepriseForm->isSubmitted() && $searchEntrepriseForm->isValid()) {
+            $page = 1;
+            $criteres = $searchEntrepriseForm->getData();
+            $data = $entrepriseRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_entreprise", $criteres);
+        }else{
+            if($session->has("criteres_liste_entreprise")){
+                $data = $entrepriseRepository->findByMotCle($session->get("criteres_liste_entreprise"));
+                $criteres = new EntrepriseSearchType();
+                $searchEntrepriseForm = $this->createForm(EntrepriseSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_entreprise")['motcle']
+                ]);
+            }else{
+                $data = $entrepriseRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $entreprises = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Entreprise";
         return $this->render(
             'entreprise.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchEntrepriseForm->createView(),
                 'entreprises' => $entreprises
             ]
         );
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Entreprise";
+        // $repository = $doctrine->getRepository(Entreprise::class);
+        // $data = $repository->findAll();
+        // $entreprises = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'entreprise.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'entreprises' => $entreprises
+        //     ]
+        // );
     }
 
 

@@ -39,20 +39,27 @@ class EntrepriseRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Entreprise[] Returns an array of Entreprise objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Entreprise[] Returns an array of Entreprise objects
+    */
+   public function findByMotCle($criteres): array
+   {
+       $query = $this->createQueryBuilder('e')
+            ->where('e.nom like :valMotCle')
+            ->orWhere('e.adresse like :valMotCle')
+            ->orWhere('e.telephone like :valMotCle')
+            ->orWhere('e.rccm like :valMotCle')
+            ->orWhere('e.idnat like :valMotCle')
+            ->orWhere('e.numimpot like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('e.id', 'DESC');
+
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+   }
 
 //    public function findOneBySomeField($value): ?Entreprise
 //    {
