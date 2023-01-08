@@ -45,43 +45,52 @@ class ClientRepository extends ServiceEntityRepository
      */
     public function findByMotCle($criteres): array
     {
-        return $this->createQueryBuilder('c')
+        $query = $this->createQueryBuilder('c')
             ->where('c.nom like :valMotCle')
             ->orWhere('c.adresse like :valMotCle')
             ->orWhere('c.telephone like :valMotCle')
             ->orWhere('c.email like :valMotCle')
             ->orWhere('c.siteweb like :valMotCle')
-            ->setParameter('valMotCle', '%'.$criteres['motcle'].'%')
-            ->orderBy('c.id', 'DESC')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('c.id', 'DESC');
+
+        if ($criteres['secteur'] != -1) {
+            $query = $query
+                ->andWhere('c.secteur = :valSecteur')
+                ->setParameter('valSecteur', $criteres['secteur']);
+        }
+
+        $query = $query
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+
+        return $query;
     }
 
 
 
-//    /**
-//     * @return Client[] Returns an array of Client objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Client[] Returns an array of Client objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('c.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Client
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Client
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

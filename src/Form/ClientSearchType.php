@@ -41,7 +41,7 @@ class ClientSearchType extends AbstractType
                 'label' => "Mot Clé",
                 'required' => false,
                 'row_attr' => [
-                    'class' => 'input-group'
+                    'class' => 'input-group',
                 ]
             ])
             ->add("secteur", ChoiceType::class, [

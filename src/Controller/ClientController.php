@@ -43,13 +43,28 @@ class ClientController extends AbstractController
     public function search(Request $request, $page, $nbre, ClientRepository $clientRepository, PaginatorInterface $paginatorInterface)
     {
         $searchClientForm = $this->createForm(ClientSearchType::class);
-        $searchClientForm = $searchClientForm->handleRequest($request);
+        $searchClientForm->handleRequest($request);
+        $session = $request->getSession();
 
         $data = [];
         if ($searchClientForm->isSubmitted() && $searchClientForm->isValid()) {
+            $page = 1;
             $criteres = $searchClientForm->getData();
             $data = $clientRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_client", $criteres);
+        }else{
+            if($session->has("criteres_liste_client")){
+                $data = $clientRepository->findByMotCle($session->get("criteres_liste_client"));
+                $criteres = new ClientSearchType();
+                $searchClientForm = $this->createForm(ClientSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_client")['motcle'],
+                    'secteur' => $session->get("criteres_liste_client")['secteur']
+                ]);
+            }else{
+                $data = $clientRepository->findAll();
+            }
         }
+        //dd($session->get("criteres"));
         $clients = $paginatorInterface->paginate($data, $page, $nbre);
         //dd($clients);
         $appTitreRubrique = "Client - Résultat de la recherche";
