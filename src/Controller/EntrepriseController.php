@@ -23,7 +23,6 @@ class EntrepriseController extends AbstractController
     #[Route('/list/{page?1}/{nbre?20}', name: 'entreprise.list')]
     public function list(Request $request, $page, $nbre, EntrepriseRepository $entrepriseRepository, PaginatorInterface $paginatorInterface): Response
     {
-
         $searchEntrepriseForm = $this->createForm(EntrepriseSearchType::class);
         $searchEntrepriseForm->handleRequest($request);
         $session = $request->getSession();
@@ -57,23 +56,6 @@ class EntrepriseController extends AbstractController
                 'entreprises' => $entreprises
             ]
         );
-
-
-
-        // $session = $request->getSession();
-        // $appTitreRubrique = "Entreprise";
-        // $repository = $doctrine->getRepository(Entreprise::class);
-        // $data = $repository->findAll();
-        // $entreprises = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        // return $this->render(
-        //     'entreprise.list.html.twig',
-        //     [
-        //         'appTitreRubrique' => $appTitreRubrique,
-        //         'entreprises' => $entreprises
-        //     ]
-        // );
     }
 
 

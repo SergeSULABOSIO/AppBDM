@@ -39,28 +39,35 @@ class PartenaireRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Partenaire[] Returns an array of Partenaire objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Partenaire[] Returns an array of Partenaire objects
+     */
+    public function findByMotCle($criteres): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.nom like :valMotCle')
+            ->orWhere('p.adresse like :valMotCle')
+            ->orWhere('p.email like :valMotCle')
+            ->orWhere('p.rccm like :valMotCle')
+            ->orWhere('p.idnat like :valMotCle')
+            ->orWhere('p.numimpot like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('p.id', 'DESC');
 
-//    public function findOneBySomeField($value): ?Partenaire
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    //    public function findOneBySomeField($value): ?Partenaire
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

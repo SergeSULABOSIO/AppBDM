@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Automobile;
+use PartenaireSearchType;
 use App\Entity\Partenaire;
 use App\Form\PartenaireFormType;
+use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,22 +19,57 @@ class PartenaireController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'partenaire.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, PartenaireRepository $partenaireRepository, PaginatorInterface $paginatorInterface): Response
     {
+        $searchPartenaireForm = $this->createForm(PartenaireSearchType::class);
+        $searchPartenaireForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Partenaire";
-        $repository = $doctrine->getRepository(Partenaire::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchPartenaireForm->isSubmitted() && $searchPartenaireForm->isValid()) {
+            $page = 1;
+            $criteres = $searchPartenaireForm->getData();
+            $data = $partenaireRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_partenaire", $criteres);
+        } else {
+            if ($session->has("criteres_liste_partenaire")) {
+                $data = $partenaireRepository->findByMotCle($session->get("criteres_liste_partenaire"));
+                $criteres = new PartenaireSearchType();
+                $searchPartenaireForm = $this->createForm(PartenaireSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_partenaire")['motcle']
+                ]);
+            } else {
+                $data = $partenaireRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $partenaires = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Partenaire";
         return $this->render(
             'partenaire.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchPartenaireForm->createView(),
                 'partenaires' => $partenaires
             ]
         );
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Partenaire";
+        // $repository = $doctrine->getRepository(Partenaire::class);
+        // $data = $repository->findAll();
+        // $partenaires = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'partenaire.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'partenaires' => $partenaires
+        //     ]
+        // );
     }
 
 
