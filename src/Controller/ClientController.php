@@ -20,26 +20,6 @@ class ClientController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'client.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
-    {
-        $session = $request->getSession();
-        $appTitreRubrique = "Client";
-        $repository = $doctrine->getRepository(Client::class);
-        $data = $repository->findAll();
-        $clients = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        return $this->render(
-            'client.list.html.twig',
-            [
-                'appTitreRubrique' => $appTitreRubrique,
-                'clients' => $clients
-            ]
-        );
-    }
-
-
-    #[Route('/search/{page?1}/{nbre?20}', name: 'client.search')]
     public function search(Request $request, $page, $nbre, ClientRepository $clientRepository, PaginatorInterface $paginatorInterface)
     {
         $searchClientForm = $this->createForm(ClientSearchType::class);
@@ -67,9 +47,9 @@ class ClientController extends AbstractController
         //dd($session->get("criteres"));
         $clients = $paginatorInterface->paginate($data, $page, $nbre);
         //dd($clients);
-        $appTitreRubrique = "Client - Résultat de la recherche";
+        $appTitreRubrique = "Client";
         return $this->render(
-            'client.resultat.html.twig',
+            'client.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchClientForm->createView(),
