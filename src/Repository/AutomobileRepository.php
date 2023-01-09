@@ -39,28 +39,45 @@ class AutomobileRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Automobile[] Returns an array of Automobile objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Automobile[] Returns an array of Automobile objects
+     */
+    public function findByMotCle($criteres): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->where('a.model like :valMotCle')
+            ->orWhere('a.marque like :valMotCle')
+            ->orWhere('a.plaque like :valMotCle')
+            ->orWhere('a.chassis like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('a.id', 'DESC');
 
-//    public function findOneBySomeField($value): ?Automobile
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($criteres['nature'] != -1) {
+            $query = $query
+                ->andWhere('a.nature = :valNature')
+                ->setParameter('valNature', $criteres['nature']);
+        }
+
+        if ($criteres['utilite'] != -1) {
+            $query = $query
+                ->andWhere('a.utilite = :valUtilite')
+                ->setParameter('valUtilite', $criteres['utilite']);
+        }
+
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    //    public function findOneBySomeField($value): ?Automobile
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

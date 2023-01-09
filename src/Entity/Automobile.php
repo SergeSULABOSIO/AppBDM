@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\AutomobileRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AutomobileRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 #[ORM\Entity(repositoryClass: AutomobileRepository::class)]
 class Automobile

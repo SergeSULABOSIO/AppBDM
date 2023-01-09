@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Automobile;
 use App\Form\AutomobileFormType;
+use App\Repository\AutomobileRepository;
+use AutomobileSearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +19,60 @@ class AutomobileController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'automobile.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, AutomobileRepository $automobileRepository, PaginatorInterface $paginatorInterface): Response
     {
+        $searchAutomobileForm = $this->createForm(AutomobileSearchType::class);
+        $searchAutomobileForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Automobile";
-        $repository = $doctrine->getRepository(Automobile::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchAutomobileForm->isSubmitted() && $searchAutomobileForm->isValid()) {
+            $page = 1;
+            $criteres = $searchAutomobileForm->getData();
+            $data = $automobileRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_automobile", $criteres);
+        } else {
+            if ($session->has("criteres_liste_automobile")) {
+                $data = $automobileRepository->findByMotCle($session->get("criteres_liste_automobile"));
+                $criteres = new AutomobileSearchType();
+                $searchAutomobileForm = $this->createForm(AutomobileSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_automobile")['motcle'],
+                    'nature' => $session->get("criteres_liste_automobile")['nature'],
+                    'utilite' => $session->get("criteres_liste_automobile")['utilite']
+                ]);
+            } else {
+                $data = $automobileRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $automobiles = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Automobile";
         return $this->render(
             'automobile.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchAutomobileForm->createView(),
                 'automobiles' => $automobiles
             ]
         );
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Automobile";
+        // $repository = $doctrine->getRepository(Automobile::class);
+        // $data = $repository->findAll();
+        // $automobiles = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'automobile.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'automobiles' => $automobiles
+        //     ]
+        // );
     }
 
 
@@ -73,7 +113,7 @@ class AutomobileController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($automobile);
             $entityManager->flush();
-            $this->addFlash('success', "Bravo ! " . $automobile->getMarque(). " / " . $automobile->getPlaque() . " vient d'être " . $adjectif . " avec succès.");
+            $this->addFlash('success', "Bravo ! " . $automobile->getMarque() . " / " . $automobile->getPlaque() . " vient d'être " . $adjectif . " avec succès.");
             return $this->redirectToRoute('automobile.list');
         } else {
 
