@@ -30,7 +30,7 @@ class Produit
 
     #[ORM\Column]
     private ?bool $isobligatoire = null;
-
+    
     #[ORM\Column]
     private ?bool $isabonnement = null;
 
