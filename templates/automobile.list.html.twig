@@ -62,7 +62,7 @@
 						<div class="card-subtitle mb-2 text-muted">
 							<i class="fa-solid fa-truck-monster"></i>
 							{{automobile.monnaie.code}}
-							{{automobile.valeur}}
+							{{automobile.valeur|number_format(2, ',', '.')}}
 							/
 							{{automobile.chassis}}
 						</div>

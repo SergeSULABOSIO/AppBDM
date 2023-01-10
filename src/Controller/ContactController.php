@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Client;
 use App\Entity\Contact;
 use App\Form\ContactFormType;
+use App\Repository\ClientRepository;
+use App\Repository\ContactRepository;
+use ContactSearchType;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +21,76 @@ class ContactController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'contact.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, ClientRepository $clientRepository, ContactRepository $contactRepository, PaginatorInterface $paginatorInterface): Response
     {
+        $searchContactForm = $this->createForm(ContactSearchType::class);
+        $searchContactForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Contact";
-        $repository = $doctrine->getRepository(Contact::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchContactForm->isSubmitted() && $searchContactForm->isValid()) {
+            $page = 1;
+            $criteres = $searchContactForm->getData();
+            //dd($criteres);
+            $data = $contactRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_contact", $criteres);
+        } else {
+            if ($session->has("criteres_liste_contact")) {
+                $data = $contactRepository->findByMotCle($session->get("criteres_liste_contact"));
+                $client = $clientRepository->find($session->get("criteres_liste_contact")['client']->getId());
+                //dd($session->get("criteres_liste_contact")['client']->getNom());
+                
+                $searchContactForm = $this->createForm(ContactSearchType::class, [
+                   'motcle' => $session->get("criteres_liste_contact")['motcle'],
+                   'client' => $client
+                ]);
+            } else {
+                $data = $contactRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $contacts = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Contact";
         return $this->render(
             'contact.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchContactForm->createView(),
                 'contacts' => $contacts
             ]
         );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Contact";
+        // $repository = $doctrine->getRepository(Contact::class);
+        // $data = $repository->findAll();
+        // $contacts = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'contact.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'contacts' => $contacts
+        //     ]
+        // );
     }
 
 

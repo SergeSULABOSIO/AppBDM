@@ -25,7 +25,7 @@
 				<h6 class="card-subtitle mb-2 text-muted">
 					<i class="fa-solid fa-truck-monster"></i>
 					Valeur: {{automobile.monnaie.code}}
-					{{automobile.valeur}}
+					{{automobile.valeur|number_format(2, ',', '.')}}
 					/
 					N° Chassis: {{automobile.chassis}}
 				</h6>
