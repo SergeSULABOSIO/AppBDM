@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use TaxeSearchType;
 use App\Entity\Taxe;
 use App\Form\TaxeFormType;
+use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +19,62 @@ class TaxeController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'taxe.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, $page, $nbre, TaxeRepository $taxeRepository, PaginatorInterface $paginatorInterface): Response
     {
+
+        $searchTaxeForm = $this->createForm(TaxeSearchType::class);
+        $searchTaxeForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Taxe";
-        $repository = $doctrine->getRepository(Taxe::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchTaxeForm->isSubmitted() && $searchTaxeForm->isValid()) {
+            $page = 1;
+            $criteres = $searchTaxeForm->getData();
+            $data = $taxeRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_taxe", $criteres);
+        } else {
+            if ($session->has("criteres_liste_taxe")) {
+                $data = $taxeRepository->findByMotCle($session->get("criteres_liste_taxe"));
+                $searchTaxeForm = $this->createForm(TaxeSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_taxe")['motcle']
+                ]);
+            } else {
+                $data = $taxeRepository->findAll();
+            }
+        }
+        //dd($session->get("criteres"));
         $taxes = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Taxe";
         return $this->render(
             'taxe.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchTaxeForm->createView(),
                 'taxes' => $taxes
             ]
         );
+
+
+
+
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Taxe";
+        // $repository = $doctrine->getRepository(Taxe::class);
+        // $data = $repository->findAll();
+        // $taxes = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'taxe.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'taxes' => $taxes
+        //     ]
+        // );
     }
 
 
