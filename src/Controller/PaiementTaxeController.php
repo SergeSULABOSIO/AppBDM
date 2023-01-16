@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use ContactSearchType;
+use PaiementTaxeSearchType;
 use App\Entity\PaiementTaxe;
 use App\Form\PaiementTaxeFormType;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\PaiementTaxeRepository;
+use App\Repository\PoliceRepository;
+use App\Repository\TaxeRepository;
+use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,18 +23,57 @@ class PaiementTaxeController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'poptaxe.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
-    {
+    public function list(
+        Request $request,
+        $page,
+        $nbre,
+        PaiementTaxeRepository $paiementTaxeRepository,
+        TaxeRepository $taxeRepository,
+        PoliceRepository $policeRepository,
+        PaginatorInterface $paginatorInterface
+    ): Response {
+        $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
+            'dateA' => new DateTime('now'),
+            'dateB' => new DateTime('now')
+        ]);
+        $searchPaiementTaxeForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Paiement de Taxe";
-        $repository = $doctrine->getRepository(PaiementTaxe::class);
-        $data = $repository->findAll();
-        $paiementtaxes = $paginatorInterface->paginate($data, $page, $nbre);
 
+        $data = [];
+        if ($searchPaiementTaxeForm->isSubmitted() && $searchPaiementTaxeForm->isValid()) {
+            $page = 1;
+            $criteres = $searchPaiementTaxeForm->getData();
+            //dd($criteres);
+            $data = $paiementTaxeRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_pop_taxe", $criteres);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+             $session_police = $session->get("criteres_liste_pop_taxe")['police'];
+             $session_taxe = $session->get("criteres_liste_pop_taxe")['taxe'];
+
+             $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
+             $objtaxe = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
+           
+             $data = $paiementTaxeRepository->findByMotCle($session->get("criteres_liste_pop_taxe"));
+
+             $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
+                 'motcle' => $session->get("criteres_liste_pop_taxe")['motcle'],
+                 'police' => $objpolice,
+                 'taxe' => $objtaxe,
+                 'dateA' => $session->get("criteres_liste_pop_taxe")['dateA'],
+                 'dateB' => $session->get("criteres_liste_pop_taxe")['dateB']
+             ]);
+        }
+        //dd($session->get("criteres"));
+        $paiementtaxes = $paginatorInterface->paginate($data, $page, $nbre);
+        //dd($clients);
+        $appTitreRubrique = "Paiement de Taxe";
         return $this->render(
             'paiementtaxe.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchPaiementTaxeForm->createView(),
                 'paiementtaxes' => $paiementtaxes
             ]
         );

@@ -1,69 +1,107 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActiveListe %}active{% endblock %}
-{% block classeOpenListe %}menu-open{% endblock %}
-{% block classeActiveListePopTaxes %}active{% endblock %}
+{% block classeActiveListe %}active
+{% endblock %}
+{% block classeOpenListe %}menu-open
+{% endblock %}
+{% block classeActiveListePopTaxes %}active
+{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-filter-circle-dollar"></i>
 	{{appTitreRubrique}}
-	<div>
-		<a href="{{ path('poptaxe.edit') }}" type="button" class="btn btn-primary">
-			<i class="fa-solid fa-circle-plus"></i>
-			Nouveau
-		</a>
-	</div>
 {% endblock %}
 
 {% block appCorps %}
-	<div class="navigation">
-		{{ knp_pagination_render(paiementtaxes) }}
-	</div>
-	<div class="row">
-		{% for paiementtaxe in paiementtaxes %}
-			<div class="card m-2 p-0" style="width: 18rem;">
-				<h5 class="card-header">
-					<i class="fa-solid fa-filter-circle-dollar"></i>
-					{{paiementtaxe.refnotededebit}}
-				</h5>
-				<div class="card-body">
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-money-check-dollar"></i>
-						{{paiementtaxe.monnaie.code}} {{paiementtaxe.montant|number_format(2, ',', '.')}} / {{paiementtaxe.exercice}}
-					</div>
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-city"></i>
-						{{paiementtaxe.taxe.organisation}}
-					</div>
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-umbrella"></i>
-						Polices concernées: <span class="badge bg-secondary">{{paiementtaxe.polices|length}}</span>
-					</div>
-					<p class="card-text">
-						{{paiementtaxe.taxe.nom}}, payée le {{paiementtaxe.date|date("d/m/Y")}}
-					</p>
-					<a class="btn btn-light btn-sm card-link" href="{{ path('poptaxe.details', {id:paiementtaxe.id}) }}">
-						<i class="fa-solid fa-circle-info"></i>
-						Voir les détails
-					</a>
-					<span class="dropdown show">
-						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-screwdriver-wrench"></i>
-							Actions
-						</a>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="{{ path('poptaxe.edit', {id:paiementtaxe.id}) }}">
-								<i class="fa-solid fa-pen-to-square"></i>
-								Modifier
-							</a>
-							<a class="dropdown-item text-danger" href="{{ path('poptaxe.delete', {id:paiementtaxe.id}) }}">
-								<i class="fa-solid fa-trash-can"></i>
-								Supprimer
-							</a>
-						</div>
-					</span>
-				</div>
+	{{ form_start(search_form) }}
+	<div class="align-content-center">
+		<div class="form-row align-items-end">
+			<div class="col">
+				{{ form_row(search_form.dateA) }}
 			</div>
-		{% endfor %}
+			<div class="col">
+				{{ form_row(search_form.dateB) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.police) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.taxe) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.motcle) }}
+			</div>
+			<div class="col">
+				<button type="submit" class="btn btn-primary">
+					<i class="fa-solid fa-magnifying-glass"></i>
+					Chercher
+				</button>
+				<a href="{{ path('poptaxe.edit') }}" type="button" class="btn btn-success">
+					<i class="fa-solid fa-circle-plus"></i>
+					Nouveau
+				</a>
+			</div>
+		</div>
 	</div>
+	{{ form_end(search_form) }}
+
+	{% if (paiementtaxes|length > 0) %}
+		<div class="navigation m-2">
+			{{ knp_pagination_render(paiementtaxes) }}
+		</div>
+		<div class="row">
+			{% for paiementtaxe in paiementtaxes %}
+				<div class="card m-2 p-0" style="width: 18rem;">
+					<h5 class="card-header">
+						<i class="fa-solid fa-filter-circle-dollar"></i>
+						{{paiementtaxe.refnotededebit}}
+					</h5>
+					<div class="card-body">
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-money-check-dollar"></i>
+							{{paiementtaxe.monnaie.code}}
+							{{paiementtaxe.montant|number_format(2, ',', '.')}}
+							/
+							{{paiementtaxe.exercice}}
+						</div>
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-city"></i>
+							{{paiementtaxe.taxe.organisation}}
+						</div>
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-umbrella"></i>
+							Polices concernées:
+							<span class="badge bg-secondary">{{paiementtaxe.polices|length}}</span>
+						</div>
+						<p class="card-text">
+							{{paiementtaxe.taxe.nom}}, payée le
+							{{paiementtaxe.date|date("d/m/Y")}}
+						</p>
+						<a class="btn btn-light btn-sm card-link" href="{{ path('poptaxe.details', {id:paiementtaxe.id}) }}">
+							<i class="fa-solid fa-circle-info"></i>
+							Voir les détails
+						</a>
+						<span class="dropdown show">
+							<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa-solid fa-screwdriver-wrench"></i>
+								Actions
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="{{ path('poptaxe.edit', {id:paiementtaxe.id}) }}">
+									<i class="fa-solid fa-pen-to-square"></i>
+									Modifier
+								</a>
+								<a class="dropdown-item text-danger" href="{{ path('poptaxe.delete', {id:paiementtaxe.id}) }}">
+									<i class="fa-solid fa-trash-can"></i>
+									Supprimer
+								</a>
+							</div>
+						</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		Aucun résultat.
+	{% endif %}
 {% endblock %}

@@ -60,37 +60,6 @@ class ContactController extends AbstractController
                 'contacts' => $contacts
             ]
         );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // $session = $request->getSession();
-        // $appTitreRubrique = "Contact";
-        // $repository = $doctrine->getRepository(Contact::class);
-        // $data = $repository->findAll();
-        // $contacts = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        // return $this->render(
-        //     'contact.list.html.twig',
-        //     [
-        //         'appTitreRubrique' => $appTitreRubrique,
-        //         'contacts' => $contacts
-        //     ]
-        // );
     }
 
 

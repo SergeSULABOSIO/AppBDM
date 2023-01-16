@@ -2,23 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Assureur;
+use DateTime;
 use App\Entity\Client;
-use App\Entity\Entreprise;
-use App\Entity\Monnaie;
-use App\Entity\Partenaire;
 use App\Entity\Police;
+use App\Entity\Monnaie;
 use App\Entity\Produit;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Assureur;
+use App\Entity\Entreprise;
+use App\Entity\Partenaire;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PoliceFormType extends AbstractType
 {
@@ -29,24 +30,28 @@ class PoliceFormType extends AbstractType
                 'label' => "Date de l'opération",
                 'widget' => 'single_text',
                 'required' => false,
+                'data' => new DateTime('now'),
                 'empty_data' => null
             ])
             ->add('dateemission', DateType::class, [
                 'label' => "Date d'émission",
                 'widget' => 'single_text',
                 'required' => false,
+                'data' => new DateTime('now'),
                 'empty_data' => null
             ])
             ->add('dateeffet', DateType::class, [
                 'label' => "Date d'effet",
                 'widget' => 'single_text',
                 'required' => false,
+                'data' => new DateTime('now'),
                 'empty_data' => null
             ])
             ->add('dateexpiration', DateType::class, [
                 'label' => "Date d'expiration",
                 'widget' => 'single_text',
                 'required' => false,
+                'data' => new DateTime('+364 day'),//new DateTime("+364 day")
                 'empty_data' => null
             ])
             ->add('reference', TextType::class, [
