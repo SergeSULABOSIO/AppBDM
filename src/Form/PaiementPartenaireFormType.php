@@ -5,6 +5,7 @@ namespace App\Form;
 use DateTime;
 use App\Entity\Police;
 use App\Entity\Monnaie;
+use App\Entity\Partenaire;
 use App\Entity\PaiementPartenaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -54,8 +55,14 @@ class PaiementPartenaireFormType extends AbstractType
                 'class'  => Police::class,
                 'label' => "Polices"
             ])
-            ->add('Enregistrer', SubmitType::class);
-        ;
+            ->add('partenaire', EntityType::class, [
+                'label' => "Partenaire",
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'class'  => Partenaire::class
+            ])
+            ->add('Enregistrer', SubmitType::class);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

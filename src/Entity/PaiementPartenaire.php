@@ -39,6 +39,10 @@ class PaiementPartenaire
     #[ORM\ManyToMany(targetEntity: Police::class)]
     private Collection $polices;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Partenaire $partenaire = null;
+
     public function __construct()
     {
         $this->polices = new ArrayCollection();
@@ -134,6 +138,18 @@ class PaiementPartenaire
     public function removePolice(Police $police): self
     {
         $this->polices->removeElement($police);
+
+        return $this;
+    }
+
+    public function getPartenaire(): ?Partenaire
+    {
+        return $this->partenaire;
+    }
+
+    public function setPartenaire(?Partenaire $partenaire): self
+    {
+        $this->partenaire = $partenaire;
 
         return $this;
     }

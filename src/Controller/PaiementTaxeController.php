@@ -49,21 +49,23 @@ class PaiementTaxeController extends AbstractController
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-             $session_police = $session->get("criteres_liste_pop_taxe")['police'];
-             $session_taxe = $session->get("criteres_liste_pop_taxe")['taxe'];
+            if ($session->get("criteres_liste_pop_taxe")) {
+                $session_police = $session->get("criteres_liste_pop_taxe")['police'];
+                $session_taxe = $session->get("criteres_liste_pop_taxe")['taxe'];
 
-             $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
-             $objtaxe = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
-           
-             $data = $paiementTaxeRepository->findByMotCle($session->get("criteres_liste_pop_taxe"));
+                $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
+                $objtaxe = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
 
-             $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
-                 'motcle' => $session->get("criteres_liste_pop_taxe")['motcle'],
-                 'police' => $objpolice,
-                 'taxe' => $objtaxe,
-                 'dateA' => $session->get("criteres_liste_pop_taxe")['dateA'],
-                 'dateB' => $session->get("criteres_liste_pop_taxe")['dateB']
-             ]);
+                $data = $paiementTaxeRepository->findByMotCle($session->get("criteres_liste_pop_taxe"));
+                
+                $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_pop_taxe")['motcle'],
+                    'police' => $objpolice,
+                    'taxe' => $objtaxe,
+                    'dateA' => $session->get("criteres_liste_pop_taxe")['dateA'],
+                    'dateB' => $session->get("criteres_liste_pop_taxe")['dateB']
+                ]);
+            }
         }
         //dd($session->get("criteres"));
         $paiementtaxes = $paginatorInterface->paginate($data, $page, $nbre);

@@ -57,12 +57,6 @@ class PaiementTaxeRepository extends ServiceEntityRepository
                 ->setParameter('valDateB', $criteres['dateB']);
         }
 
-        // if ($criteres['police']) {
-        //     $query = $query
-        //         ->andWhere('p.polices = :valPolice')
-        //         ->setParameter('valPolice', '%'.$criteres['police'].'%');
-        // }
-
         if ($criteres['taxe']) {
             $query = $query
                 ->andWhere('p.taxe = :valTaxe')

@@ -39,28 +39,65 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return PaiementPartenaire[] Returns an array of PaiementPartenaire objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return PaiementPartenaire[] Returns an array of PaiementPartenaire objects
+     */
+    public function findByMotCle($criteres): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.refnotededebit like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('p.id', 'DESC');
 
-//    public function findOneBySomeField($value): ?PaiementPartenaire
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if (($criteres['dateA'] != null) and ($criteres['dateB'] != null)) {
+            $query = $query
+                ->andWhere('p.date BETWEEN :valDateA AND :valDateB')
+                ->setParameter('valDateA', $criteres['dateA'])
+                ->setParameter('valDateB', $criteres['dateB']);
+        }
+
+        if ($criteres['partenaire']) {
+            $query = $query
+                ->andWhere('p.partenaire = :valPartenaire')
+                ->setParameter('valPartenaire', $criteres['partenaire']);
+        }
+
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        //dd($query);
+        //dd($criteres['police']);
+
+        $resultFinal = [];
+        if ($criteres['police']) {
+            foreach ($query as $popPartenaire) {
+                //dd($popTaxe);
+                //dd($criteres['police']);
+                //dd($popTaxe->getPolices());
+                foreach ($popPartenaire->getPolices() as $police) {
+                    //dd($police);
+                    //dd($criteres['police']->getReference());
+                    if ($police->getReference() == $criteres['police']->getReference()) {
+                        $resultFinal[] = $popPartenaire;
+                    }
+                }
+            }
+        } else {
+            $resultFinal = $query;
+        }
+
+        //return $query;
+        return $resultFinal;
+    }
+
+    //    public function findOneBySomeField($value): ?PaiementPartenaire
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

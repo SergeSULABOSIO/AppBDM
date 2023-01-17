@@ -2,11 +2,17 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Produit;
+use PaiementTaxeSearchType;
 use App\Entity\PaiementPartenaire;
 use App\Form\PaiementPartenaireFormType;
+use App\Repository\PaiementPartenaireRepository;
+use App\Repository\PartenaireRepository;
+use App\Repository\PoliceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
+use PaiementPartenaireSearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,22 +24,82 @@ class PaiementPartenaireController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'poppartenaire.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
-    {
+    public function list(
+        Request $request,
+        $page,
+        $nbre,
+        PaiementPartenaireRepository $paiementPartenaireRepository,
+        PartenaireRepository $partenaireRepository,
+        PoliceRepository $policeRepository,
+        PaginatorInterface $paginatorInterface
+    ): Response {
+        $searchPaiementPartenaireForm = $this->createForm(PaiementPartenaireSearchType::class, [
+            'dateA' => new DateTime('now'),
+            'dateB' => new DateTime('now')
+        ]);
+        $searchPaiementPartenaireForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Paiement de Partenaire";
-        $repository = $doctrine->getRepository(PaiementPartenaire::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchPaiementPartenaireForm->isSubmitted() && $searchPaiementPartenaireForm->isValid()) {
+            $page = 1;
+            $criteres = $searchPaiementPartenaireForm->getData();
+            //dd($criteres);
+            $data = $paiementPartenaireRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_pop_partenaire", $criteres);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+            if ($session->get("criteres_liste_pop_partenaire")) {
+                $session_police = $session->get("criteres_liste_pop_partenaire")['police'];
+                $session_partenaire = $session->get("criteres_liste_pop_partenaire")['partenaire'];
+
+                $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
+                $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
+
+                $data = $paiementPartenaireRepository->findByMotCle($session->get("criteres_liste_pop_partenaire"));
+
+                $searchPaiementPartenaireForm = $this->createForm(PaiementPartenaireSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_pop_partenaire")['motcle'],
+                    'police' => $objpolice,
+                    'partenaire' => $objPartenaire,
+                    'dateA' => $session->get("criteres_liste_pop_partenaire")['dateA'],
+                    'dateB' => $session->get("criteres_liste_pop_partenaire")['dateB']
+                ]);
+            }
+        }
+        //dd($session->get("criteres"));
         $paiementpartenaires = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Paiement du Partenaire";
         return $this->render(
             'paiementpartenaire.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchPaiementPartenaireForm->createView(),
                 'paiementpartenaires' => $paiementpartenaires
             ]
         );
+
+
+
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Paiement de Partenaire";
+        // $repository = $doctrine->getRepository(PaiementPartenaire::class);
+        // $data = $repository->findAll();
+        // $paiementpartenaires = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'paiementpartenaire.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'paiementpartenaires' => $paiementpartenaires
+        //     ]
+        // );
     }
 
 
