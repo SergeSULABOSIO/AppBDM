@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use DateTime;
+use PaiementCommissionSearchType;
+use PaiementPartenaireSearchType;
 use App\Entity\PaiementCommission;
 use App\Form\PaiementCommissionFormType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -9,6 +12,9 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PaiementCommissionRepository;
+use App\Repository\PartenaireRepository;
+use App\Repository\PoliceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -17,22 +23,78 @@ class PaiementCommissionController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'popcommission.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, PoliceRepository $policeRepository, PartenaireRepository $partenaireRepository,  PaiementCommissionRepository $paiementCommissionRepository, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
+        $searchPaiementCommissionForm = $this->createForm(PaiementCommissionSearchType::class, [
+            'dateA' => new DateTime('now'),
+            'dateB' => new DateTime('now')
+        ]);
+        $searchPaiementCommissionForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Paiement de Commission";
-        $repository = $doctrine->getRepository(PaiementCommission::class);
-        $data = $repository->findAll();
+
+        $data = [];
+        if ($searchPaiementCommissionForm->isSubmitted() && $searchPaiementCommissionForm->isValid()) {
+            $page = 1;
+            $criteres = $searchPaiementCommissionForm->getData();
+            //dd($criteres);
+            $data = $paiementCommissionRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_pop_commission", $criteres);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+            if ($session->get("criteres_liste_pop_commission")) {
+                $session_police = $session->get("criteres_liste_pop_commission")['police'];
+                $session_partenaire = $session->get("criteres_liste_pop_commission")['partenaire'];
+                $session_client = $session->get("criteres_liste_pop_commission")['client'];
+                $session_assureur = $session->get("criteres_liste_pop_commission")['assureur'];
+
+                $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
+                $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
+                $objClient = $session_client ? $partenaireRepository->find($session_client->getId()) : null;
+                $objAssureur = $session_assureur ? $partenaireRepository->find($session_assureur->getId()) : null;
+
+                $data = $paiementCommissionRepository->findByMotCle($session->get("criteres_liste_pop_commission"));
+
+                $searchPaiementCommissionForm = $this->createForm(PaiementCommissionSearchType::class, [
+                    'motcle' => $session->get("criteres_liste_pop_commission")['motcle'],
+                    'police' => $objpolice,
+                    'partenaire' => $objPartenaire,
+                    'client' => $objClient,
+                    'assureur' => $objAssureur,
+                    'dateA' => $session->get("criteres_liste_pop_commission")['dateA'],
+                    'dateB' => $session->get("criteres_liste_pop_commission")['dateB']
+                ]);
+            }
+        }
+        //dd($session->get("criteres"));
         $paiementcommissions = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Paiement des commissions";
         return $this->render(
             'paiementcommission.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchPaiementCommissionForm->createView(),
                 'paiementcommissions' => $paiementcommissions
             ]
         );
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Paiement de Commission";
+        // $repository = $doctrine->getRepository(PaiementCommission::class);
+        // $data = $repository->findAll();
+        // $paiementcommissions = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'paiementcommission.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'paiementcommissions' => $paiementcommissions
+        //     ]
+        // );
     }
 
 

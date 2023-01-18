@@ -1,16 +1,20 @@
 <?php
 
-use App\Entity\Partenaire;
+use App\Entity\Assureur;
+use DateTime;
 use App\Entity\Taxe;
+use App\Entity\Client;
 use App\Entity\Police;
+use App\Entity\Partenaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class PaiementPartenaireSearchType extends AbstractType
+class PaiementCommissionSearchType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,6 +50,16 @@ class PaiementPartenaireSearchType extends AbstractType
                     'class' => 'input-group'
                 ]
             ])
+            ->add('client', EntityType::class, [
+                'label' => "Client",
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'class'  => Client::class,
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             ->add('partenaire', EntityType::class, [
                 'label' => "Partenaire",
                 'expanded' => false,
@@ -56,11 +70,21 @@ class PaiementPartenaireSearchType extends AbstractType
                     'class' => 'input-group'
                 ]
             ])
+            ->add('assureur', EntityType::class, [
+                'label' => "Assureur",
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'class'  => Assureur::class,
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             ->add("motcle", TextType::class, [
                 'label' => "Réf. Note de débit",
                 'required' => false,
                 'row_attr' => [
-                    'class' => 'input-group',
+                    'class' => 'input-group'
                 ]
             ]);
         //->add("Rechercher", SubmitType::class);

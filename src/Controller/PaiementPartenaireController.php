@@ -80,26 +80,6 @@ class PaiementPartenaireController extends AbstractController
                 'paiementpartenaires' => $paiementpartenaires
             ]
         );
-
-
-
-
-
-
-        // $session = $request->getSession();
-        // $appTitreRubrique = "Paiement de Partenaire";
-        // $repository = $doctrine->getRepository(PaiementPartenaire::class);
-        // $data = $repository->findAll();
-        // $paiementpartenaires = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        // return $this->render(
-        //     'paiementpartenaire.list.html.twig',
-        //     [
-        //         'appTitreRubrique' => $appTitreRubrique,
-        //         'paiementpartenaires' => $paiementpartenaires
-        //     ]
-        // );
     }
 
 
