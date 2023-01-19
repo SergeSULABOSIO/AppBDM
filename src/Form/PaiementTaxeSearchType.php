@@ -40,6 +40,7 @@ class PaiementTaxeSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Police::class,
                 'row_attr' => [
                     'class' => 'input-group'
@@ -50,13 +51,14 @@ class PaiementTaxeSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Taxe::class,
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
             ])
             ->add("motcle", TextType::class, [
-                'label' => "Réf. Note de débit",
+                'label' => "Mot clé",
                 'required' => false,
                 'row_attr' => [
                     'class' => 'input-group',
