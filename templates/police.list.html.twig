@@ -1,104 +1,145 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActiveListe %}active{% endblock %}
-{% block classeOpenListe %}menu-open{% endblock %}
-{% block classeActiveListePolices %}active{% endblock %}
+{% block classeActiveListe %}active
+{% endblock %}
+{% block classeOpenListe %}menu-open
+{% endblock %}
+{% block classeActiveListePolices %}active
+{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-umbrella"></i>
 	{{appTitreRubrique}}
-	<div>
-		<a href="{{ path('police.edit') }}" type="button" class="btn btn-primary">
-			<i class="fa-solid fa-circle-plus"></i>
-			Nouveau
-		</a>
-	</div>
 {% endblock %}
 
 {% block appCorps %}
-	<div class="navigation">
-		{{ knp_pagination_render(polices) }}
-	</div>
-	<div class="row">
-		{% for police in polices %}
-			<div class="card m-2 p-0" style="width: 18rem;">
-				<h5 class="card-header">
-					<i class="fa-solid fa-umbrella"></i>
-					{{police.reference}}
-				</h5>
-				<div class="card-body">
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-calendar-day"></i>
-						Du
-						{{police.dateeffet|date("d/m/Y")}}
-						au
-						{{police.dateexpiration|date("d/m/Y")}}
-					</div>
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-people-roof"></i>
-						{{police.client.nom}}
-					</div>
-					<div class="card-subtitle mb-2 text-muted">
-						<i class="fa-solid fa-shield-halved"></i>
-						{% for assureur in police.assureurs %}
-							{{assureur.nom}}
-							{% if loop.last == false %}-
-							{% endif %}
-						{% endfor %}
-					</div>
-					{% if police.partenaire != null %}
-						<div class="card-subtitle mb-2 text-muted">
-							<i class="fa-solid fa-handshake"></i>
-							{{police.partenaire.nom}}
-						</div>
-					{% endif %}
-					<p class="card-text">
-						{% if police.typeavenant == 0 %}
-							SOUSCRIPTION
-						{% endif %}
-						{% if police.typeavenant == 1 %}
-							RENOUVELLEMENT
-						{% endif %}
-						{% if police.typeavenant == 2 %}
-							ANNULATION
-						{% endif %}
-						{% if police.typeavenant == 3 %}
-							RESILIATION
-						{% endif %}
-						{% if police.typeavenant == 4 %}
-							RISTOURNE
-						{% endif %}
-						{% if police.typeavenant == 5 %}
-							PROROGATION
-						{% endif %}
-						::
-						{{police.monnaie.code}}
-						{{police.primetotale|number_format(2, ',', '.')}}
-						::
-						{{police.produit.nom}}</p>
-					<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:police.id}) }}">
-						<i class="fa-solid fa-circle-info"></i>
-						Voir les détails
-					</a>
-					<span class="dropdown show">
-						<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa-solid fa-screwdriver-wrench"></i>
-							Actions
-						</a>
-
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item" href="{{ path('police.edit', {id:police.id}) }}">
-								<i class="fa-solid fa-pen-to-square"></i>
-								Modifier
-							</a>
-							<a class="dropdown-item text-danger" href="{{ path('police.delete', {id:police.id}) }}">
-								<i class="fa-solid fa-trash-can"></i>
-								Supprimer
-							</a>
-						</div>
-					</span>
-				</div>
+	{{ form_start(search_form) }}
+	<div class="align-content-center">
+		<div class="form-row align-items-end m-2">
+			<div class="col">
+				{{ form_row(search_form.dateA) }}
 			</div>
-		{% endfor %}
+			<div class="col">
+				{{ form_row(search_form.dateB) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.motcle) }}
+			</div>
+			<div class="col">
+				<button type="submit" class="btn btn-primary">
+					<i class="fa-solid fa-magnifying-glass"></i>
+					Chercher
+				</button>
+				<a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
+					<i class="fa-solid fa-circle-plus"></i>
+					Nouveau
+				</a>
+			</div>
+		</div>
+		<div class="form-row align-items-end m-2">
+			<div class="col">
+				{{ form_row(search_form.assureur) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.produit) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.partenaire) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.client) }}
+			</div>
+		</div>
 	</div>
+	{{ form_end(search_form) }}
+
+	{% if (polices|length > 0) %}
+		<div class="navigation">
+			{{ knp_pagination_render(polices) }}
+		</div>
+		<div class="row">
+			{% for police in polices %}
+				<div class="card m-2 p-0" style="width: 18rem;">
+					<h5 class="card-header">
+						<i class="fa-solid fa-umbrella"></i>
+						{{police.reference}}
+					</h5>
+					<div class="card-body">
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-calendar-day"></i>
+							Du
+							{{police.dateeffet|date("d/m/Y")}}
+							au
+							{{police.dateexpiration|date("d/m/Y")}}
+						</div>
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-people-roof"></i>
+							{{police.client.nom}}
+						</div>
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-shield-halved"></i>
+							{% for assureur in police.assureurs %}
+								{{assureur.nom}}
+								{% if loop.last == false %}-
+								{% endif %}
+							{% endfor %}
+						</div>
+						{% if police.partenaire != null %}
+							<div class="card-subtitle mb-2 text-muted">
+								<i class="fa-solid fa-handshake"></i>
+								{{police.partenaire.nom}}
+							</div>
+						{% endif %}
+						<p class="card-text">
+							{% if police.typeavenant == 0 %}
+								SOUSCRIPTION
+							{% endif %}
+							{% if police.typeavenant == 1 %}
+								RENOUVELLEMENT
+							{% endif %}
+							{% if police.typeavenant == 2 %}
+								ANNULATION
+							{% endif %}
+							{% if police.typeavenant == 3 %}
+								RESILIATION
+							{% endif %}
+							{% if police.typeavenant == 4 %}
+								RISTOURNE
+							{% endif %}
+							{% if police.typeavenant == 5 %}
+								PROROGATION
+							{% endif %}
+							::
+							{{police.monnaie.code}}
+							{{police.primetotale|number_format(2, ',', '.')}}
+							::
+							{{police.produit.nom}}</p>
+						<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:police.id}) }}">
+							<i class="fa-solid fa-circle-info"></i>
+							Voir les détails
+						</a>
+						<span class="dropdown show">
+							<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa-solid fa-screwdriver-wrench"></i>
+								Actions
+							</a>
+
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item" href="{{ path('police.edit', {id:police.id}) }}">
+									<i class="fa-solid fa-pen-to-square"></i>
+									Modifier
+								</a>
+								<a class="dropdown-item text-danger" href="{{ path('police.delete', {id:police.id}) }}">
+									<i class="fa-solid fa-trash-can"></i>
+									Supprimer
+								</a>
+							</div>
+						</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		Aucun résultat.
+	{% endif %}
 {% endblock %}

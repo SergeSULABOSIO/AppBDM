@@ -2,9 +2,15 @@
 
 namespace App\Controller;
 
+use DateTime;
+use PoliceSearchType;
 use App\Entity\Police;
 use App\Entity\Entreprise;
 use App\Form\PoliceFormType;
+use App\Repository\ClientRepository;
+use App\Repository\PoliceRepository;
+use App\Repository\ProduitRepository;
+use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,19 +24,68 @@ class PoliceController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'police.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(
+        Request $request, 
+        $page, 
+        $nbre, 
+        PoliceRepository $policeRepository, 
+        ProduitRepository $produitRepository, 
+        ClientRepository $clientRepository, 
+        PartenaireRepository $partenaireRepository, 
+        PaginatorInterface $paginatorInterface
+    ): Response
     {
+        $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
+            'dateA' => new DateTime('now'),
+            'dateB' => new DateTime('now')
+        ]);
+        $searchPoliceForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Police";
-        $repository = $doctrine->getRepository(Police::class);
-        $data = $repository->findAll();
+        $criteres = $searchPoliceForm->getData();
+
+        $data = [];
+        if ($searchPoliceForm->isSubmitted() && $searchPoliceForm->isValid()) {
+            $page = 1;
+            //dd($criteres);
+            $data = $policeRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_police", $criteres);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+            $objCritereSession = $session->get("criteres_liste_police");
+            if ($objCritereSession) {
+                $session_produit = $objCritereSession['produit'] ? $objCritereSession['produit'] : null;
+                $session_partenaire = $objCritereSession['partenaire'] ? $objCritereSession['partenaire'] : null;
+                $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
+                $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
+
+                $objproduit = $session_produit ? $policeRepository->find($session_produit->getId()) : null;
+                $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
+                $objClient = $session_client ? $partenaireRepository->find($session_client->getId()) : null;
+                $objAssureur = $session_assureur ? $partenaireRepository->find($session_assureur->getId()) : null;
+
+                $data = $policeRepository->findByMotCle($objCritereSession);
+
+                $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
+                    'motcle' => $objCritereSession['motcle'],
+                    'produit' => $objproduit,
+                    'partenaire' => $objPartenaire,
+                    'client' => $objClient,
+                    'assureur' => $objAssureur,
+                    'dateA' => $objCritereSession['dateA'],
+                    'dateB' => $objCritereSession['dateB']
+                ]);
+            }
+        }
+        //dd($session->get("criteres"));
         $polices = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Polices";
         return $this->render(
             'police.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchPoliceForm->createView(),
                 'polices' => $polices
             ]
         );
