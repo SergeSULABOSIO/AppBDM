@@ -69,7 +69,7 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         //dd($query);
         //dd($criteres['police']);
 
-        $resultFinal = [];
+        $resultPolice = [];
         if ($criteres['police']) {
             foreach ($query as $popPartenaire) {
                 //dd($popTaxe);
@@ -79,14 +79,32 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
                     //dd($police);
                     //dd($criteres['police']->getReference());
                     if ($police->getReference() == $criteres['police']->getReference()) {
-                        $resultFinal[] = $popPartenaire;
+                        $resultPolice[] = $popPartenaire;
                     }
                 }
             }
         } else {
-            $resultFinal = $query;
+            $resultPolice = $query;
         }
 
+
+
+
+        //FILTRE POUR CLIENT
+        $resultClient = [];
+        if ($criteres['client']) {
+            foreach ($resultPolice as $popPartenaire) {
+                foreach ($popPartenaire->getPolices() as $police) {
+                    if ($police->getClient()->getId() == $criteres['client']->getId()) {
+                        $resultClient[] = $popPartenaire;
+                    }
+                }
+            }
+        } else {
+            $resultClient = $resultPolice;
+        }
+
+        $resultFinal = $resultClient;
         //return $query;
         return $resultFinal;
     }

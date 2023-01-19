@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use PaiementTaxeSearchType;
 use App\Entity\PaiementPartenaire;
 use App\Form\PaiementPartenaireFormType;
+use App\Repository\ClientRepository;
 use App\Repository\PaiementPartenaireRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\PoliceRepository;
@@ -30,6 +31,7 @@ class PaiementPartenaireController extends AbstractController
         $nbre,
         PaiementPartenaireRepository $paiementPartenaireRepository,
         PartenaireRepository $partenaireRepository,
+        ClientRepository $clientRepository,
         PoliceRepository $policeRepository,
         PaginatorInterface $paginatorInterface
     ): Response {
@@ -50,21 +52,25 @@ class PaiementPartenaireController extends AbstractController
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-            if ($session->get("criteres_liste_pop_partenaire")) {
-                $session_police = $session->get("criteres_liste_pop_partenaire")['police'];
-                $session_partenaire = $session->get("criteres_liste_pop_partenaire")['partenaire'];
+            $objCritereSession = $session->get("criteres_liste_pop_partenaire");
+            if ($objCritereSession) {
+                $session_police = $objCritereSession['police']?$objCritereSession['police']:null;
+                $session_client = $objCritereSession['client']?$objCritereSession['client']:null;
+                $session_partenaire = $objCritereSession['partenaire']?$objCritereSession['partenaire']:null;
 
                 $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
+                $objclient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
 
-                $data = $paiementPartenaireRepository->findByMotCle($session->get("criteres_liste_pop_partenaire"));
+                $data = $paiementPartenaireRepository->findByMotCle($objCritereSession);
 
                 $searchPaiementPartenaireForm = $this->createForm(PaiementPartenaireSearchType::class, [
-                    'motcle' => $session->get("criteres_liste_pop_partenaire")['motcle'],
+                    'motcle' => $objCritereSession['motcle'],
                     'police' => $objpolice,
+                    'client' => $objclient,
                     'partenaire' => $objPartenaire,
-                    'dateA' => $session->get("criteres_liste_pop_partenaire")['dateA'],
-                    'dateB' => $session->get("criteres_liste_pop_partenaire")['dateB']
+                    'dateA' => $objCritereSession['dateA'],
+                    'dateB' => $objCritereSession['dateB']
                 ]);
             }
         }
