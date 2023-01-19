@@ -45,6 +45,7 @@ class PaiementCommissionSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Police::class,
                 'row_attr' => [
                     'class' => 'input-group'
@@ -55,6 +56,7 @@ class PaiementCommissionSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Client::class,
                 'row_attr' => [
                     'class' => 'input-group'
@@ -65,6 +67,7 @@ class PaiementCommissionSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Partenaire::class,
                 'row_attr' => [
                     'class' => 'input-group'
@@ -75,6 +78,7 @@ class PaiementCommissionSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Assureur::class,
                 'row_attr' => [
                     'class' => 'input-group'
