@@ -39,28 +39,38 @@ class MonnaieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Monnaie[] Returns an array of Monnaie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return Monnaie[] Returns an array of Monnaie objects
+     */
+    public function findByMotCle($criteres): array
+    {
+        dd($criteres);
+        $query = $this->createQueryBuilder('c')
+            ->where('c.nom like :valMotCle')
+            ->orWhere('c.code like :valMotCle')
+            ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
+            ->orderBy('c.id', 'DESC');
 
-//    public function findOneBySomeField($value): ?Monnaie
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($criteres['islocale']) {
+            $query = $query
+                ->andWhere('c.islocale = :valIsSlocale')
+                ->setParameter('valIsSlocale', $criteres['islocale']);
+        }
+
+        $query = $query
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    //    public function findOneBySomeField($value): ?Monnaie
+    //    {
+    //        return $this->createQueryBuilder('m')
+    //            ->andWhere('m.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

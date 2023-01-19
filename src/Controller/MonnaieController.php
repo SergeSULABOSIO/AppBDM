@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use MonnaieSearchType;
 use App\Entity\Monnaie;
 use App\Form\MonnaieFormType;
+use App\Repository\MonnaieRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,22 +19,63 @@ class MonnaieController extends AbstractController
 {
 
     #[Route('/list/{page?1}/{nbre?20}', name: 'monnaie.list')]
-    public function list(Request $request, ManagerRegistry $doctrine, $page, $nbre, PaginatorInterface $paginatorInterface): Response
+    public function list(Request $request, MonnaieRepository $monnaieRepository, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
+
+        $searchMonnaieForm = $this->createForm(MonnaieSearchType::class);
+        $searchMonnaieForm->handleRequest($request);
         $session = $request->getSession();
-        $appTitreRubrique = "Monnaie";
-        $repository = $doctrine->getRepository(Monnaie::class);
-        $data = $repository->findAll();
+        $criteres = $searchMonnaieForm->getData();
+
+        $data = [];
+        if ($searchMonnaieForm->isSubmitted() && $searchMonnaieForm->isValid()) {
+            $page = 1;
+            //dd($criteres);
+            $data = $monnaieRepository->findByMotCle($criteres);
+            $session->set("criteres_liste_monnaie", $criteres);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+            $objCritereSession = $session->get("criteres_liste_pop_commission");
+            if ($objCritereSession) {
+                $data = $monnaieRepository->findByMotCle($objCritereSession);
+                $searchMonnaieForm = $this->createForm(MonnaieSearchType::class, [
+                    'motcle' => $objCritereSession['motcle'],
+                    'islocale' => $objCritereSession['islocale']
+                ]);
+            }
+        }
+        //dd($session->get("criteres"));
         $monnaies = $paginatorInterface->paginate($data, $page, $nbre);
-
-
+        //dd($clients);
+        $appTitreRubrique = "Monnaies";
         return $this->render(
             'monnaie.list.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $searchMonnaieForm->createView(),
                 'monnaies' => $monnaies
             ]
         );
+
+
+
+
+
+        // $session = $request->getSession();
+        // $appTitreRubrique = "Monnaie";
+        // $repository = $doctrine->getRepository(Monnaie::class);
+        // $data = $repository->findAll();
+        // $monnaies = $paginatorInterface->paginate($data, $page, $nbre);
+
+
+        // return $this->render(
+        //     'monnaie.list.html.twig',
+        //     [
+        //         'appTitreRubrique' => $appTitreRubrique,
+        //         'monnaies' => $monnaies
+        //     ]
+        // );
     }
 
 
