@@ -85,7 +85,7 @@ class PaiementCommissionSearchType extends AbstractType
                 ]
             ])
             ->add("motcle", TextType::class, [
-                'label' => "Réf. Note de débit",
+                'label' => "Mot clé",
                 'required' => false,
                 'row_attr' => [
                     'class' => 'input-group'

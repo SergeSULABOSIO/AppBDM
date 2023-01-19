@@ -1,7 +1,7 @@
 <?php
 
 use App\Entity\Partenaire;
-use App\Entity\Taxe;
+use App\Entity\Client;
 use App\Entity\Police;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,6 +41,7 @@ class PaiementPartenaireSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Police::class,
                 'row_attr' => [
                     'class' => 'input-group'
@@ -51,13 +52,25 @@ class PaiementPartenaireSearchType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
+                'placeholder' => 'Tous',
                 'class'  => Partenaire::class,
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
             ])
+            ->add('client', EntityType::class, [
+                'label' => "Client",
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'placeholder' => 'Tous',
+                'class'  => Client::class,
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             ->add("motcle", TextType::class, [
-                'label' => "Réf. Note de débit",
+                'label' => "Mot clé",
                 'required' => false,
                 'row_attr' => [
                     'class' => 'input-group',

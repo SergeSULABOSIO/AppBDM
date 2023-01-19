@@ -3,19 +3,21 @@
 namespace App\Controller;
 
 use DateTime;
+use App\Entity\Client;
 use PaiementCommissionSearchType;
 use PaiementPartenaireSearchType;
 use App\Entity\PaiementCommission;
+use App\Repository\PoliceRepository;
 use App\Form\PaiementCommissionFormType;
+use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PaiementCommissionRepository;
-use App\Repository\PartenaireRepository;
-use App\Repository\PoliceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 #[Route("/popcommission")]
@@ -31,38 +33,39 @@ class PaiementCommissionController extends AbstractController
         ]);
         $searchPaiementCommissionForm->handleRequest($request);
         $session = $request->getSession();
+        $criteres = $searchPaiementCommissionForm->getData();
 
         $data = [];
         if ($searchPaiementCommissionForm->isSubmitted() && $searchPaiementCommissionForm->isValid()) {
             $page = 1;
-            $criteres = $searchPaiementCommissionForm->getData();
             //dd($criteres);
             $data = $paiementCommissionRepository->findByMotCle($criteres);
             $session->set("criteres_liste_pop_commission", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-            if ($session->get("criteres_liste_pop_commission")) {
-                $session_police = $session->get("criteres_liste_pop_commission")['police'];
-                $session_partenaire = $session->get("criteres_liste_pop_commission")['partenaire'];
-                $session_client = $session->get("criteres_liste_pop_commission")['client'];
-                $session_assureur = $session->get("criteres_liste_pop_commission")['assureur'];
+            $objCritereSession = $session->get("criteres_liste_pop_commission");
+            if ($objCritereSession) {
+                $session_police = $objCritereSession['police']?$objCritereSession['police']:null;
+                $session_partenaire = $objCritereSession['partenaire']?$objCritereSession['partenaire']:null;
+                $session_client = $objCritereSession['client']?$objCritereSession['client']:null;
+                $session_assureur = $objCritereSession['assureur']?$objCritereSession['assureur']:null;
 
                 $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
                 $objClient = $session_client ? $partenaireRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $partenaireRepository->find($session_assureur->getId()) : null;
 
-                $data = $paiementCommissionRepository->findByMotCle($session->get("criteres_liste_pop_commission"));
+                $data = $paiementCommissionRepository->findByMotCle($objCritereSession);
 
                 $searchPaiementCommissionForm = $this->createForm(PaiementCommissionSearchType::class, [
-                    'motcle' => $session->get("criteres_liste_pop_commission")['motcle'],
+                    'motcle' => $objCritereSession['motcle'],
                     'police' => $objpolice,
                     'partenaire' => $objPartenaire,
                     'client' => $objClient,
                     'assureur' => $objAssureur,
-                    'dateA' => $session->get("criteres_liste_pop_commission")['dateA'],
-                    'dateB' => $session->get("criteres_liste_pop_commission")['dateB']
+                    'dateA' => $objCritereSession['dateA'],
+                    'dateB' => $objCritereSession['dateB']
                 ]);
             }
         }
