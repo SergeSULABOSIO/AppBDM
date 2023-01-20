@@ -71,8 +71,10 @@ class PoliceRepository extends ServiceEntityRepository
         $resultProduit = [];
         if ($criteres['produit']) {
             foreach ($query as $police) {
-                if ($police->getProduit()->getId() == $criteres['produit']->getId()) {
-                    $resultProduit[] = $police;
+                if ($police->getProduit()) {
+                    if ($police->getProduit()->getId() == $criteres['produit']->getId()) {
+                        $resultProduit[] = $police;
+                    }
                 }
             }
         } else {
@@ -84,8 +86,10 @@ class PoliceRepository extends ServiceEntityRepository
         $resultClient = [];
         if ($criteres['client']) {
             foreach ($resultProduit as $police) {
-                if ($police->getClient()->getId() == $criteres['client']->getId()) {
-                    $resultClient[] = $police;
+                if ($police->getClient()) {
+                    if ($police->getClient()->getId() == $criteres['client']->getId()) {
+                        $resultClient[] = $police;
+                    }
                 }
             }
         } else {
@@ -97,8 +101,10 @@ class PoliceRepository extends ServiceEntityRepository
         $resultPartenaire = [];
         if ($criteres['partenaire']) {
             foreach ($resultClient as $police) {
-                if ($police->getPartenaire()->getId() == $criteres['partenaire']->getId()) {
-                    $resultPartenaire[] = $police;
+                if ($police->getPartenaire()) {
+                    if ($police->getPartenaire()->getId() == $criteres['partenaire']->getId()) {
+                        $resultPartenaire[] = $police;
+                    }
                 }
             }
         } else {
@@ -124,14 +130,4 @@ class PoliceRepository extends ServiceEntityRepository
         //return $query;
         return $resultFinal;
     }
-
-    //    public function findOneBySomeField($value): ?Police
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

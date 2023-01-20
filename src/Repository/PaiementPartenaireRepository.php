@@ -72,12 +72,7 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         $resultPolice = [];
         if ($criteres['police']) {
             foreach ($query as $popPartenaire) {
-                //dd($popTaxe);
-                //dd($criteres['police']);
-                //dd($popTaxe->getPolices());
                 foreach ($popPartenaire->getPolices() as $police) {
-                    //dd($police);
-                    //dd($criteres['police']->getReference());
                     if ($police->getReference() == $criteres['police']->getReference()) {
                         $resultPolice[] = $popPartenaire;
                     }
@@ -95,8 +90,10 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         if ($criteres['client']) {
             foreach ($resultPolice as $popPartenaire) {
                 foreach ($popPartenaire->getPolices() as $police) {
-                    if ($police->getClient()->getId() == $criteres['client']->getId()) {
-                        $resultClient[] = $popPartenaire;
+                    if ($police->getClient()) {
+                        if ($police->getClient()->getId() == $criteres['client']->getId()) {
+                            $resultClient[] = $popPartenaire;
+                        }
                     }
                 }
             }
@@ -108,14 +105,4 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         //return $query;
         return $resultFinal;
     }
-
-    //    public function findOneBySomeField($value): ?PaiementPartenaire
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

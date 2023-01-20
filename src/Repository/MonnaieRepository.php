@@ -44,17 +44,17 @@ class MonnaieRepository extends ServiceEntityRepository
      */
     public function findByMotCle($criteres): array
     {
-        dd($criteres);
+        //dd($criteres);
         $query = $this->createQueryBuilder('c')
             ->where('c.nom like :valMotCle')
             ->orWhere('c.code like :valMotCle')
             ->setParameter('valMotCle', '%' . $criteres['motcle'] . '%')
             ->orderBy('c.id', 'DESC');
 
-        if ($criteres['islocale']) {
+        if($criteres['islocale'] !== null){
             $query = $query
-                ->andWhere('c.islocale = :valIsSlocale')
-                ->setParameter('valIsSlocale', $criteres['islocale']);
+            ->andWhere('c.islocale like :valIsSlocale')
+            ->setParameter('valIsSlocale', $criteres['islocale']);
         }
 
         $query = $query

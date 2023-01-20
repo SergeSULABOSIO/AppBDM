@@ -26,17 +26,20 @@ class MonnaieController extends AbstractController
         $searchMonnaieForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchMonnaieForm->getData();
+        $nomSession = "criteres_liste_monnaie";
+        $appTitreRubrique = "Monnaies";
+        $vueTwig = 'monnaie.list.html.twig';
 
         $data = [];
         if ($searchMonnaieForm->isSubmitted() && $searchMonnaieForm->isValid()) {
             $page = 1;
             //dd($criteres);
             $data = $monnaieRepository->findByMotCle($criteres);
-            $session->set("criteres_liste_monnaie", $criteres);
+            $session->set($nomSession, $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-            $objCritereSession = $session->get("criteres_liste_pop_commission");
+            $objCritereSession = $session->get($nomSession);
             if ($objCritereSession) {
                 $data = $monnaieRepository->findByMotCle($objCritereSession);
                 $searchMonnaieForm = $this->createForm(MonnaieSearchType::class, [
@@ -48,9 +51,8 @@ class MonnaieController extends AbstractController
         //dd($session->get("criteres"));
         $monnaies = $paginatorInterface->paginate($data, $page, $nbre);
         //dd($clients);
-        $appTitreRubrique = "Monnaies";
         return $this->render(
-            'monnaie.list.html.twig',
+            $vueTwig,
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchMonnaieForm->createView(),

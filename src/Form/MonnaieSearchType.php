@@ -24,10 +24,14 @@ class MonnaieSearchType extends AbstractType
                 'label' => "Nature",
                 'required' => false,
                 'expanded' => false,
+                'placeholder' => 'Tous',
                 'choices' => array(
-                    'Monnaie étrangère' => false,
-                    'Monnaie locale' => true
-                )
+                    'Monnaie étrangère' => 0,
+                    'Monnaie locale' => 1
+                ),
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
             ]);
         //->add("Rechercher", SubmitType::class);
     }

@@ -73,12 +73,7 @@ class PaiementTaxeRepository extends ServiceEntityRepository
         $resultFinal = [];
         if ($criteres['police']) {
             foreach ($query as $popTaxe) {
-                //dd($popTaxe);
-                //dd($criteres['police']);
-                //dd($popTaxe->getPolices());
                 foreach ($popTaxe->getPolices() as $police) {
-                    //dd($police);
-                    //dd($criteres['police']->getReference());
                     if ($police->getReference() == $criteres['police']->getReference()) {
                         $resultFinal[] = $popTaxe;
                     }
