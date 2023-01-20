@@ -154,9 +154,9 @@ class PoliceFormType extends AbstractType
                 //     'class' => 'select2'
                 // ],
                 'choices'  => [
-                    "Paiement Annuel" => 0,
-                    "Paiement Semestriel" => 1,
-                    "Paiement Trimestriel" => 2
+                    "Annuel" => 0,
+                    "Semestriel" => 1,
+                    "Trimestriel" => 2
                 ],
                 'label' => "Mode de Paiement",
                 'row_attr' => [
@@ -253,7 +253,7 @@ class PoliceFormType extends AbstractType
             //         'class' => 'input-group'
             //     ]
             // ])
-            ->add('remarques', TextareaType::class, [
+            ->add('remarques', TextType::class, [
                 'label' => "Rémarques",
                 'required' => false,
                 'row_attr' => [
