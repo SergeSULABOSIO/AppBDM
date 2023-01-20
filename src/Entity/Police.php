@@ -114,7 +114,23 @@ class Police
     private ?string $reassureurs = null;
 
     #[ORM\Column]
-    private ?int $commissionpartageable = null;
+    private ?bool $cansharericom = null;
+
+    #[ORM\Column]
+    private ?bool $cansharelocalcom = null;
+
+    #[ORM\Column]
+    private ?bool $cansharefrontingcom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ricompayableby = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $localcompayableby = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $frontingcompayableby = null;
+
 
     public function __construct()
     {
@@ -467,14 +483,74 @@ class Police
         return $this;
     }
 
-    public function getCommissionpartageable(): ?int
+    public function isCansharericom(): ?bool
     {
-        return $this->commissionpartageable;
+        return $this->cansharericom;
     }
 
-    public function setCommissionpartageable(int $commissionpartageable): self
+    public function setCansharericom(bool $cansharericom): self
     {
-        $this->commissionpartageable = $commissionpartageable;
+        $this->cansharericom = $cansharericom;
+
+        return $this;
+    }
+
+    public function isCansharelocalcom(): ?bool
+    {
+        return $this->cansharelocalcom;
+    }
+
+    public function setCansharelocalcom(bool $cansharelocalcom): self
+    {
+        $this->cansharelocalcom = $cansharelocalcom;
+
+        return $this;
+    }
+
+    public function isCansharefrontingcom(): ?bool
+    {
+        return $this->cansharefrontingcom;
+    }
+
+    public function setCansharefrontingcom(bool $cansharefrontingcom): self
+    {
+        $this->cansharefrontingcom = $cansharefrontingcom;
+
+        return $this;
+    }
+
+    public function getRicompayableby(): ?string
+    {
+        return $this->ricompayableby;
+    }
+
+    public function setRicompayableby(string $ricompayableby): self
+    {
+        $this->ricompayableby = $ricompayableby;
+
+        return $this;
+    }
+
+    public function getLocalcompayableby(): ?string
+    {
+        return $this->localcompayableby;
+    }
+
+    public function setLocalcompayableby(string $localcompayableby): self
+    {
+        $this->localcompayableby = $localcompayableby;
+
+        return $this;
+    }
+
+    public function getFrontingcompayableby(): ?string
+    {
+        return $this->frontingcompayableby;
+    }
+
+    public function setFrontingcompayableby(string $frontingcompayableby): self
+    {
+        $this->frontingcompayableby = $frontingcompayableby;
 
         return $this;
     }
