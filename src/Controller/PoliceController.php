@@ -7,10 +7,12 @@ use PoliceSearchType;
 use App\Entity\Police;
 use App\Entity\Entreprise;
 use App\Form\PoliceFormType;
-use App\Repository\AssureurRepository;
+use App\Agregats\PoliceAgregat;
+use App\Agregats\PoliceAgregats;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
+use App\Repository\AssureurRepository;
 use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -37,6 +39,8 @@ class PoliceController extends AbstractController
         PaginatorInterface $paginatorInterface
     ): Response
     {
+        $agregats = new PoliceAgregat();
+
         $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
@@ -49,7 +53,7 @@ class PoliceController extends AbstractController
         if ($searchPoliceForm->isSubmitted() && $searchPoliceForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres);
+            $data = $policeRepository->findByMotCle($criteres, $agregats);
             $session->set("criteres_liste_police", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -66,7 +70,7 @@ class PoliceController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession);
+                $data = $policeRepository->findByMotCle($objCritereSession, $agregats);
 
                 $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],
@@ -88,7 +92,8 @@ class PoliceController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchPoliceForm->createView(),
-                'polices' => $polices
+                'polices' => $polices,
+                'agregats' => $agregats
             ]
         );
     }

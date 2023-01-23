@@ -42,7 +42,7 @@ class PoliceRepository extends ServiceEntityRepository
     /**
      * @return Police[] Returns an array of Police objects
      */
-    public function findByMotCle($criteres): array
+    public function findByMotCle($criteres, $agregat): array
     {
 
         $query = $this->createQueryBuilder('p')
@@ -128,6 +128,43 @@ class PoliceRepository extends ServiceEntityRepository
 
         $resultFinal = $resultAssureur;
         //return $query;
+
+
+        //chargement des données sur l'agregat
+        if ($agregat !== null) {
+            $primetotale = 0;
+            $primenette = 0;
+            $comtotale = 0;
+            $comnette = 0;
+            $retrocom = 0;
+            $importettaxe = 0;
+            foreach ($resultFinal as $police) {
+                $primetotale += $police->getPrimeTotale();
+                $primenette += $police->getPrimeNette();
+
+                $netCom = ($police->getLocalCom() + $police->getFrontingCom() + $police->getRiCom());
+                $tva = $netCom * (16/100);
+                $arca = $netCom * (2/100);
+                $total = $netCom + $tva;
+
+                $comtotale += $total;
+                $comnette += $netCom / (1.02);
+                $retrocom += 0;
+
+                $importettaxe += ($arca + $tva);
+            }
+            //PRIMES
+            $agregat->setPrimeTotale($primetotale);
+            $agregat->setPrimeNette($primenette);
+            $agregat->setCodeMonnaie("$");
+            //COMMISSIONS
+            $agregat->setCommissionTotale($comtotale);
+            $agregat->setCommissionNette($comnette);
+            //PARTENAIRES
+            $agregat->setRetroCommissionTotale($retrocom);
+            //IMPOTS et TAXES
+            $agregat->setImpotEtTaxeTotale($importettaxe);
+        }
         return $resultFinal;
     }
 }
