@@ -83,15 +83,28 @@
 			<div class="card-body">
 				<p class="card-text">
 					<div class="form-row align-items-end">
-						<div class="col col-sm">{{ form_row(form.ricom) }}</div>
-						<div class="col col-sm">{{ form_row(form.localcom) }}</div>
-						<div class="col col-sm">{{ form_row(form.frontingcom) }}</div>
 						<div class="col col-sm">{{ form_row(form.partenaire) }}</div>
 					</div>
 				</p>
 				<p class="card-text">
-					<div
-						class="form-row align-items-end m-2">{# <div class="col col-sm"></div> #}
+					<div class="form-row align-items-end">
+						<div class="col col-sm">{{ form_row(form.ricom) }}</div>
+						<div class="col col-sm">{{ form_row(form.cansharericom) }}</div>
+						<div class="col col-sm">{{ form_row(form.ricompayableby) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					<div class="form-row align-items-end">
+						<div class="col col-sm">{{ form_row(form.localcom) }}</div>
+						<div class="col col-sm">{{ form_row(form.cansharelocalcom) }}</div>
+						<div class="col col-sm">{{ form_row(form.localcompayableby) }}</div>
+					</div>
+				</p>
+				<p class="card-text">
+					<div class="form-row align-items-end">
+						<div class="col col-sm">{{ form_row(form.frontingcom) }}</div>
+						<div class="col col-sm">{{ form_row(form.cansharefrontingcom) }}</div>
+						<div class="col col-sm">{{ form_row(form.frontingcompayableby) }}</div>
 					</div>
 				</p>
 				<p class="card-text">
@@ -100,8 +113,8 @@
 			</div>
 		</div>
 		&nbsp
-																				&nbsp
-																				&nbsp
+																								&nbsp
+																								&nbsp
 	</div>
 {% endblock %}
 

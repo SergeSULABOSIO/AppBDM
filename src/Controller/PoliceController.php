@@ -7,6 +7,7 @@ use PoliceSearchType;
 use App\Entity\Police;
 use App\Entity\Entreprise;
 use App\Form\PoliceFormType;
+use App\Repository\AssureurRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
@@ -31,7 +32,8 @@ class PoliceController extends AbstractController
         PoliceRepository $policeRepository, 
         ProduitRepository $produitRepository, 
         ClientRepository $clientRepository, 
-        PartenaireRepository $partenaireRepository, 
+        PartenaireRepository $partenaireRepository,
+        AssureurRepository $assureurRepository, 
         PaginatorInterface $paginatorInterface
     ): Response
     {
@@ -59,10 +61,10 @@ class PoliceController extends AbstractController
                 $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
                 $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
 
-                $objproduit = $session_produit ? $policeRepository->find($session_produit->getId()) : null;
+                $objproduit = $session_produit ? $produitRepository->find($session_produit->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
-                $objClient = $session_client ? $partenaireRepository->find($session_client->getId()) : null;
-                $objAssureur = $session_assureur ? $partenaireRepository->find($session_assureur->getId()) : null;
+                $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
+                $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
                 $data = $policeRepository->findByMotCle($objCritereSession);
 

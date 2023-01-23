@@ -165,94 +165,97 @@ class PoliceFormType extends AbstractType
             ])
             // //Commissions - RI
             ->add('ricom', NumberType::class, [
-                'label' => "Commission de réa. (ht)",
+                'label' => "Com. Réassurance (ht)",
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
             ])
             // //Commissions - Local
             ->add('localcom', NumberType::class, [
-                'label' => "Commission ordinaire (ht)",
+                'label' => "Com. Ordinaire (ht)",
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
             ])
             // //Commissions - Fronting
             ->add('frontingcom', NumberType::class, [
-                'label' => "Commission / Fronting (ht)",
+                'label' => "Com. Fronting (ht)",
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
             ])
             // //ri com - can share
-            // ->add('cansharericom', ChoiceType::class, [
-            //     'expanded' => false,
-            //     'multiple' => false,
-            //     'required' => true,
-            //     // 'attr' => [
-            //     //     'class' => 'select2'
-            //     // ],
-            //     'choices'  => [
-            //         "Non" => false,
-            //         "Oui" => true
-            //     ],
-            //     'label' => "Partageable?",
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('cansharericom', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                // 'attr' => [
+                //     'class' => 'select2'
+                // ],
+                'choices'  => [
+                    "Non" => false,
+                    "Oui" => true
+                ],
+                'label' => "Partageable?",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             // //local com - can share
-            // ->add('cansharelocalcom', ChoiceType::class, [
-            //     'expanded' => false,
-            //     'multiple' => false,
-            //     'required' => true,
-            //     'choices'  => [
-            //         "Non" => false,
-            //         "Oui" => true
-            //     ],
-            //     'label' => "Partageable?",
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('cansharelocalcom', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'choices'  => [
+                    "Non" => false,
+                    "Oui" => true
+                ],
+                'label' => "Partageable?",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             // //fronting com - can share
-            // ->add('cansharefrontingcom', ChoiceType::class, [
-            //     'expanded' => false,
-            //     'multiple' => false,
-            //     'required' => true,
-            //     'choices'  => [
-            //         "Non" => false,
-            //         "Oui" => true
-            //     ],
-            //     'label' => "Partageable?",
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('cansharefrontingcom', ChoiceType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'choices'  => [
+                    "Non" => false,
+                    "Oui" => true
+                ],
+                'label' => "Partageable?",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             // //ri com - payable by
-            // ->add('ricompayableby', TextType::class, [
-            //     'label' => "Débiteur",
-            //     'required' => true,
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('ricompayableby', TextType::class, [
+                'label' => "Débiteur",
+                'required' => true,
+                'data' => "Le client lui-même",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             // //local com - payable by
-            // ->add('localcompayableby', TextType::class, [
-            //     'label' => "Débiteur",
-            //     'required' => true,
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('localcompayableby', TextType::class, [
+                'label' => "Débiteur",
+                'required' => true,
+                'data' => "Le client lui-même",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             // //fronting com - payable by
-            // ->add('frontingcompayableby', TextType::class, [
-            //     'label' => "Débiteur",
-            //     'required' => true,
-            //     'row_attr' => [
-            //         'class' => 'input-group'
-            //     ]
-            // ])
+            ->add('frontingcompayableby', TextType::class, [
+                'label' => "Débiteur",
+                'required' => true,
+                'data' => "Le client lui-même",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
+            ])
             ->add('remarques', TextType::class, [
                 'label' => "Rémarques",
                 'required' => false,
@@ -327,7 +330,7 @@ class PoliceFormType extends AbstractType
                 //     'class' => 'select2'
                 // ],
                 'class'  => Partenaire::class,
-                'label' => "Partenaire",
+                'label' => "Partenaire, bénéficiaire de la retro-commission",
                 'row_attr' => [
                     'class' => 'input-group'
                 ]
