@@ -40,7 +40,7 @@ class PoliceController extends AbstractController
     ): Response
     {
         $agregats = new PoliceAgregat();
-
+        
         $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
