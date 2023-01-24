@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Police;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Agregats\PoliceAgregat;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Police>
@@ -138,6 +139,7 @@ class PoliceRepository extends ServiceEntityRepository
             $comnette = 0;
             $retrocom = 0;
             $importettaxe = 0;
+            $codeMonnaie = "";
             foreach ($resultFinal as $police) {
                 $primetotale += $police->getPrimeTotale();
                 $primenette += $police->getPrimeNette();
@@ -146,13 +148,16 @@ class PoliceRepository extends ServiceEntityRepository
                 $localcom = $police->getLocalCom();
                 $frontingcom = $police->getFrontingCom();
 
+                if($police->getMonnaie()){
+                    $codeMonnaie = $police->getMonnaie()->getCode();
+                }
                 //dd($frontingcom);
 
                 $netCom = ($ricom + $localcom + $frontingcom);
                 $tva = $netCom * (16/100);
                 $arca = $netCom * (2/100);
                 $comtotale += $netCom + $tva;
-                
+
 
 
                 $retro_ricom = 0;
@@ -184,7 +189,7 @@ class PoliceRepository extends ServiceEntityRepository
             //PRIMES
             $agregat->setPrimeTotale($primetotale);
             $agregat->setPrimeNette($primenette);
-            $agregat->setCodeMonnaie("$");
+            $agregat->setCodeMonnaie($codeMonnaie);
             //COMMISSIONS
             $agregat->setCommissionTotale($comtotale);
             $agregat->setCommissionNette($comnette);
