@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use DateTime;
 use ContactSearchType;
 use PaiementTaxeSearchType;
 use App\Entity\PaiementTaxe;
+use App\Agregats\PopTaxeAgregat;
 use App\Form\PaiementTaxeFormType;
+use App\Repository\TaxeRepository;
+use App\Repository\PoliceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\PaiementTaxeRepository;
-use App\Repository\PoliceRepository;
-use App\Repository\TaxeRepository;
-use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,7 @@ class PaiementTaxeController extends AbstractController
         PoliceRepository $policeRepository,
         PaginatorInterface $paginatorInterface
     ): Response {
+        $agregats = new PopTaxeAgregat();
         $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
@@ -44,26 +46,27 @@ class PaiementTaxeController extends AbstractController
             $page = 1;
             $criteres = $searchPaiementTaxeForm->getData();
             //dd($criteres);
-            $data = $paiementTaxeRepository->findByMotCle($criteres);
+            $data = $paiementTaxeRepository->findByMotCle($criteres, $agregats);
             $session->set("criteres_liste_pop_taxe", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-            if ($session->get("criteres_liste_pop_taxe")) {
-                $session_police = $session->get("criteres_liste_pop_taxe")['police'];
-                $session_taxe = $session->get("criteres_liste_pop_taxe")['taxe'];
+            $objCritereSession = $session->get("criteres_liste_pop_taxe");
+            if ($objCritereSession) {
+                $session_police = $objCritereSession['police'];
+                $session_taxe = $objCritereSession['taxe'];
 
                 $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
                 $objtaxe = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
 
-                $data = $paiementTaxeRepository->findByMotCle($session->get("criteres_liste_pop_taxe"));
+                $data = $paiementTaxeRepository->findByMotCle($objCritereSession, $agregats);
                 
                 $searchPaiementTaxeForm = $this->createForm(PaiementTaxeSearchType::class, [
-                    'motcle' => $session->get("criteres_liste_pop_taxe")['motcle'],
+                    'motcle' => $objCritereSession['motcle'],
                     'police' => $objpolice,
                     'taxe' => $objtaxe,
-                    'dateA' => $session->get("criteres_liste_pop_taxe")['dateA'],
-                    'dateB' => $session->get("criteres_liste_pop_taxe")['dateB']
+                    'dateA' => $objCritereSession['dateA'],
+                    'dateB' => $objCritereSession['dateB']
                 ]);
             }
         }
@@ -76,7 +79,8 @@ class PaiementTaxeController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchPaiementTaxeForm->createView(),
-                'paiementtaxes' => $paiementtaxes
+                'paiementtaxes' => $paiementtaxes,
+                'agregats' => $agregats
             ]
         );
     }

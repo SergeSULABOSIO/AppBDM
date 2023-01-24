@@ -43,7 +43,7 @@ class PaiementTaxeRepository extends ServiceEntityRepository
     /**
      * @return PaiementTaxe[] Returns an array of PaiementTaxe objects
      */
-    public function findByMotCle($criteres): array
+    public function findByMotCle($criteres, $agregat): array
     {
         $query = $this->createQueryBuilder('p')
             ->where('p.refnotededebit like :valMotCle')
@@ -83,7 +83,21 @@ class PaiementTaxeRepository extends ServiceEntityRepository
             $resultFinal = $query;
         }
 
-        //return $query;
+        
+        
+        //chargement des données sur l'agregat
+        if ($agregat !== null) {
+            $montant = 0;
+            $codeMonnaie = "";
+            foreach ($resultFinal as $popTaxe) {
+                $montant += $popTaxe->getMontant();
+                if ($popTaxe->getMonnaie()) {
+                    $codeMonnaie = $popTaxe->getMonnaie()->getCode();
+                }
+            }
+            $agregat->setMontant($montant);
+            $agregat->setCodeMonnaie($codeMonnaie);
+        }
         return $resultFinal;
     }
 
