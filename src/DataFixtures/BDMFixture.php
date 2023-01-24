@@ -103,7 +103,7 @@ class BDMFixture extends Fixture
             $partenaire->setRccm("RCCM" . $faker->randomNumber(5, true));
             $partenaire->setIdnat("IDNAT" . $faker->randomNumber(5, true));
             $partenaire->setNumimpot("IMP" . $faker->randomNumber(5, true));
-            $partenaire->setPart(0.50);
+            $partenaire->setPart(50);
             $partenaire->setEntreprise($entreprise);
             $manager->persist($partenaire);
         }

@@ -13,6 +13,72 @@
 {% endblock %}
 
 {% block appCorps %}
+	{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
+	<div
+		class="container-fluid">
+		<!-- Small boxes (Stat box) -->
+		<div class="row">
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h4>{{agregats.codemonnaie}}
+							{{agregats.montantRecu|number_format(2, ',', '.')}}
+							(ttc)</h4>
+						Commission (partageable) : {{agregats.codemonnaie}} {{agregats.montantNet|number_format(2, ',', '.')}}
+					</div>
+					<div class="icon">
+						<i class="fa-solid fa-filter-circle-dollar"></i>
+					</div>
+					<a href="#" class="small-box-footer">More info
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h4>{{agregats.codemonnaie}}
+							{{agregats.tva|number_format(2, ',', '.')}}
+							</h4>
+							Taxe sur la valeur ajoutée (Tva @16%)
+					</div>
+					<div class="icon">
+						<i class="fa-solid fa-scale-balanced"></i>
+					</div>
+					<a href="#" class="small-box-footer">More info
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<!-- ./col -->
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h4>{{agregats.codemonnaie}}
+							{{agregats.arca|number_format(2, ',', '.')}}
+							</h4>
+							Frais de régulation (Arca @2%)
+					</div>
+					<div class="icon">
+						<i class="fa-solid fa-scale-balanced"></i>
+					</div>
+					<a href="#" class="small-box-footer">More info
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<!-- ./col -->
+		</div>
+		<!-- /.row -->
+	</div>
+
 	{{ form_start(search_form) }}
 	<div class="align-content-center">
 		<div class="form-row align-items-end m-2">
@@ -57,7 +123,7 @@
 		<div class="navigation m-2">
 			{{ knp_pagination_render(paiementcommissions) }}
 		</div>
-		<div class="row">
+		<div class="row m-2">
 			{% for paiementcommission in paiementcommissions %}
 				<div class="card m-2 p-0" style="width: 18rem;">
 					<h5 class="card-header">

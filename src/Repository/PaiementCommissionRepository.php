@@ -42,7 +42,7 @@ class PaiementCommissionRepository extends ServiceEntityRepository
     /**
      * @return PaiementCommission[] Returns an array of PaiementCommission objects
      */
-    public function findByMotCle($criteres): array
+    public function findByMotCle($criteres, $agregat): array
     {
         //    return $this->createQueryBuilder('p')
         //        ->andWhere('p.exampleField = :val')
@@ -147,7 +147,39 @@ class PaiementCommissionRepository extends ServiceEntityRepository
         }
 
         $resultFinal = $resultAssureur;
-        //return $query;
+
+
+
+
+        //chargement des données sur l'agregat
+        if ($agregat !== null) {
+            $montantRecu = 0;
+            $montantNet = 0;
+            $tva = 0;
+            $arca = 0;
+            $codeMonnaie = "";
+            foreach ($resultFinal as $popCommission) {
+                $net_plus_arca_temp = $popCommission->getMontant() / 1.16;
+                $tva_temp = $net_plus_arca_temp * (16/100);
+                $arca_temp = $net_plus_arca_temp * (2/100);
+                $net_temp = $net_plus_arca_temp - $arca_temp;
+
+                $montantRecu += $popCommission->getMontant();
+                $tva += $tva_temp;
+                $arca += $arca_temp;
+                $montantNet += $net_temp;
+
+                if ($popCommission->getMonnaie()) {
+                    $codeMonnaie = $popCommission->getMonnaie()->getCode();
+                }
+            }
+            //PRIMES
+            $agregat->setMontantRecu($montantRecu);
+            $agregat->setMontantNet($montantNet);
+            $agregat->setTva($tva);
+            $agregat->setArca($arca);
+            $agregat->setCodeMonnaie($codeMonnaie);
+        }
         return $resultFinal;
     }
 }

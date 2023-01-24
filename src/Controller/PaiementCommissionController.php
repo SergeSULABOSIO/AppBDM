@@ -8,6 +8,7 @@ use PaiementCommissionSearchType;
 use PaiementPartenaireSearchType;
 use App\Entity\PaiementCommission;
 use App\Repository\PoliceRepository;
+use App\Agregats\PopCommissionAgregat;
 use App\Form\PaiementCommissionFormType;
 use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\PaiementCommissionRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 #[Route("/popcommission")]
@@ -27,6 +28,8 @@ class PaiementCommissionController extends AbstractController
     #[Route('/list/{page?1}/{nbre?20}', name: 'popcommission.list')]
     public function list(Request $request, PoliceRepository $policeRepository, PartenaireRepository $partenaireRepository,  PaiementCommissionRepository $paiementCommissionRepository, $page, $nbre, PaginatorInterface $paginatorInterface): Response
     {
+        $agregats = new PopCommissionAgregat();
+
         $searchPaiementCommissionForm = $this->createForm(PaiementCommissionSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
@@ -39,7 +42,7 @@ class PaiementCommissionController extends AbstractController
         if ($searchPaiementCommissionForm->isSubmitted() && $searchPaiementCommissionForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $paiementCommissionRepository->findByMotCle($criteres);
+            $data = $paiementCommissionRepository->findByMotCle($criteres, $agregats);
             $session->set("criteres_liste_pop_commission", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -56,7 +59,7 @@ class PaiementCommissionController extends AbstractController
                 $objClient = $session_client ? $partenaireRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $partenaireRepository->find($session_assureur->getId()) : null;
 
-                $data = $paiementCommissionRepository->findByMotCle($objCritereSession);
+                $data = $paiementCommissionRepository->findByMotCle($objCritereSession, $agregats);
 
                 $searchPaiementCommissionForm = $this->createForm(PaiementCommissionSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],
@@ -78,7 +81,8 @@ class PaiementCommissionController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchPaiementCommissionForm->createView(),
-                'paiementcommissions' => $paiementcommissions
+                'paiementcommissions' => $paiementcommissions,
+                'agregats' => $agregats
             ]
         );
 

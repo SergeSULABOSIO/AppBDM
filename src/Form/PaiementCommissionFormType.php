@@ -50,7 +50,7 @@ class PaiementCommissionFormType extends AbstractType
             ->add('polices', EntityType::class, [
                 'expanded' => false,
                 'multiple' => true,
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'select2'
                 ],
