@@ -1,11 +1,8 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActiveListe %}active
-{% endblock %}
-{% block classeOpenListe %}menu-open
-{% endblock %}
-{% block classeActiveListePopTaxes %}active
-{% endblock %}
+{% block classeActivePaiement %}active{% endblock %}
+{% block classeOpenPaiements %}menu-open{% endblock %}
+{% block classeActiveListePopTaxes %}active{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-filter-circle-dollar"></i>
@@ -14,7 +11,7 @@
 
 {% block appCorps %}
 
-{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
+	{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
 	<div
 		class="container-fluid">
 		<!-- Small boxes (Stat box) -->
@@ -26,8 +23,8 @@
 					<div class="inner">
 						<h4>{{agregats.codemonnaie}}
 							{{agregats.montant|number_format(2, ',', '.')}}
-							</h4>
-							Montant total versé (16%)
+						</h4>
+						Montant total versé (16%)
 					</div>
 					<div class="icon">
 						<i class="fa-solid fa-scale-balanced"></i>
@@ -81,7 +78,7 @@
 		<div class="navigation m-2">
 			{{ knp_pagination_render(paiementtaxes) }}
 		</div>
-		<div class="row">
+		<div class="row m-2">
 			{% for paiementtaxe in paiementtaxes %}
 				<div class="card m-2 p-0" style="width: 18rem;">
 					<h5 class="card-header">

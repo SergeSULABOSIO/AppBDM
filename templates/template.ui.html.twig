@@ -100,6 +100,7 @@
 									</p>
 								</a>
 							</li>
+							{# LES LISTES #}
 							<li class="nav-item {% block classeOpenListe %}{% endblock %}">
 								<a href="#" class="nav-link {% block classeActiveListe %}{% endblock %}">
 									<i class="nav-icon fas fa-th"></i>
@@ -163,7 +164,7 @@
 											<p>Impôts / Taxes</p>
 										</a>
 									</li>
-									<li class="nav-item">
+									{# <li class="nav-item">
 										<a class="nav-link {% block classeActiveListePopTaxes %}{% endblock %}" href="{{ path('poptaxe.list') }}">
 											<i class="fa-solid fa-filter-circle-dollar"></i>
 											<p>POP - Taxes</p>
@@ -180,7 +181,7 @@
 											<i class="fa-solid fa-filter-circle-dollar"></i>
 											<p>POP - Commissions</p>
 										</a>
-									</li>
+									</li> #}
 									<li class="nav-item">
 										<a class="nav-link {% block classeActiveListeMonnaies %}{% endblock %}" href="{{ path('monnaie.list') }}">
 											<i class="fa-solid fa-money-check-dollar"></i>
@@ -189,45 +190,67 @@
 									</li>
 								</ul>
 							</li>
-							<li class="nav-item">
-								<a href="#" class="nav-link">
-									<i class="nav-icon fas fa-table"></i>
+							{# LES PAIEMENTS #}
+							<li class="nav-item {% block classeOpenPaiements %}{% endblock %}">
+								<a href="#" class="nav-link {% block classeActivePaiement %}{% endblock %}">
+									<i class="nav-icon fas fa-th"></i>
 									<p>
-										Outstanding
-										<i class="fas fa-angle-left right"></i>
+										Paiements
+										<i class="right fas fa-angle-left"></i>
 									</p>
 								</a>
 								<ul class="nav nav-treeview">
 									<li class="nav-item">
-										<a href="pages/tables/simple.html" class="nav-link">
-											<i class="fa-solid fa-sack-dollar"></i>
-											<p>Primes<span class="right badge badge-danger">12</span>
-											</p>
+										<a class="nav-link {% block classeActiveListePopTaxes %}{% endblock %}" href="{{ path('poptaxe.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Taxes</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a href="pages/tables/simple.html" class="nav-link">
-											<i class="fa-solid fa-sack-dollar"></i>
-											<p>Commissions<span class="right badge badge-danger">12</span>
-											</p>
+										<a class="nav-link {% block classeActiveListePopPartenaires %}{% endblock %}" href="{{ path('poppartenaire.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Partenaires</p>
 										</a>
 									</li>
 									<li class="nav-item">
-										<a href="pages/tables/data.html" class="nav-link">
-											<i class="fa-solid fa-sack-dollar"></i>
-											<p>Retrocoms<span class="right badge badge-danger">0</span>
-											</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="pages/tables/jsgrid.html" class="nav-link">
-											<i class="fa-solid fa-sack-dollar"></i>
-											<p>Taxes<span class="right badge badge-danger">5</span>
-											</p>
+										<a class="nav-link {% block classeActiveListePopCommissions %}{% endblock %}" href="{{ path('popcommission.list') }}">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Commissions</p>
 										</a>
 									</li>
 								</ul>
 							</li>
+							{# LES OUTSTANDING #}
+							<li class="nav-item {% block classeOpenOutstanding %}{% endblock %}">
+								<a href="#" class="nav-link {% block classeActiveOutstanding %}{% endblock %}">
+									<i class="nav-icon fas fa-th"></i>
+									<p>
+										Oustandings
+										<i class="right fas fa-angle-left"></i>
+									</p>
+								</a>
+								<ul class="nav nav-treeview">
+									<li class="nav-item">
+										<a class="nav-link {% block classeActiveOutstandingTaxes %}{% endblock %}" href="#">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Taxes</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {% block classeActiveOutstandingPartenaires %}{% endblock %}" href="#">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Partenaires</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {% block classeActiveOutstandingCommissions %}{% endblock %}" href="#">
+											<i class="fa-solid fa-filter-circle-dollar"></i>
+											<p>Commissions</p>
+										</a>
+									</li>
+								</ul>
+							</li>
+							
 							<li class="nav-header">PARAMETRES</li>
 							<li class="nav-item">
 								<a href="pages/calendar.html" class="nav-link">

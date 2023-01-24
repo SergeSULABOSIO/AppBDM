@@ -1,11 +1,8 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActiveListe %}active
-{% endblock %}
-{% block classeOpenListe %}menu-open
-{% endblock %}
-{% block classeActiveListePopPartenaires %}active
-{% endblock %}
+{% block classeActivePaiement %}active{% endblock %}
+{% block classeOpenPaiements %}menu-open{% endblock %}
+{% block classeActiveListePopPartenaires %}active{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-filter-circle-dollar"></i>
@@ -13,6 +10,35 @@
 {% endblock %}
 
 {% block appCorps %}
+
+	{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
+	<div
+		class="container-fluid">
+		<!-- Small boxes (Stat box) -->
+		<div class="row">
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-warning">
+					<div class="inner">
+						<h4>{{agregats.codemonnaie}}
+							{{agregats.montant|number_format(2, ',', '.')}}
+						</h4>
+						Montant total versé.
+					</div>
+					<div class="icon">
+						<i class="fa-solid fa-handshake"></i>
+					</div>
+					<a href="#" class="small-box-footer">More info
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				</div>
+			</div>
+			<!-- ./col -->
+		</div>
+		<!-- /.row -->
+	</div>
+
 	{{ form_start(search_form) }}
 	<div class="align-content-center">
 		<div class="form-row align-items-end m-2">
@@ -54,7 +80,7 @@
 		<div class="navigation m-2">
 			{{ knp_pagination_render(paiementpartenaires) }}
 		</div>
-		<div class="row">
+		<div class="row m-2">
 			{% for paiementpartenaire in paiementpartenaires %}
 				<div class="card m-2 p-0" style="width: 18rem;">
 					<h5 class="card-header">
@@ -73,11 +99,16 @@
 							{% if paiementpartenaire.polices|length > 1 %}
 								<span class="badge bg-secondary">{{paiementpartenaire.polices|length}}</span>
 							{% else %}
-								{% if paiementpartenaire.polices[0].partenaire != null %}
-									<span class="badge bg-secondary">{{paiementpartenaire.polices[0].partenaire.nom}}</span>
+								{% if paiementpartenaire.polices|length != 0 %}
+									{% if paiementpartenaire.polices[0].partenaire != null %}
+										<span class="badge bg-secondary">{{paiementpartenaire.polices[0].partenaire.nom}}</span>
+									{% else %}
+										<span class="badge bg-secondary">Aucun</span>
+									{% endif %}
 								{% else %}
 									<span class="badge bg-secondary">Aucun</span>
 								{% endif %}
+
 							{% endif %}
 						</div>
 						<div class="card-subtitle mb-2 text-muted">

@@ -42,7 +42,7 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
     /**
      * @return PaiementPartenaire[] Returns an array of PaiementPartenaire objects
      */
-    public function findByMotCle($criteres): array
+    public function findByMotCle($criteres, $agregat): array
     {
         $query = $this->createQueryBuilder('p')
             ->where('p.refnotededebit like :valMotCle')
@@ -102,7 +102,22 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         }
 
         $resultFinal = $resultClient;
-        //return $query;
+        
+        
+        //chargement des données sur l'agregat
+        if ($agregat !== null) {
+            $montant = 0;
+            $codeMonnaie = "";
+            foreach ($resultFinal as $popPartenaire) {
+                $montant += $popPartenaire->getMontant();
+                if ($popPartenaire->getMonnaie()) {
+                    $codeMonnaie = $popPartenaire->getMonnaie()->getCode();
+                }
+            }
+            $agregat->setMontant($montant);
+            $agregat->setCodeMonnaie($codeMonnaie);
+        }
+
         return $resultFinal;
     }
 }

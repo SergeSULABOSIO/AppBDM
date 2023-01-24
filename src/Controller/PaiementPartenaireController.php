@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Agregats\PopPartenaireAgregat;
 use DateTime;
 use App\Entity\Produit;
 use PaiementTaxeSearchType;
@@ -35,6 +36,7 @@ class PaiementPartenaireController extends AbstractController
         PoliceRepository $policeRepository,
         PaginatorInterface $paginatorInterface
     ): Response {
+        $agregats = new PopPartenaireAgregat();
         $searchPaiementPartenaireForm = $this->createForm(PaiementPartenaireSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
@@ -47,7 +49,7 @@ class PaiementPartenaireController extends AbstractController
             $page = 1;
             $criteres = $searchPaiementPartenaireForm->getData();
             //dd($criteres);
-            $data = $paiementPartenaireRepository->findByMotCle($criteres);
+            $data = $paiementPartenaireRepository->findByMotCle($criteres, $agregats);
             $session->set("criteres_liste_pop_partenaire", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -62,7 +64,7 @@ class PaiementPartenaireController extends AbstractController
                 $objclient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
 
-                $data = $paiementPartenaireRepository->findByMotCle($objCritereSession);
+                $data = $paiementPartenaireRepository->findByMotCle($objCritereSession, $agregats);
 
                 $searchPaiementPartenaireForm = $this->createForm(PaiementPartenaireSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],
@@ -83,7 +85,8 @@ class PaiementPartenaireController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $searchPaiementPartenaireForm->createView(),
-                'paiementpartenaires' => $paiementpartenaires
+                'paiementpartenaires' => $paiementpartenaires,
+                'agregats' => $agregats
             ]
         );
     }
