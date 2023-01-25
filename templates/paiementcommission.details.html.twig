@@ -1,8 +1,11 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActivePaiement %}active{% endblock %}
-{% block classeOpenPaiements %}menu-open{% endblock %}
-{% block classeActiveListePopCommissions %}active{% endblock %}
+{% block classeActivePaiement %}active
+{% endblock %}
+{% block classeOpenPaiements %}menu-open
+{% endblock %}
+{% block classeActiveListePopCommissions %}active
+{% endblock %}
 
 {% block appTitreRubrique %}{% endblock %}
 
@@ -23,8 +26,8 @@
 				</div>
 				<div class="card-subtitle mb-2 text-muted">
 					<i class="fa-solid fa-umbrella"></i>
-					Polices concernées:
-					<span class="badge bg-secondary">{{paiementcommission.polices|length}} police(s)</span>
+					Police:
+					<span class="badge bg-secondary">{{paiementcommission.police.reference}}</span>
 				</div>
 				<p class="card-text">
 					Commission encaissée le

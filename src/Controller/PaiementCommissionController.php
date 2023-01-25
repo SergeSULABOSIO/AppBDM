@@ -10,6 +10,7 @@ use App\Entity\PaiementCommission;
 use App\Repository\PoliceRepository;
 use App\Agregats\PopCommissionAgregat;
 use App\Form\PaiementCommissionFormType;
+use App\Repository\MonnaieRepository;
 use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -49,10 +50,10 @@ class PaiementCommissionController extends AbstractController
             //dd($session->get("criteres_liste_pop_taxe"));
             $objCritereSession = $session->get("criteres_liste_pop_commission");
             if ($objCritereSession) {
-                $session_police = $objCritereSession['police']?$objCritereSession['police']:null;
-                $session_partenaire = $objCritereSession['partenaire']?$objCritereSession['partenaire']:null;
-                $session_client = $objCritereSession['client']?$objCritereSession['client']:null;
-                $session_assureur = $objCritereSession['assureur']?$objCritereSession['assureur']:null;
+                $session_police = $objCritereSession['police'] ? $objCritereSession['police'] : null;
+                $session_partenaire = $objCritereSession['partenaire'] ? $objCritereSession['partenaire'] : null;
+                $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
+                $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
 
                 $objpolice = $session_police ? $policeRepository->find($session_police->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
@@ -140,6 +141,61 @@ class PaiementCommissionController extends AbstractController
                 ]
             );
         }
+    }
+
+
+
+    #[Route('/deposit/{idpolicy?0}/{amount?0}/{idmonnaie?0}', name: 'popcommission.deposit')]
+    public function deposit(
+        $idpolicy,
+        $idmonnaie,
+        $amount,
+        PoliceRepository $policeRepository,
+        MonnaieRepository $monnaieRepository,
+        ManagerRegistry $doctrine,
+        Request $request
+    ): Response {
+        $appTitreRubrique = "";
+        $adjectif = "";
+        $appTitreRubrique = "Paiement de Commission / Ajout";
+        $adjectif = "ajouté";
+
+        $popcommission = new PaiementCommission();
+        $police = $policeRepository->find($idpolicy);
+        $monnaie = $monnaieRepository->find($idmonnaie);
+
+        if ($police && $monnaie) {
+            $popcommission->setMontant($amount);
+            $popcommission->setMonnaie($monnaie);
+            $popcommission->setPolice($police);
+            $popcommission->setDescription("Paiement Commission de Courtage / Police: " . $police->getReference() . " / Client: " . $police->getClient()->getNom());
+
+            //dd($popcommission);
+
+            $form = $this->createForm(PaiementCommissionFormType::class, $popcommission);
+            //vérifions le contenu de l'objet requete
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($popcommission);
+                $entityManager->flush();
+                $this->addFlash('success', "Bravo ! L'encaissement de " . $monnaie->getCode() . " " . $popcommission->getMontant() . " vient d'être effectué avec succès.");
+                return $this->redirectToRoute('outstanding.commission.list');
+            } else {
+                return $this->render(
+                    'paiementcommission.edit.html.twig',
+                    [
+                        'appTitreRubrique' => $appTitreRubrique,
+                        'form' => $form->createView()
+                    ]
+                );
+            }
+        } else {
+            $this->addFlash('error', "La police et/ou la monnaie n'est pas définie.");
+            return $this->redirectToRoute('outstanding.commission.list');
+        }
+        //dd($monnaie);
+        //dd("Amount: " . $amount . " idPolicy: " . $idpolicy);
     }
 
 

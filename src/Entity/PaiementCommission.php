@@ -4,7 +4,6 @@ namespace App\Entity;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\PaiementCommissionRepository;
 use Doctrine\DBAL\Types\Types;
@@ -39,12 +38,13 @@ class PaiementCommission
     #[ORM\JoinColumn(nullable: false)]
     private ?Monnaie $monnaie = null;
 
-    #[ORM\ManyToMany(targetEntity: Police::class)]
-    private Collection $polices;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Police $police = null;
 
     public function __construct()
     {
-        $this->polices = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -129,26 +129,14 @@ class PaiementCommission
         return $this;
     }
 
-    /**
-     * @return Collection<int, Police>
-     */
-    public function getPolices(): Collection
+    public function getPolice(): ?Police
     {
-        return $this->polices;
+        return $this->police;
     }
 
-    public function addPolice(Police $police): self
+    public function setPolice(?Police $police): self
     {
-        if (!$this->polices->contains($police)) {
-            $this->polices->add($police);
-        }
-
-        return $this;
-    }
-
-    public function removePolice(Police $police): self
-    {
-        $this->polices->removeElement($police);
+        $this->police = $police;
 
         return $this;
     }

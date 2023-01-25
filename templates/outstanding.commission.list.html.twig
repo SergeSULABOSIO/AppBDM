@@ -61,10 +61,10 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 					Chercher
 				</button>
-				<a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
+				{# <a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
 					<i class="fa-solid fa-circle-plus"></i>
 					Nouveau
-				</a>
+				</a> #}
 			</div>
 		</div>
 		<div class="form-row align-items-end m-2">
@@ -168,14 +168,14 @@
 								</a>
 
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ path('police.edit', {id:outstanding.police.id}) }}">
-										<i class="fa-solid fa-pen-to-square"></i>
-										Encaisser
+									<a class="dropdown-item" href="{{ path('popcommission.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantDu, idmonnaie:outstanding.police.monnaie.id}) }}">
+										<i class="fa-solid fa-money-bill-transfer"></i>
+										Encaisser le paiement
 									</a>
-									<a class="dropdown-item text-danger" href="{{ path('police.delete', {id:outstanding.police.id}) }}">
+									{# <a class="dropdown-item text-danger" href="{{ path('police.delete', {id:outstanding.police.id}) }}">
 										<i class="fa-solid fa-trash-can"></i>
 										Supprimer
-									</a>
+									</a> #}
 								</div>
 							</span>
 						</div>
