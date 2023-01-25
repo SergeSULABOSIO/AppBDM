@@ -83,11 +83,20 @@ class OutstandingCommissionController extends AbstractController
         $outstandings = [];
         
         //$polices = $paginatorInterface->paginate($data, $page, $nbre);
+        $agreg_codeMonnaie = "...";
+        $agreg_montant = 0;
+        $agreg_montant_net = 0;
         foreach ($data as $police) {
             $commOustanding = new CommissionOutstanding($police, null);
             $outstandings[] = $commOustanding;
-        }
 
+            $agreg_montant += $commOustanding->montantDu;
+            $agreg_montant_net += ($commOustanding->montantDu) / 1.16;
+            $agreg_codeMonnaie = $commOustanding->codeMonnaie;
+        }
+        $agregats->setCodeMonnaie($agreg_codeMonnaie);
+        $agregats->setMontant($agreg_montant);
+        $agregats->setMontantNet($agreg_montant_net);
         //dd($outstandings);
 
 

@@ -85,23 +85,6 @@ class PaiementCommissionController extends AbstractController
                 'agregats' => $agregats
             ]
         );
-
-
-
-        // $session = $request->getSession();
-        // $appTitreRubrique = "Paiement de Commission";
-        // $repository = $doctrine->getRepository(PaiementCommission::class);
-        // $data = $repository->findAll();
-        // $paiementcommissions = $paginatorInterface->paginate($data, $page, $nbre);
-
-
-        // return $this->render(
-        //     'paiementcommission.list.html.twig',
-        //     [
-        //         'appTitreRubrique' => $appTitreRubrique,
-        //         'paiementcommissions' => $paiementcommissions
-        //     ]
-        // );
     }
 
 
