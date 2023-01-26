@@ -106,8 +106,8 @@ class OutstandingCommissionController extends AbstractController
             //dd($commOustanding);
 
             if ($commOustanding->montantSolde != 0) {
-                $agreg_montant += $commOustanding->montantDu;
-                $agreg_montant_net += ($commOustanding->montantDu) / 1.16;
+                $agreg_montant += $commOustanding->montantSolde;
+                $agreg_montant_net += ($commOustanding->montantSolde) / 1.16;
                 $agreg_codeMonnaie = $commOustanding->codeMonnaie;
                 $outstandings[] = $commOustanding;
             }
