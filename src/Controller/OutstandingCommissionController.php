@@ -13,6 +13,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Agregats\OutstandingCommissionAgregat;
 use App\Outstanding\CommissionOutstanding;
+use App\Repository\PaiementCommissionRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +26,7 @@ class OutstandingCommissionController extends AbstractController
         Request $request,
         $page,
         $nbre,
+        PaiementCommissionRepository $paiementCommissionRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
         ClientRepository $clientRepository,
@@ -44,6 +46,7 @@ class OutstandingCommissionController extends AbstractController
         $criteres = $searchOutstandingForm->getData();
 
         $data = [];
+
         if ($searchOutstandingForm->isSubmitted() && $searchOutstandingForm->isValid()) {
             $page = 1;
             //dd($criteres);
@@ -93,6 +96,14 @@ class OutstandingCommissionController extends AbstractController
             $agreg_montant += $commOustanding->montantDu;
             $agreg_montant_net += ($commOustanding->montantDu) / 1.16;
             $agreg_codeMonnaie = $commOustanding->codeMonnaie;
+
+            //On va vérifier aussi les paiements possibles
+            $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
+                'police' => $police
+            ], null);
+
+
+
         }
         $agregats->setCodeMonnaie($agreg_codeMonnaie);
         $agregats->setMontant($agreg_montant);
