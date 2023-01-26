@@ -98,7 +98,7 @@
 						<h5 class="card-header">
 							<i class="fa-solid fa-filter-circle-dollar"></i>
 							{{outstanding.codeMonnaie}}
-							{{outstanding.montantDu|number_format(2, ',', '.')}}
+							{{outstanding.montantSolde|number_format(2, ',', '.')}}
 						</h5>
 						<div class="card-body">
 							<div class="card-subtitle mb-2 text-muted">
@@ -168,7 +168,7 @@
 								</a>
 
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ path('popcommission.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantDu, idmonnaie:outstanding.police.monnaie.id}) }}">
+									<a class="dropdown-item" href="{{ path('popcommission.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantSolde, idmonnaie:outstanding.police.monnaie.id}) }}">
 										<i class="fa-solid fa-money-bill-transfer"></i>
 										Encaisser le paiement
 									</a>

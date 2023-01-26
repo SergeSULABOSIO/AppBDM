@@ -165,13 +165,13 @@ class PoliceRepository extends ServiceEntityRepository
                 $retro_frontingcom = 0;
 
                 if($police->isCansharericom() == true){
-                    $retro_ricom += $ricom;
+                    $retro_ricom += ($ricom / 1.02);
                 }
                 if($police->isCansharelocalcom() == true){
-                    $retro_localcom += $localcom;
+                    $retro_localcom += ($localcom / 1.02);
                 }
                 if($police->isCansharefrontingcom() == true){
-                    $retro_frontingcom += $frontingcom;
+                    $retro_frontingcom += ($frontingcom / 1.02);
                 }
 
                 $taux_retro_com = 0;

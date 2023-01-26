@@ -81,10 +81,10 @@ class PaiementCommissionRepository extends ServiceEntityRepository
                 //dd($popTaxe);
                 //dd($criteres['police']);
                 //dd($popTaxe->getPolices());
-                foreach ($popCommission->getPolices() as $police) {
+                if ($popCommission->getPolice()) {
                     //dd($police);
                     //dd($criteres['police']->getReference());
-                    if ($police->getReference() == $criteres['police']->getReference()) {
+                    if ($popCommission->getPolice()->getId() == $criteres['police']->getId()) {
                         $resultPolices[] = $popCommission;
                     }
                 }
@@ -98,9 +98,9 @@ class PaiementCommissionRepository extends ServiceEntityRepository
         $resultClient = [];
         if ($criteres['client']) {
             foreach ($resultPolices as $popCommission) {
-                foreach ($popCommission->getPolices() as $police) {
-                    if ($police->getClient()) {
-                        if ($police->getClient()->getId() == $criteres['client']->getId()) {
+                if ($popCommission->getPolice()) {
+                    if ($popCommission->getPolice()->getClient()) {
+                        if ($popCommission->getPolice()->getClient()->getId() == $criteres['client']->getId()) {
                             $resultClient[] = $popCommission;
                         }
                     }
@@ -116,9 +116,9 @@ class PaiementCommissionRepository extends ServiceEntityRepository
         $resultPartenaire = [];
         if ($criteres['partenaire']) {
             foreach ($resultClient as $popCommission) {
-                foreach ($popCommission->getPolices() as $police) {
-                    if ($police->getPartenaire()) {
-                        if ($police->getPartenaire()->getId() == $criteres['partenaire']->getId()) {
+                if ($popCommission->getPolice()) {
+                    if ($popCommission->getPolice()->getPartenaire()) {
+                        if ($popCommission->getPolice()->getPartenaire()->getId() == $criteres['partenaire']->getId()) {
                             $resultPartenaire[] = $popCommission;
                         }
                     }

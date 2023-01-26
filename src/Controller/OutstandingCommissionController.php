@@ -84,26 +84,33 @@ class OutstandingCommissionController extends AbstractController
         //dd($data);
 
         $outstandings = [];
-        
+
         //$polices = $paginatorInterface->paginate($data, $page, $nbre);
         $agreg_codeMonnaie = "...";
         $agreg_montant = 0;
         $agreg_montant_net = 0;
         foreach ($data as $police) {
-            $commOustanding = new CommissionOutstanding($police, null);
-            $outstandings[] = $commOustanding;
-
-            $agreg_montant += $commOustanding->montantDu;
-            $agreg_montant_net += ($commOustanding->montantDu) / 1.16;
-            $agreg_codeMonnaie = $commOustanding->codeMonnaie;
-
             //On va vérifier aussi les paiements possibles
             $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
-                'police' => $police
+                'dateA' => "",
+                'dateB' => "",
+                'motcle' => "",
+                'police' => $police,
+                'assureur' => null,
+                'client' => $police->getClient(),
+                'partenaire' => $police->getPartenaire()
             ], null);
 
+            $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
 
+            //dd($commOustanding);
 
+            if ($commOustanding->montantSolde != 0) {
+                $agreg_montant += $commOustanding->montantDu;
+                $agreg_montant_net += ($commOustanding->montantDu) / 1.16;
+                $agreg_codeMonnaie = $commOustanding->codeMonnaie;
+                $outstandings[] = $commOustanding;
+            }
         }
         $agregats->setCodeMonnaie($agreg_codeMonnaie);
         $agregats->setMontant($agreg_montant);

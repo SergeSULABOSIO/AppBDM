@@ -8,17 +8,19 @@ use Symfony\Component\Validator\Constraints\Collection;
 class CommissionOutstanding
 {
     private ?Police $police = null;
-    private Collection $popcommissions;
+    private $popcommissions = [];
     public $montantDu;
+    public $montantEncaisse;
+    public $montantSolde;
     public $codeMonnaie = "...";
-    
+
     public function __construct($police, $popcommissions)
     {
         // $this->popcommissions = new ArrayCollection();
-        if($police !== null){
+        if ($police !== null) {
             $this->police = $police;
         }
-        if($popcommissions !== null){
+        if ($popcommissions !== null) {
             $this->popcommissions = $popcommissions;
         }
         $this->calculateMontantDu();
@@ -26,8 +28,7 @@ class CommissionOutstanding
 
     public function calculateMontantDu()
     {
-        $montantEncaisse = 0;
-        if($this->police !== null){
+        if ($this->police !== null) {
             $net_ri_com = $this->police->getRicom();
             $net_local_com = $this->police->getLocalcom();
             $net_fronting_com = $this->police->getFrontingcom();
@@ -40,15 +41,14 @@ class CommissionOutstanding
             }
 
             //Vérification des com encaissées
-            // foreach ($this->popcommissions as $popcom) {
-            //     if($popcom->getPolices()){
-            //         foreach ($popcom->getPolices() as $police) {
-            //             if ($police->getReference() == $this->police->getReference()) {
-            //                 $montantEncaisse = $popcom->getMontant();
-            //             }
-            //         }
-            //     }
-            // }
+            foreach ($this->popcommissions as $popcom) {
+                if ($popcom->getPolice()) {
+                    if ($popcom->getPolice()->getId() == $this->police->getId()) {
+                        $this->montantEncaisse += $popcom->getMontant();
+                    }
+                }
+            }
+            $this->montantSolde = $this->montantDu - $this->montantEncaisse;
         }
     }
 
