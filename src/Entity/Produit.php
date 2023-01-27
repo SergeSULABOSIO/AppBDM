@@ -120,7 +120,7 @@ class Produit
 
     public function __toString()
     {
-        return $this->nom;
+        return  "[" . $this->tauxarca . "%] " . $this->nom;
     }
 
     public function getCategorie(): ?int
