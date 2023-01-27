@@ -39,16 +39,17 @@ class PaiementTaxe
     #[ORM\JoinColumn(nullable: false)]
     private ?Monnaie $monnaie = null;
 
-    #[ORM\ManyToMany(targetEntity: Police::class)]
-    private Collection $polices;
-
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Taxe $taxe = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Police $police = null;
+
     public function __construct()
     {
-        $this->polices = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -133,30 +134,6 @@ class PaiementTaxe
         return $this;
     }
 
-    /**
-     * @return Collection<int, Police>
-     */
-    public function getPolices(): Collection
-    {
-        return $this->polices;
-    }
-
-    public function addPolice(Police $police): self
-    {
-        if (!$this->polices->contains($police)) {
-            $this->polices->add($police);
-        }
-
-        return $this;
-    }
-
-    public function removePolice(Police $police): self
-    {
-        $this->polices->removeElement($police);
-
-        return $this;
-    }
-
     public function getTaxe(): ?Taxe
     {
         return $this->taxe;
@@ -165,6 +142,18 @@ class PaiementTaxe
     public function setTaxe(?Taxe $taxe): self
     {
         $this->taxe = $taxe;
+
+        return $this;
+    }
+
+    public function getPolice(): ?Police
+    {
+        return $this->police;
+    }
+
+    public function setPolice(?Police $police): self
+    {
+        $this->police = $police;
 
         return $this;
     }
