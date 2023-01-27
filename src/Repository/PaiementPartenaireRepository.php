@@ -72,8 +72,8 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         $resultPolice = [];
         if ($criteres['police']) {
             foreach ($query as $popPartenaire) {
-                foreach ($popPartenaire->getPolices() as $police) {
-                    if ($police->getReference() == $criteres['police']->getReference()) {
+                if ($popPartenaire->getPolice()) {
+                    if ($popPartenaire->getPolice()->getId() == $criteres['police']->getId()) {
                         $resultPolice[] = $popPartenaire;
                     }
                 }
@@ -89,9 +89,9 @@ class PaiementPartenaireRepository extends ServiceEntityRepository
         $resultClient = [];
         if ($criteres['client']) {
             foreach ($resultPolice as $popPartenaire) {
-                foreach ($popPartenaire->getPolices() as $police) {
-                    if ($police->getClient()) {
-                        if ($police->getClient()->getId() == $criteres['client']->getId()) {
+                if ($popPartenaire->getPolice()) {
+                    if ($popPartenaire->getPolice()->getClient()) {
+                        if ($popPartenaire->getPolice()->getClient()->getId() == $criteres['client']->getId()) {
                             $resultClient[] = $popPartenaire;
                         }
                     }

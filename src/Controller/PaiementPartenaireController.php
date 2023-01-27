@@ -2,22 +2,23 @@
 
 namespace App\Controller;
 
-use App\Agregats\PopPartenaireAgregat;
 use DateTime;
 use App\Entity\Produit;
 use PaiementTaxeSearchType;
+use PaiementPartenaireSearchType;
 use App\Entity\PaiementPartenaire;
-use App\Form\PaiementPartenaireFormType;
 use App\Repository\ClientRepository;
-use App\Repository\PaiementPartenaireRepository;
-use App\Repository\PartenaireRepository;
 use App\Repository\PoliceRepository;
+use App\Repository\MonnaieRepository;
+use App\Agregats\PopPartenaireAgregat;
+use App\Form\PaiementPartenaireFormType;
+use App\Repository\PartenaireRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
-use PaiementPartenaireSearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PaiementPartenaireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -163,5 +164,59 @@ class PaiementPartenaireController extends AbstractController
             $this->addFlash('error', "Désolé. Cet enregistrement n'existe pas.");
         }
         return $this->redirectToRoute('poppartenaire.list');
+    }
+
+
+    #[Route('/deposit/{idpolicy?0}/{amount?0}/{idmonnaie?0}', name: 'popretrocommission.deposit')]
+    public function deposit(
+        $idpolicy,
+        $idmonnaie,
+        $amount,
+        PoliceRepository $policeRepository,
+        PartenaireRepository $partenaireRepository,
+        MonnaieRepository $monnaieRepository,
+        ManagerRegistry $doctrine,
+        Request $request
+    ): Response {
+        $appTitreRubrique = "";
+        $appTitreRubrique = "Paiement de la RetroCommission / Ajout";
+        $adjectif = "ajouté";
+
+        $popretrocommission = new PaiementPartenaire();
+        $police = $policeRepository->find($idpolicy);
+        $partenaire = $partenaireRepository->find($police->getPartenaire());
+        $monnaie = $monnaieRepository->find($idmonnaie);
+
+        if ($police && $monnaie) {
+            $popretrocommission->setMontant($amount);
+            $popretrocommission->setMonnaie($monnaie);
+            $popretrocommission->setPolice($police);
+            $popretrocommission->setPartenaire($partenaire);
+            //$popretrocommission->setDescription("Paiement Commission de Courtage / Police: " . $police->getReference() . " / Client: " . $police->getClient()->getNom());
+
+            //dd($popcommission);
+
+            $form = $this->createForm(PaiementPartenaireFormType::class, $popretrocommission);
+            //vérifions le contenu de l'objet requete
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($popretrocommission);
+                $entityManager->flush();
+                $this->addFlash('success', "Bravo ! Le décaissement de " . $monnaie->getCode() . " " . $popretrocommission->getMontant() . " vient d'être effectué avec succès.");
+                return $this->redirectToRoute('outstanding.retrocommission.list');
+            } else {
+                return $this->render(
+                    'paiementpartenaire.edit.html.twig',
+                    [
+                        'appTitreRubrique' => $appTitreRubrique,
+                        'form' => $form->createView()
+                    ]
+                );
+            }
+        } else {
+            $this->addFlash('error', "La police et/ou la monnaie n'est pas définie.");
+            return $this->redirectToRoute('outstanding.retrocommission.list');
+        }
     }
 }

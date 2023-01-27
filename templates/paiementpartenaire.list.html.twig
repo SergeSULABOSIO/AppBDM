@@ -1,8 +1,11 @@
 {% extends "template.ui.html.twig" %}
 
-{% block classeActivePaiement %}active{% endblock %}
-{% block classeOpenPaiements %}menu-open{% endblock %}
-{% block classeActiveListePopPartenaires %}active{% endblock %}
+{% block classeActivePaiement %}active
+{% endblock %}
+{% block classeOpenPaiements %}menu-open
+{% endblock %}
+{% block classeActiveListePopPartenaires %}active
+{% endblock %}
 
 {% block appTitreRubrique %}
 	<i class="fa-solid fa-filter-circle-dollar"></i>
@@ -95,28 +98,23 @@
 						</div>
 						<div class="card-subtitle mb-2 text-muted">
 							<i class="fa-solid fa-handshake"></i>
-							Partenaire(s):
-							{% if paiementpartenaire.polices|length > 1 %}
-								<span class="badge bg-secondary">{{paiementpartenaire.polices|length}}</span>
-							{% else %}
-								{% if paiementpartenaire.polices|length != 0 %}
-									{% if paiementpartenaire.polices[0].partenaire != null %}
-										<span class="badge bg-secondary">{{paiementpartenaire.polices[0].partenaire.nom}}</span>
-									{% else %}
-										<span class="badge bg-secondary">Aucun</span>
-									{% endif %}
+							Partenaire:
+							{% if paiementpartenaire.police != null %}
+								{% if paiementpartenaire.police.partenaire != null %}
+									<span class="badge bg-secondary">{{paiementpartenaire.police.partenaire.nom}}</span>
 								{% else %}
 									<span class="badge bg-secondary">Aucun</span>
 								{% endif %}
-
+							{% else %}
+								<span class="badge bg-secondary">Aucun</span>
 							{% endif %}
 						</div>
 						<div class="card-subtitle mb-2 text-muted">
 							<i class="fa-solid fa-umbrella"></i>
-							{% if paiementpartenaire.polices|length == 1 %}
-								Police:<span class="badge bg-secondary">{{paiementpartenaire.polices[0].reference}}</span>
+							{% if paiementpartenaire.police != null %}
+								Police:<span class="badge bg-secondary">{{paiementpartenaire.police.reference}}</span>
 							{% else %}
-								Polices:<span class="badge bg-secondary">{{paiementpartenaire.polices|length}}</span>
+								Polices:<span class="badge bg-secondary">Null</span>
 							{% endif %}
 
 						</div>

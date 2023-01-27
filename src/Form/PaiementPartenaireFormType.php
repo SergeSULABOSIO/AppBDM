@@ -45,15 +45,15 @@ class PaiementPartenaireFormType extends AbstractType
                 'class'  => Monnaie::class,
                 'label' => "Monnaie"
             ])
-            ->add('polices', EntityType::class, [
+            ->add('police', EntityType::class, [
                 'expanded' => false,
-                'multiple' => true,
-                'required' => false,
+                'multiple' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'select2'
                 ],
                 'class'  => Police::class,
-                'label' => "Polices"
+                'label' => "Police"
             ])
             ->add('partenaire', EntityType::class, [
                 'label' => "Partenaire",
