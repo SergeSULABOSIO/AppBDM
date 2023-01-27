@@ -8,9 +8,9 @@ class RetrocomOutstanding
 {
     private ?Police $police = null;
     private $poppartenaires = [];
-    public $montantDu;
-    public $montantDecaisse;
-    public $montantSolde;
+    public $montantDu = 0;
+    public $montantDecaisse = 0;
+    public $montantSolde = 0;
     public $codeMonnaie = "...";
 
     public function __construct($police, $poppartenaires)
@@ -37,22 +37,25 @@ class RetrocomOutstanding
                 $net_ri_com = $this->police->getRicom();
             }
             if($this->police->isCansharelocalcom()){
-                $net_ri_com = $this->police->getLocalcom();
+                $net_local_com = $this->police->getLocalcom();
             }
             if($this->police->isCansharefrontingcom()){
-                $net_ri_com = $this->police->getFrontingcom();
+                $net_fronting_com = $this->police->getFrontingcom();
             }
 
 
             $net_including_arca = $net_ri_com + $net_local_com + $net_fronting_com;
-            $net = $net_including_arca / 1.02;
+
+            $arca = $net_including_arca * (2 / 100);
+
+            $net_partageable = $net_including_arca - $arca;
             
 
             //si le partenaire était défini
             $this->montantDu = 0;
             if($this->police->getPartenaire()){
                 $part = ($this->police->getPartenaire()->getPart()) / 100;
-                $this->montantDu = $net * $part;
+                $this->montantDu = $net_partageable * $part;
             }
             
 
@@ -69,6 +72,7 @@ class RetrocomOutstanding
                 }
             }
             $this->montantSolde = $this->montantDu - $this->montantDecaisse;
+            //dd($this);
         }
     }
 

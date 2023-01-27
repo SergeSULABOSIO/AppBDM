@@ -144,45 +144,42 @@ class PoliceRepository extends ServiceEntityRepository
                 $primetotale += $police->getPrimeTotale();
                 $primenette += $police->getPrimeNette();
 
-                $ricom = $police->getRiCom();
-                $localcom = $police->getLocalCom();
-                $frontingcom = $police->getFrontingCom();
+                $ricom = 0;
+                $localcom = 0;
+                $frontingcom = 0;
 
-                if($police->getMonnaie()){
+                if ($police->isCansharericom() == true) {
+                    $ricom = $police->getRiCom();
+                }
+                if ($police->isCansharelocalcom() == true) {
+                    $localcom = $police->getLocalCom();
+                }
+                if ($police->isCansharefrontingcom() == true) {
+                    $frontingcom = $police->getFrontingCom();
+                }
+
+                if ($police->getMonnaie()) {
                     $codeMonnaie = $police->getMonnaie()->getCode();
                 }
                 //dd($frontingcom);
 
-                $netCom = ($ricom + $localcom + $frontingcom);
-                $tva = $netCom * (16/100);
-                $arca = $netCom * (2/100);
-                $comtotale += $netCom + $tva;
-
-
-
-                $retro_ricom = 0;
-                $retro_localcom = 0;
-                $retro_frontingcom = 0;
-
-                if($police->isCansharericom() == true){
-                    $retro_ricom += ($ricom / 1.02);
-                }
-                if($police->isCansharelocalcom() == true){
-                    $retro_localcom += ($localcom / 1.02);
-                }
-                if($police->isCansharefrontingcom() == true){
-                    $retro_frontingcom += ($frontingcom / 1.02);
-                }
+                $net_com_including_arca = ($ricom + $localcom + $frontingcom);
+                $tva = $net_com_including_arca * (16 / 100);
+                $arca = $net_com_including_arca * (2 / 100);
+                $net_com_sharable = $net_com_including_arca - $arca;
+                $comtotale += $net_com_including_arca + $tva;
 
                 $taux_retro_com = 0;
                 //dd($police->getPartenaire()->getPart());
-                if($police->getPartenaire()){
+                if ($police->getPartenaire()) {
                     $taux_retro_com = $police->getPartenaire()->getPart();
                 }
 
-                $retrocom += ($retro_ricom + $retro_localcom + $retro_frontingcom) * ($taux_retro_com / 100);
+                $retrocom += $net_com_sharable * ($taux_retro_com / 100);
 
-                $comnette += $netCom - $arca - $retrocom;
+                //dd($retrocom);
+
+                $comnette += $net_com_sharable - $retrocom;
 
                 $importettaxe += ($arca + $tva);
             }
@@ -197,6 +194,8 @@ class PoliceRepository extends ServiceEntityRepository
             $agregat->setRetroCommissionTotale($retrocom);
             //IMPOTS et TAXES
             $agregat->setImpotEtTaxeTotale($importettaxe);
+
+            //dd($agregat);
         }
         return $resultFinal;
     }
