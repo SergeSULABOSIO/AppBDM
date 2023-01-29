@@ -135,52 +135,62 @@ class PoliceRepository extends ServiceEntityRepository
         if ($agregat !== null) {
             $primetotale = 0;
             $primenette = 0;
+            $codeMonnaie = "";
+            //Ordinaire
             $comtotale = 0;
             $comnette = 0;
+            //Partageable
+            $comtotale_charable = 0;
+            $comnette_charable = 0;
             $retrocom = 0;
+
             $importettaxe = 0;
-            $codeMonnaie = "";
+            
+            
             foreach ($resultFinal as $police) {
                 $primetotale += $police->getPrimeTotale();
                 $primenette += $police->getPrimeNette();
-
-                $ricom = 0;
-                $localcom = 0;
-                $frontingcom = 0;
-
-                if ($police->isCansharericom() == true) {
-                    $ricom = $police->getRiCom();
-                }
-                if ($police->isCansharelocalcom() == true) {
-                    $localcom = $police->getLocalCom();
-                }
-                if ($police->isCansharefrontingcom() == true) {
-                    $frontingcom = $police->getFrontingCom();
-                }
-
-                if ($police->getMonnaie()) {
-                    $codeMonnaie = $police->getMonnaie()->getCode();
-                }
-                //dd($frontingcom);
+                $ricom = $police->getRiCom();
+                $localcom = $police->getLocalCom();
+                $frontingcom = $police->getFrontingCom();
 
                 $net_com_including_arca = ($ricom + $localcom + $frontingcom);
                 $tva = $net_com_including_arca * (16 / 100);
                 $arca = $net_com_including_arca * (2 / 100);
-                $net_com_sharable = $net_com_including_arca - $arca;
+                $net_com_excluding_arca = $net_com_including_arca - $arca;
                 $comtotale += $net_com_including_arca + $tva;
 
+                if ($police->getMonnaie()) {
+                    $codeMonnaie = $police->getMonnaie()->getCode();
+                }
+
+                //Partageable
+                $ricom_sharable = 0;
+                $localcom_sharable = 0;
+                $frontingcom_sharable = 0;
+                if ($police->isCansharericom() == true) {
+                    $ricom_sharable = $police->getRiCom();
+                }
+                if ($police->isCansharelocalcom() == true) {
+                    $localcom_sharable = $police->getLocalCom();
+                }
+                if ($police->isCansharefrontingcom() == true) {
+                    $frontingcom_sharable = $police->getFrontingCom();
+                } 
+                //dd($frontingcom);
+                $net_com_including_arca_charable = ($ricom_sharable + $localcom_sharable + $frontingcom_sharable);
+                $arca_charable = $net_com_including_arca_charable * (2 / 100);
+                $net_com_excluding_arca_sharable = $net_com_including_arca_charable - $arca_charable;
                 $taux_retro_com = 0;
                 //dd($police->getPartenaire()->getPart());
                 if ($police->getPartenaire()) {
                     $taux_retro_com = $police->getPartenaire()->getPart();
                 }
-
-                $retrocom += $net_com_sharable * ($taux_retro_com / 100);
+                $retrocom += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
 
                 //dd($retrocom);
-
-                $comnette += $net_com_sharable - $retrocom;
-
+                
+                $comnette += $net_com_excluding_arca - $retrocom;
                 $importettaxe += ($arca + $tva);
             }
             //PRIMES

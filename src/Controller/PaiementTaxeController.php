@@ -10,6 +10,7 @@ use App\Agregats\PopTaxeAgregat;
 use App\Form\PaiementTaxeFormType;
 use App\Repository\TaxeRepository;
 use App\Repository\PoliceRepository;
+use App\Repository\MonnaieRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\PaiementTaxeRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -157,5 +158,61 @@ class PaiementTaxeController extends AbstractController
             $this->addFlash('error', "Désolé. Cet enregistrement n'existe pas.");
         }
         return $this->redirectToRoute('poptaxe.list');
+    }
+
+
+
+
+
+    #[Route('/deposit/{idpolicy?0}/{amount?0}/{idmonnaie?0}', name: 'poptaxe.deposit')]
+    public function deposit(
+        $idpolicy,
+        $idmonnaie,
+        $amount,
+        PoliceRepository $policeRepository,
+        MonnaieRepository $monnaieRepository,
+        ManagerRegistry $doctrine,
+        Request $request
+    ): Response {
+        $appTitreRubrique = "";
+        $adjectif = "";
+        $appTitreRubrique = "Paiement des Taxes / Ajout";
+        $adjectif = "ajouté";
+
+        $poptaxe = new PaiementTaxe();
+        $police = $policeRepository->find($idpolicy);
+        $monnaie = $monnaieRepository->find($idmonnaie);
+
+        if ($police && $monnaie) {
+            $poptaxe->setMontant($amount);
+            $poptaxe->setMonnaie($monnaie);
+            $poptaxe->setPolice($police);
+            
+            //dd($popcommission);
+
+            $form = $this->createForm(PaiementTaxeFormType::class, $poptaxe);
+            //vérifions le contenu de l'objet requete
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($poptaxe);
+                $entityManager->flush();
+                $this->addFlash('success', "Bravo ! Le paiement de " . $monnaie->getCode() . " " . $poptaxe->getMontant() . " vient d'être effectué avec succès.");
+                return $this->redirectToRoute('outstanding.taxe.list');
+            } else {
+                return $this->render(
+                    'paiementtaxe.edit.html.twig',
+                    [
+                        'appTitreRubrique' => $appTitreRubrique,
+                        'form' => $form->createView()
+                    ]
+                );
+            }
+        } else {
+            $this->addFlash('error', "La police et/ou la monnaie n'est pas définie.");
+            return $this->redirectToRoute('outstanding.taxe.list');
+        }
+        //dd($monnaie);
+        //dd("Amount: " . $amount . " idPolicy: " . $idpolicy);
     }
 }

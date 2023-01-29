@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230127115127 extends AbstractMigration
+final class Version20230129160335 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,8 +29,7 @@ final class Version20230127115127 extends AbstractMigration
         $this->addSql('CREATE TABLE monnaie (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, nom VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, tauxusd NUMERIC(10, 2) NOT NULL, islocale TINYINT(1) NOT NULL, INDEX IDX_B3A6E2E6A4AEAFEA (entreprise_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE paiement_commission (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, monnaie_id INT NOT NULL, police_id INT NOT NULL, date DATE NOT NULL, montant NUMERIC(10, 2) NOT NULL, refnotededebit VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, INDEX IDX_8AAA6FA8A4AEAFEA (entreprise_id), INDEX IDX_8AAA6FA898D3FE22 (monnaie_id), INDEX IDX_8AAA6FA837E60BE1 (police_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE paiement_partenaire (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, monnaie_id INT NOT NULL, partenaire_id INT NOT NULL, police_id INT NOT NULL, date DATE NOT NULL, montant NUMERIC(10, 2) NOT NULL, refnotededebit VARCHAR(255) NOT NULL, INDEX IDX_A430CD83A4AEAFEA (entreprise_id), INDEX IDX_A430CD8398D3FE22 (monnaie_id), INDEX IDX_A430CD8398DE13AC (partenaire_id), INDEX IDX_A430CD8337E60BE1 (police_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE paiement_taxe (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, monnaie_id INT NOT NULL, taxe_id INT NOT NULL, date DATE NOT NULL, montant NUMERIC(10, 2) NOT NULL, exercice VARCHAR(255) DEFAULT NULL, refnotededebit VARCHAR(255) NOT NULL, INDEX IDX_A9086544A4AEAFEA (entreprise_id), INDEX IDX_A908654498D3FE22 (monnaie_id), INDEX IDX_A90865441AB947A4 (taxe_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE paiement_taxe_police (paiement_taxe_id INT NOT NULL, police_id INT NOT NULL, INDEX IDX_F5216C17783F755 (paiement_taxe_id), INDEX IDX_F5216C1737E60BE1 (police_id), PRIMARY KEY(paiement_taxe_id, police_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE paiement_taxe (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, monnaie_id INT NOT NULL, taxe_id INT NOT NULL, police_id INT NOT NULL, date DATE NOT NULL, montant NUMERIC(10, 2) NOT NULL, exercice VARCHAR(255) DEFAULT NULL, refnotededebit VARCHAR(255) NOT NULL, INDEX IDX_A9086544A4AEAFEA (entreprise_id), INDEX IDX_A908654498D3FE22 (monnaie_id), INDEX IDX_A90865441AB947A4 (taxe_id), INDEX IDX_A908654437E60BE1 (police_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE partenaire (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, nom VARCHAR(255) NOT NULL, part NUMERIC(10, 2) NOT NULL, adresse VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, siteweb VARCHAR(255) DEFAULT NULL, rccm VARCHAR(255) DEFAULT NULL, idnat VARCHAR(255) DEFAULT NULL, numimpot VARCHAR(255) DEFAULT NULL, INDEX IDX_32FFA373A4AEAFEA (entreprise_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE police (id INT AUTO_INCREMENT NOT NULL, entreprise_id INT NOT NULL, monnaie_id INT NOT NULL, client_id INT NOT NULL, produit_id INT NOT NULL, partenaire_id INT DEFAULT NULL, reference VARCHAR(255) NOT NULL, dateoperation DATE NOT NULL, dateemission DATE NOT NULL, dateeffet DATE NOT NULL, dateexpiration DATE NOT NULL, idavenant INT NOT NULL, typeavenant VARCHAR(255) NOT NULL, capital NUMERIC(10, 2) NOT NULL, primenette NUMERIC(10, 2) NOT NULL, fronting NUMERIC(10, 2) NOT NULL, arca NUMERIC(10, 2) NOT NULL, tva NUMERIC(10, 2) NOT NULL, fraisadmin NUMERIC(10, 2) NOT NULL, primetotale NUMERIC(10, 2) NOT NULL, discount NUMERIC(10, 2) NOT NULL, modepaiement VARCHAR(255) NOT NULL, ricom NUMERIC(10, 2) NOT NULL, localcom NUMERIC(10, 2) NOT NULL, frontingcom NUMERIC(10, 2) NOT NULL, remarques VARCHAR(255) DEFAULT NULL, reassureurs VARCHAR(255) DEFAULT NULL, cansharericom TINYINT(1) NOT NULL, cansharelocalcom TINYINT(1) NOT NULL, cansharefrontingcom TINYINT(1) NOT NULL, ricompayableby VARCHAR(255) NOT NULL, localcompayableby VARCHAR(255) NOT NULL, frontingcompayableby VARCHAR(255) NOT NULL, INDEX IDX_E47C5959A4AEAFEA (entreprise_id), INDEX IDX_E47C595998D3FE22 (monnaie_id), INDEX IDX_E47C595919EB6921 (client_id), INDEX IDX_E47C5959F347EFB (produit_id), INDEX IDX_E47C595998DE13AC (partenaire_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE police_assureur (police_id INT NOT NULL, assureur_id INT NOT NULL, INDEX IDX_674BE03E37E60BE1 (police_id), INDEX IDX_674BE03E80F7E20A (assureur_id), PRIMARY KEY(police_id, assureur_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -56,8 +55,7 @@ final class Version20230127115127 extends AbstractMigration
         $this->addSql('ALTER TABLE paiement_taxe ADD CONSTRAINT FK_A9086544A4AEAFEA FOREIGN KEY (entreprise_id) REFERENCES entreprise (id)');
         $this->addSql('ALTER TABLE paiement_taxe ADD CONSTRAINT FK_A908654498D3FE22 FOREIGN KEY (monnaie_id) REFERENCES monnaie (id)');
         $this->addSql('ALTER TABLE paiement_taxe ADD CONSTRAINT FK_A90865441AB947A4 FOREIGN KEY (taxe_id) REFERENCES taxe (id)');
-        $this->addSql('ALTER TABLE paiement_taxe_police ADD CONSTRAINT FK_F5216C17783F755 FOREIGN KEY (paiement_taxe_id) REFERENCES paiement_taxe (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE paiement_taxe_police ADD CONSTRAINT FK_F5216C1737E60BE1 FOREIGN KEY (police_id) REFERENCES police (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE paiement_taxe ADD CONSTRAINT FK_A908654437E60BE1 FOREIGN KEY (police_id) REFERENCES police (id)');
         $this->addSql('ALTER TABLE partenaire ADD CONSTRAINT FK_32FFA373A4AEAFEA FOREIGN KEY (entreprise_id) REFERENCES entreprise (id)');
         $this->addSql('ALTER TABLE police ADD CONSTRAINT FK_E47C5959A4AEAFEA FOREIGN KEY (entreprise_id) REFERENCES entreprise (id)');
         $this->addSql('ALTER TABLE police ADD CONSTRAINT FK_E47C595998D3FE22 FOREIGN KEY (monnaie_id) REFERENCES monnaie (id)');
@@ -92,8 +90,7 @@ final class Version20230127115127 extends AbstractMigration
         $this->addSql('ALTER TABLE paiement_taxe DROP FOREIGN KEY FK_A9086544A4AEAFEA');
         $this->addSql('ALTER TABLE paiement_taxe DROP FOREIGN KEY FK_A908654498D3FE22');
         $this->addSql('ALTER TABLE paiement_taxe DROP FOREIGN KEY FK_A90865441AB947A4');
-        $this->addSql('ALTER TABLE paiement_taxe_police DROP FOREIGN KEY FK_F5216C17783F755');
-        $this->addSql('ALTER TABLE paiement_taxe_police DROP FOREIGN KEY FK_F5216C1737E60BE1');
+        $this->addSql('ALTER TABLE paiement_taxe DROP FOREIGN KEY FK_A908654437E60BE1');
         $this->addSql('ALTER TABLE partenaire DROP FOREIGN KEY FK_32FFA373A4AEAFEA');
         $this->addSql('ALTER TABLE police DROP FOREIGN KEY FK_E47C5959A4AEAFEA');
         $this->addSql('ALTER TABLE police DROP FOREIGN KEY FK_E47C595998D3FE22');
@@ -114,7 +111,6 @@ final class Version20230127115127 extends AbstractMigration
         $this->addSql('DROP TABLE paiement_commission');
         $this->addSql('DROP TABLE paiement_partenaire');
         $this->addSql('DROP TABLE paiement_taxe');
-        $this->addSql('DROP TABLE paiement_taxe_police');
         $this->addSql('DROP TABLE partenaire');
         $this->addSql('DROP TABLE police');
         $this->addSql('DROP TABLE police_assureur');

@@ -101,11 +101,11 @@ class OutstandingTaxeController extends AbstractController
         foreach ($data as $police) {
             //On va vérifier aussi les paiements possibles
             $data_popTaxes = $paiementTaxeRepository->findByMotCle([
+                'dateA' => "",
+                'dateB' => "",
                 'motcle' => "",
                 'police' => $police,
-                'taxe' => null,
-                'dateA' => $objCritereSession['dateA'],
-                'dateB' => $objCritereSession['dateB']
+                'taxe' => null
             ], null);
 
             // dd($taxes);
