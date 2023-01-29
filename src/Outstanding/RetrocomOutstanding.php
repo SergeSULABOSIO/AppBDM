@@ -12,6 +12,7 @@ class RetrocomOutstanding
     public $montantDecaisse = 0;
     public $montantSolde = 0;
     public $codeMonnaie = "...";
+    public $canPay = false;
 
     public function __construct($police, $poppartenaires)
     {
@@ -84,5 +85,15 @@ class RetrocomOutstanding
     public function getPopPartenaires()
     {
         return $this->poppartenaires;
+    }
+
+    public function isCanPay()
+    {
+        return $this->canPay;
+    }
+
+    public function setCanPay($value)
+    {
+        $this->canPay = $value;
     }
 }

@@ -19,8 +19,9 @@
 		class="container-fluid">
 		<!-- Small boxes (Stat box) -->
 		<div class="row">
-				<div
-				class="col-lg-3 col-6"> <!-- small box -->
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
 				<div class="small-box bg-danger">
 					<div class="inner">
 						<h4>{{agregats.codemonnaie}}
@@ -60,9 +61,9 @@
 					Chercher
 				</button>
 				{# <a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
-					<i class="fa-solid fa-circle-plus"></i>
-					Nouveau
-				</a> #}
+																	<i class="fa-solid fa-circle-plus"></i>
+																	Nouveau
+																</a> #}
 			</div>
 		</div>
 		<div class="form-row align-items-end m-2">
@@ -94,6 +95,11 @@
 
 					<div class="card m-2 p-0" style="width: 18rem;">
 						<h5 class="card-header">
+							{% if outstanding.canPay == true %}
+								<span class="badge badge-danger">
+									<i class="fa-solid fa-trophy"></i>
+								</span>
+							{% endif %}
 							<i class="fa-solid fa-filter-circle-dollar"></i>
 							{{outstanding.codeMonnaie}}
 							{{outstanding.montantSolde|number_format(2, ',', '.')}}
@@ -101,16 +107,15 @@
 						<div class="card-body">
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-umbrella"></i>
-								Réf.:{{outstanding.police.reference}}
+								{{outstanding.police.reference}}
 							</div>
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-umbrella"></i>
-								Prime Totale:{{outstanding.police.monnaie.code}}
+								{{outstanding.police.monnaie.code}}
 								{{outstanding.police.primetotale|number_format(2, ',', '.')}}
 							</div>
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-calendar-day"></i>
-								Période:
 								{{outstanding.police.dateeffet|date("d/m/Y")}}
 								-
 								{{outstanding.police.dateexpiration|date("d/m/Y")}}
@@ -164,12 +169,18 @@
 									<i class="fa-solid fa-screwdriver-wrench"></i>
 									Actions
 								</a>
-
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-									<a class="dropdown-item" href="{{ path('poptaxe.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantSolde, idmonnaie:outstanding.police.monnaie.id}) }}">
-										<i class="fa-solid fa-money-bill-transfer"></i>
-										Payer
+									<a class="dropdown-item" href="{{ path('police.details', {id:outstanding.police.id}) }}">
+										<i class="fa-solid fa-umbrella"></i>
+										Ouvrir la police
 									</a>
+									{% if outstanding.canPay == true %}
+										<a class="dropdown-item" href="{{ path('poptaxe.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantSolde, idmonnaie:outstanding.police.monnaie.id}) }}">
+											<i class="fa-solid fa-money-bill-transfer"></i>
+											Payer
+										</a>
+									{% endif %}
+
 								</div>
 							</span>
 						</div>

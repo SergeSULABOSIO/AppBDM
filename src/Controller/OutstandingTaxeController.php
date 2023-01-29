@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use PoliceSearchType;
+use App\Repository\TaxeRepository;
 use App\Outstanding\TaxeOutstanding;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
@@ -12,15 +13,16 @@ use App\Repository\AssureurRepository;
 use App\Agregats\OutstandingTaxeAgregat;
 use App\Outstanding\RetrocomOutstanding;
 use App\Repository\PartenaireRepository;
+use App\Outstanding\CommissionOutstanding;
+use App\Repository\PaiementTaxeRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Agregats\OutstandingCommissionAgregat;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\PaiementCommissionRepository;
 use App\Repository\PaiementPartenaireRepository;
 use App\Agregats\OutstandingRetroCommissionAgregat;
-use App\Repository\PaiementTaxeRepository;
-use App\Repository\TaxeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route("/outstanding")]
@@ -32,6 +34,7 @@ class OutstandingTaxeController extends AbstractController
         $page,
         $nbre,
         PaiementTaxeRepository $paiementTaxeRepository,
+        PaiementCommissionRepository $paiementCommissionRepository,
         TaxeRepository $taxeRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
@@ -117,6 +120,26 @@ class OutstandingTaxeController extends AbstractController
             if ($taxeOustanding->montantSolde != 0) {
                 $agreg_montant += $taxeOustanding->montantSolde;
                 $agreg_codeMonnaie = $taxeOustanding->codeMonnaie;
+
+
+                //On vérifie si nous avons déjà encaissé toutes les commissions relatives à cette police
+                $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
+                    'dateA' => "",
+                    'dateB' => "",
+                    'motcle' => "",
+                    'police' => $police,
+                    'assureur' => null,
+                    'client' => $police->getClient(),
+                    'partenaire' => $police->getPartenaire()
+                ], null);
+                $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
+                //dd($commOustanding);
+                //Sur le twig on ne pouura etre en mesure de payer que les Outstanding retrocom pour lesquelles nous avons déjà enciassé 100% de commission de courtage!!!
+                if ($commOustanding->montantSolde == 0) {
+                    $taxeOustanding->setCanPay(true);
+                } else {
+                    $taxeOustanding->setCanPay(false);
+                }
                 $outstandings[] = $taxeOustanding;
             }
         }

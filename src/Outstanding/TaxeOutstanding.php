@@ -13,6 +13,7 @@ class TaxeOutstanding
     public $montantDecaisse = 0;
     public $montantSolde = 0;
     public $codeMonnaie = "...";
+    public $canPay = false;
 
     public function __construct($police, $poptaxes, $taxes)
     {
@@ -68,5 +69,15 @@ class TaxeOutstanding
     public function getPopTaxes()
     {
         return $this->poptaxes;
+    }
+
+    public function isCanPay()
+    {
+        return $this->canPay;
+    }
+
+    public function setCanPay($value)
+    {
+        $this->canPay = $value;
     }
 }

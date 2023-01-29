@@ -29,6 +29,7 @@ class OutstandingRetroComController extends AbstractController
         Request $request,
         $page,
         $nbre,
+        PaiementCommissionRepository $paiementCommissionRepository,
         PaiementPartenaireRepository $paiementPartenaireRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
@@ -103,14 +104,34 @@ class OutstandingRetroComController extends AbstractController
                 'partenaire' => $police->getPartenaire()
             ], null);
 
-            $commOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+            $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
 
-            //dd($commOustanding);
+            //dd($retrocommOustanding);
+            if ($retrocommOustanding->montantSolde != 0) {
+                $agreg_montant += $retrocommOustanding->montantSolde;
+                $agreg_codeMonnaie = $retrocommOustanding->codeMonnaie;
 
-            if ($commOustanding->montantSolde != 0) {
-                $agreg_montant += $commOustanding->montantSolde;
-                $agreg_codeMonnaie = $commOustanding->codeMonnaie;
-                $outstandings[] = $commOustanding;
+
+                //On vérifie si nous avons déjà encaissé toutes les commissions relatives à cette police
+                $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
+                    'dateA' => "",
+                    'dateB' => "",
+                    'motcle' => "",
+                    'police' => $police,
+                    'assureur' => null,
+                    'client' => $police->getClient(),
+                    'partenaire' => $police->getPartenaire()
+                ], null);
+                $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
+                //dd($commOustanding);
+                //Sur le twig on ne pouura etre en mesure de payer que les Outstanding retrocom pour lesquelles nous avons déjà enciassé 100% de commission de courtage!!!
+                if ($commOustanding->montantSolde == 0) {
+                    $retrocommOustanding->setCanPay(true);
+                }else{
+                    $retrocommOustanding->setCanPay(false);
+                }
+                //dd($retrocommOustanding);
+                $outstandings[] = $retrocommOustanding;
             }
         }
         $agregats->setCodeMonnaie($agreg_codeMonnaie);
