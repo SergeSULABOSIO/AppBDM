@@ -45,6 +45,25 @@
 	{# BLOC DU MOTEUR DE RECHERCHE #}
 	{{ form_start(search_form) }}
 	<div class="align-content-center">
+		<div class="form-row align-items-end m-2" style="display:block">
+			<div class="col">
+				{{ form_row(search_form.taxe) }}
+			</div>
+		</div>
+		<div class="form-row align-items-end m-2">
+			<div class="col">
+				{{ form_row(search_form.assureur) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.produit) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.partenaire) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.client) }}
+			</div>
+		</div>
 		<div class="form-row align-items-end m-2">
 			<div class="col">
 				{{ form_row(search_form.dateA) }}
@@ -60,24 +79,6 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 					Chercher
 				</button>
-				{# <a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
-																	<i class="fa-solid fa-circle-plus"></i>
-																	Nouveau
-																</a> #}
-			</div>
-		</div>
-		<div class="form-row align-items-end m-2">
-			<div class="col">
-				{{ form_row(search_form.assureur) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.produit) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.partenaire) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.client) }}
 			</div>
 		</div>
 	</div>

@@ -9,13 +9,14 @@ class TaxeOutstanding
     private ?Police $police = null;
     private $poptaxes = [];
     private $taxes = [];
+    private $taxeSelected = null;
     public $montantDu = 0;
     public $montantDecaisse = 0;
     public $montantSolde = 0;
     public $codeMonnaie = "...";
     public $canPay = false;
 
-    public function __construct($police, $poptaxes, $taxes)
+    public function __construct($police, $poptaxes, $taxes, $taxeSelected)
     {
         // $this->popcommissions = new ArrayCollection();
         if ($police !== null) {
@@ -26,6 +27,9 @@ class TaxeOutstanding
         }
         if($taxes !== null){
             $this->taxes = $taxes;
+        }
+        if ($taxeSelected !== null) {
+            $this->taxeSelected = $taxeSelected;
         }
         $this->calculateMontantDu();
     }
@@ -52,6 +56,7 @@ class TaxeOutstanding
             foreach ($this->poptaxes as $poptaxe) {
                 if ($poptaxe->getPolice()) {
                     if ($poptaxe->getPolice()->getId() == $this->police->getId()) {
+                        
                         $this->montantDecaisse += $poptaxe->getMontant();
                     }
                 }

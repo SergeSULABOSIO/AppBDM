@@ -54,6 +54,8 @@ class OutstandingTaxeController extends AbstractController
             'motcle' => ""
         ]);
 
+        $objTaxeSelected = null;
+
         $searchOutstandingForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchOutstandingForm->getData();
@@ -65,6 +67,8 @@ class OutstandingTaxeController extends AbstractController
             //dd($criteres);
             $data = $policeRepository->findByMotCle($criteres, null);
             $session->set($nomSession, $criteres);
+            $objTaxeSelected = $criteres['taxe'];
+            //dd($objTaxeSelected);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
@@ -74,11 +78,13 @@ class OutstandingTaxeController extends AbstractController
                 $session_partenaire = $objCritereSession['partenaire'] ? $objCritereSession['partenaire'] : null;
                 $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
                 $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
+                $session_taxe = $objCritereSession['taxe'] ? $objCritereSession['taxe'] : null;
 
                 $objproduit = $session_produit ? $produitRepository->find($session_produit->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
+                $objTaxeSelected = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
 
                 $data = $policeRepository->findByMotCle($objCritereSession, null);
 
@@ -113,9 +119,9 @@ class OutstandingTaxeController extends AbstractController
 
             // dd($taxes);
 
-            $taxeOustanding = new TaxeOutstanding($police, $data_popTaxes, $taxes);
+            $taxeOustanding = new TaxeOutstanding($police, $data_popTaxes, $taxes, $objTaxeSelected);
 
-            //dd($commOustanding);
+            //dd($taxeOustanding);
 
             if ($taxeOustanding->montantSolde != 0) {
                 $agreg_montant += $taxeOustanding->montantSolde;

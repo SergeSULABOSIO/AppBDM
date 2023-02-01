@@ -26,9 +26,8 @@
 						<h5>
 							{{agregats.codemonnaie}}
 							{{agregats.primetotale|number_format(2, ',', '.')}}
-							(ttc)
 						</h5>
-						Prime totale (net:
+						Prime nette:
 						{{agregats.codemonnaie}}
 						{{agregats.primenette|number_format(2, ',', '.')}}).
 					</div>
@@ -50,9 +49,8 @@
 						<h5>
 							{{agregats.codemonnaie}}
 							{{agregats.commissiontotale|number_format(2, ',', '.')}}
-							(ttc)
 						</h5>
-						Commission totale (net:
+						Commissions nettes:
 						{{agregats.codemonnaie}}
 						{{agregats.commissionnette|number_format(2, ',', '.')}}).
 					</div>
@@ -143,6 +141,11 @@
 					<i class="fa-solid fa-magnifying-glass"></i>
 					Chercher
 				</button>
+			</div>
+		</div>
+		<div class="form-row align-items-end m-2"  style="display:none">
+			<div class="col">
+				{{ form_row(search_form.taxe) }}
 			</div>
 		</div>
 	</div>

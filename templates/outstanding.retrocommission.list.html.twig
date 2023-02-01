@@ -45,25 +45,9 @@
 	{# BLOC DU MOTEUR DE RECHERCHE #}
 	{{ form_start(search_form) }}
 	<div class="align-content-center">
-		<div class="form-row align-items-end m-2">
+		<div class="form-row align-items-end m-2" style="display:none">
 			<div class="col">
-				{{ form_row(search_form.dateA) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.dateB) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.motcle) }}
-			</div>
-			<div class="col">
-				<button type="submit" class="btn btn-primary">
-					<i class="fa-solid fa-magnifying-glass"></i>
-					Chercher
-				</button>
-				{# <a href="{{ path('police.edit') }}" type="button" class="btn btn-success">
-																																	<i class="fa-solid fa-circle-plus"></i>
-																																	Nouveau
-																																</a> #}
+				{{ form_row(search_form.taxe) }}
 			</div>
 		</div>
 		<div class="form-row align-items-end m-2">
@@ -80,6 +64,24 @@
 				{{ form_row(search_form.client) }}
 			</div>
 		</div>
+		<div class="form-row align-items-end m-2">
+			<div class="col">
+				{{ form_row(search_form.dateA) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.dateB) }}
+			</div>
+			<div class="col">
+				{{ form_row(search_form.motcle) }}
+			</div>
+			<div class="col">
+				<button type="submit" class="btn btn-primary">
+					<i class="fa-solid fa-magnifying-glass"></i>
+					Chercher
+				</button>
+			</div>
+		</div>
+
 	</div>
 	{{ form_end(search_form) }}
 
@@ -118,7 +120,7 @@
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-calendar-day"></i>
 								{{outstanding.police.dateeffet|date("d/m/Y")}}
-								 - 
+								-
 								{{outstanding.police.dateexpiration|date("d/m/Y")}}
 							</div>
 							<div class="card-subtitle mb-2 text-muted">

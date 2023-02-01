@@ -85,6 +85,17 @@ class PoliceSearchType extends AbstractType
                     'class' => 'input-group'
                 ]
             ])
+            ->add('taxe', EntityType::class, [
+                'expanded' => false,
+                'multiple' => false,
+                'required' => false,
+                'placeholder' => 'Tous',
+                'row_attr' => [
+                    'class' => 'input-group'
+                ],
+                'class'  => Taxe::class,
+                'label' => "Taxe"
+            ])
             ->add("motcle", TextType::class, [
                 'label' => "Mot clé",
                 'required' => false,
