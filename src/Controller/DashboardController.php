@@ -29,17 +29,68 @@ class DashboardController extends AbstractController
     #[Route('/index', name: 'dashboard')]
     public function index(
         Request $request,
-        PoliceRepository $policeRepository
-    ): Response
-    {
-        
+        PoliceRepository $policeRepository,
+        ProduitRepository $produitRepository,
+        ClientRepository $clientRepository,
+        PartenaireRepository $partenaireRepository,
+        AssureurRepository $assureurRepository
+    ): Response {
+        $agregats_dashboard = new PoliceAgregat();
+        $session_name_dashboard = "criteres_liste_dashboard";
+
+        $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
+            'dateA' => new DateTime('now'),
+            'dateB' => new DateTime('now')
+        ]);
+        $search_Dashboard_Form->handleRequest($request);
+        $session_dashboard = $request->getSession();
+        $criteres_dashboard = $search_Dashboard_Form->getData();
+
+        $data = [];
+        if ($search_Dashboard_Form->isSubmitted() && $search_Dashboard_Form->isValid()) {
+            //dd($criteres);
+            $data = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard);
+            $session_dashboard->set($session_name_dashboard, $criteres_dashboard);
+            //dd($session->get("criteres_liste_pop_taxe"));
+        } else {
+            //dd($session->get("criteres_liste_pop_taxe"));
+            $objCritereSession = $session_dashboard->get($session_name_dashboard);
+            if ($objCritereSession) {
+                $session_produit = $objCritereSession['produit'] ? $objCritereSession['produit'] : null;
+                $session_partenaire = $objCritereSession['partenaire'] ? $objCritereSession['partenaire'] : null;
+                $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
+                $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
+
+                $objproduit = $session_produit ? $produitRepository->find($session_produit->getId()) : null;
+                $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
+                $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
+                $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
+
+                $data = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard);
+
+                $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
+                    'motcle' => $objCritereSession['motcle'],
+                    'produit' => $objproduit,
+                    'partenaire' => $objPartenaire,
+                    'client' => $objClient,
+                    'assureur' => $objAssureur,
+                    'dateA' => $objCritereSession['dateA'],
+                    'dateB' => $objCritereSession['dateB']
+                ]);
+            }
+        }
+
+        //dd($data);
+
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
             'dashboard.html.twig',
             [
-                'appTitreRubrique' => $appTitreRubrique
+                'appTitreRubrique' => $appTitreRubrique,
+                'search_form' => $search_Dashboard_Form->createView(),
+                //'polices' => $polices,
+                'agregats' => $agregats_dashboard
             ]
         );
     }
-
 }

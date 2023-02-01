@@ -35,7 +35,7 @@ class PoliceController extends AbstractController
         ProduitRepository $produitRepository, 
         ClientRepository $clientRepository, 
         PartenaireRepository $partenaireRepository,
-        AssureurRepository $assureurRepository, 
+        AssureurRepository $assureurRepository,
         PaginatorInterface $paginatorInterface
     ): Response
     {
