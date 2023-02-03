@@ -164,11 +164,13 @@ class PaiementTaxeController extends AbstractController
 
 
 
-    #[Route('/deposit/{idpolicy?0}/{amount?0}/{idmonnaie?0}', name: 'poptaxe.deposit')]
+    #[Route('/deposit/{idtaxe?0}/{idpolicy?0}/{amount?0}/{idmonnaie?0}', name: 'poptaxe.deposit')]
     public function deposit(
+        $idtaxe,
         $idpolicy,
         $idmonnaie,
         $amount,
+        TaxeRepository $taxeRepository,
         PoliceRepository $policeRepository,
         MonnaieRepository $monnaieRepository,
         ManagerRegistry $doctrine,
@@ -182,12 +184,13 @@ class PaiementTaxeController extends AbstractController
         $poptaxe = new PaiementTaxe();
         $police = $policeRepository->find($idpolicy);
         $monnaie = $monnaieRepository->find($idmonnaie);
+        $taxe = $taxeRepository->find($idtaxe);
 
         if ($police && $monnaie) {
             $poptaxe->setMontant($amount);
             $poptaxe->setMonnaie($monnaie);
             $poptaxe->setPolice($police);
-            
+            $poptaxe->setTaxe($taxe);            
             //dd($popcommission);
 
             $form = $this->createForm(PaiementTaxeFormType::class, $poptaxe);

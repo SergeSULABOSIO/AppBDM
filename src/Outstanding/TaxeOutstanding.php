@@ -2,21 +2,21 @@
 
 namespace App\Outstanding;
 
+use App\Entity\Taxe;
 use App\Entity\Police;
 
 class TaxeOutstanding
 {
     private ?Police $police = null;
     private $poptaxes = [];
-    private $taxes = [];
-    private $taxeSelected = null;
+    private ?Taxe $taxe = null;
     public $montantDu = 0;
     public $montantDecaisse = 0;
     public $montantSolde = 0;
     public $codeMonnaie = "...";
     public $canPay = false;
 
-    public function __construct($police, $poptaxes, $taxes, $taxeSelected)
+    public function __construct($police, $poptaxes, $taxe)
     {
         // $this->popcommissions = new ArrayCollection();
         if ($police !== null) {
@@ -25,11 +25,8 @@ class TaxeOutstanding
         if ($poptaxes !== null) {
             $this->poptaxes = $poptaxes;
         }
-        if($taxes !== null){
-            $this->taxes = $taxes;
-        }
-        if ($taxeSelected !== null) {
-            $this->taxeSelected = $taxeSelected;
+        if ($taxe !== null) {
+            $this->taxe = $taxe;
         }
         $this->calculateMontantDu();
     }
@@ -44,8 +41,8 @@ class TaxeOutstanding
 
             // $this->montantDu += $net_including_arca * (16 / 100);
             // $this->montantDu += $net_including_arca * (2 / 100);
-            foreach ($this->taxes as $taxe) {
-                $this->montantDu += $net_including_arca * ($taxe->getTaux() / 100);
+            if ($this->taxe) {
+                $this->montantDu += $net_including_arca * ($this->taxe->getTaux() / 100);
             }
 
             if ($this->police->getMonnaie() != null) {
@@ -54,9 +51,8 @@ class TaxeOutstanding
 
             //Vérification des com encaissées
             foreach ($this->poptaxes as $poptaxe) {
-                if ($poptaxe->getPolice()) {
-                    if ($poptaxe->getPolice()->getId() == $this->police->getId()) {
-                        
+                if ($poptaxe->getPolice() && $poptaxe->getTaxe()) {
+                    if (($poptaxe->getTaxe() == $this->taxe) && ($poptaxe->getPolice()->getId() == $this->police->getId())) {
                         $this->montantDecaisse += $poptaxe->getMontant();
                     }
                 }
@@ -64,6 +60,11 @@ class TaxeOutstanding
             $this->montantSolde = $this->montantDu - $this->montantDecaisse;
             //dd($this);
         }
+    }
+
+    public function getTaxe()
+    {
+        return $this->taxe;
     }
 
     public function getPolice()

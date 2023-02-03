@@ -117,36 +117,44 @@ class OutstandingTaxeController extends AbstractController
                 'taxe' => null
             ], null);
 
-            // dd($taxes);
+            //dd($taxes);
 
-            $taxeOustanding = new TaxeOutstanding($police, $data_popTaxes, $taxes, $objTaxeSelected);
-
-            //dd($taxeOustanding);
-
-            if ($taxeOustanding->montantSolde != 0) {
-                $agreg_montant += $taxeOustanding->montantSolde;
-                $agreg_codeMonnaie = $taxeOustanding->codeMonnaie;
-
-
-                //On vérifie si nous avons déjà encaissé toutes les commissions relatives à cette police
-                $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
-                    'dateA' => "",
-                    'dateB' => "",
-                    'motcle' => "",
-                    'police' => $police,
-                    'assureur' => null,
-                    'client' => $police->getClient(),
-                    'partenaire' => $police->getPartenaire()
-                ], null);
-                $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
-                //dd($commOustanding);
-                //Sur le twig on ne pouura etre en mesure de payer que les Outstanding retrocom pour lesquelles nous avons déjà enciassé 100% de commission de courtage!!!
-                if ($commOustanding->montantSolde == 0) {
-                    $taxeOustanding->setCanPay(true);
-                } else {
-                    $taxeOustanding->setCanPay(false);
+            foreach ($taxes as $taxe) {
+                $taxeOustanding = null;
+                if($objTaxeSelected){
+                    if($objTaxeSelected == $taxe){
+                        $taxeOustanding = new TaxeOutstanding($police, $data_popTaxes, $taxe);
+                    }else{
+                        continue;
+                    }
+                }else{
+                    $taxeOustanding = new TaxeOutstanding($police, $data_popTaxes, $taxe);
                 }
-                $outstandings[] = $taxeOustanding;
+
+                //dd($taxeOustanding);
+                if ($taxeOustanding->montantSolde != 0) {
+                    $agreg_montant += $taxeOustanding->montantSolde;
+                    $agreg_codeMonnaie = $taxeOustanding->codeMonnaie;
+                    //On vérifie si nous avons déjà encaissé toutes les commissions relatives à cette police
+                    $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
+                        'dateA' => "",
+                        'dateB' => "",
+                        'motcle' => "",
+                        'police' => $police,
+                        'assureur' => null,
+                        'client' => $police->getClient(),
+                        'partenaire' => $police->getPartenaire()
+                    ], null);
+                    $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
+                    //dd($commOustanding);
+                    //Sur le twig on ne pouura etre en mesure de payer que les Outstanding retrocom pour lesquelles nous avons déjà enciassé 100% de commission de courtage!!!
+                    if ($commOustanding->montantSolde == 0) {
+                        $taxeOustanding->setCanPay(true);
+                    } else {
+                        $taxeOustanding->setCanPay(false);
+                    }
+                    $outstandings[] = $taxeOustanding;
+                }
             }
         }
         $agregats->setCodeMonnaie($agreg_codeMonnaie);

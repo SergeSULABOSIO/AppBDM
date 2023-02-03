@@ -30,7 +30,7 @@
 						Totale dûe à l'Etat.
 					</div>
 					<div class="icon">
-						<i class="fa-solid fa-handshake"></i>
+						<i class="fa-solid fa-scale-balanced"></i>
 					</div>
 					<a href="#" class="small-box-footer">
 						<i class="fas fa-arrow-circle-right"></i>
@@ -107,19 +107,12 @@
 						</h5>
 						<div class="card-body">
 							<div class="card-subtitle mb-2 text-muted">
+								<i class="fa-solid fa-city"></i>
+								{{outstanding.taxe.nom}} dûe à {{outstanding.taxe.organisation}}
+							</div>
+							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-umbrella"></i>
 								{{outstanding.police.reference}}
-							</div>
-							<div class="card-subtitle mb-2 text-muted">
-								<i class="fa-solid fa-umbrella"></i>
-								{{outstanding.police.monnaie.code}}
-								{{outstanding.police.primetotale|number_format(2, ',', '.')}}
-							</div>
-							<div class="card-subtitle mb-2 text-muted">
-								<i class="fa-solid fa-calendar-day"></i>
-								{{outstanding.police.dateeffet|date("d/m/Y")}}
-								-
-								{{outstanding.police.dateexpiration|date("d/m/Y")}}
 							</div>
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-people-roof"></i>
@@ -139,28 +132,7 @@
 									{{outstanding.police.partenaire.nom}}
 								</div>
 							{% endif %}
-							<p class="card-text">
-								{{outstanding.police.produit.nom}}
-								-
-								{% if outstanding.police.typeavenant == 0 %}
-									(SOUSCRIPTION)
-								{% endif %}
-								{% if outstanding.police.typeavenant == 1 %}
-									(RENOUVELLEMENT)
-								{% endif %}
-								{% if outstanding.police.typeavenant == 2 %}
-									(ANNULATION)
-								{% endif %}
-								{% if outstanding.police.typeavenant == 3 %}
-									(RESILIATION)
-								{% endif %}
-								{% if outstanding.police.typeavenant == 4 %}
-									(RISTOURNE)
-								{% endif %}
-								{% if outstanding.police.typeavenant == 5 %}
-									(PROROGATION)
-								{% endif %}
-							</p>
+							
 							<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:outstanding.police.id}) }}">
 								<i class="fa-solid fa-circle-info"></i>
 								Voire la police
@@ -176,7 +148,7 @@
 										Ouvrir la police
 									</a>
 									{% if outstanding.canPay == true %}
-										<a class="dropdown-item" href="{{ path('poptaxe.deposit', {idpolicy:outstanding.police.id, amount:outstanding.montantSolde, idmonnaie:outstanding.police.monnaie.id}) }}">
+										<a class="dropdown-item" href="{{ path('poptaxe.deposit', {idtaxe:outstanding.taxe.id, idpolicy:outstanding.police.id, amount:outstanding.montantSolde, idmonnaie:outstanding.police.monnaie.id}) }}">
 											<i class="fa-solid fa-money-bill-transfer"></i>
 											Payer
 										</a>
