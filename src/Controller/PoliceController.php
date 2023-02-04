@@ -14,6 +14,7 @@ use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\AssureurRepository;
 use App\Repository\PartenaireRepository;
+use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,7 @@ class PoliceController extends AbstractController
         ClientRepository $clientRepository, 
         PartenaireRepository $partenaireRepository,
         AssureurRepository $assureurRepository,
+        TaxeRepository $taxeRepository,
         PaginatorInterface $paginatorInterface
     ): Response
     {
@@ -49,11 +51,13 @@ class PoliceController extends AbstractController
         $session = $request->getSession();
         $criteres = $searchPoliceForm->getData();
 
+        $taxes = $taxeRepository->findAll();
+
         $data = [];
         if ($searchPoliceForm->isSubmitted() && $searchPoliceForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres, $agregats);
+            $data = $policeRepository->findByMotCle($criteres, $agregats, $taxes);
             $session->set("criteres_liste_police", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -70,7 +74,7 @@ class PoliceController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, $agregats);
+                $data = $policeRepository->findByMotCle($objCritereSession, $agregats, $taxes);
 
                 $searchPoliceForm = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],

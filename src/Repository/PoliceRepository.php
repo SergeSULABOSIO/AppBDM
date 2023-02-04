@@ -43,7 +43,7 @@ class PoliceRepository extends ServiceEntityRepository
     /**
      * @return Police[] Returns an array of Police objects
      */
-    public function findByMotCle($criteres, $agregat): array
+    public function findByMotCle($criteres, $agregat, $taxes): array
     {
 
         $query = $this->createQueryBuilder('p')
@@ -140,23 +140,28 @@ class PoliceRepository extends ServiceEntityRepository
             $comtotale = 0;
             $comnette = 0;
             //Partageable
-            $comtotale_charable = 0;
-            $comnette_charable = 0;
             $retrocom = 0;
 
             $importettaxe = 0;
             
             
             foreach ($resultFinal as $police) {
+                //Primes
                 $primetotale += $police->getPrimeTotale();
                 $primenette += $police->getPrimeNette();
+                //Commissions
                 $ricom = $police->getRiCom();
                 $localcom = $police->getLocalCom();
                 $frontingcom = $police->getFrontingCom();
 
                 $net_com_including_arca = ($ricom + $localcom + $frontingcom);
+
+                foreach ($taxes as $taxe) {
+                    $importettaxe += $net_com_including_arca * ($taxe->getTaux() / 100);
+                }
                 $tva = $net_com_including_arca * (16 / 100);
                 $arca = $net_com_including_arca * (2 / 100);
+
                 $net_com_excluding_arca = $net_com_including_arca - $arca;
                 $comtotale += $net_com_including_arca + $tva;
 
@@ -191,7 +196,6 @@ class PoliceRepository extends ServiceEntityRepository
                 //dd($retrocom);
                 
                 $comnette += $net_com_excluding_arca - $retrocom;
-                $importettaxe += ($arca + $tva);
             }
             //PRIMES
             $agregat->setPrimeTotale($primetotale);
