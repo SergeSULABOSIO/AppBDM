@@ -168,7 +168,6 @@ class PoliceRepository extends ServiceEntityRepository
                 if ($police->getMonnaie()) {
                     $codeMonnaie = $police->getMonnaie()->getCode();
                 }
-
                 //Partageable
                 $ricom_sharable = 0;
                 $localcom_sharable = 0;
