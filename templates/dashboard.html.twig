@@ -11,235 +11,397 @@
 {% endblock %}
 
 {% block appCorps %}
-
-	{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
+	<!-- Content Wrapper. Contains page content -->
 	<div
-		class="container-fluid">
-		<!-- Small boxes (Stat box) -->
-		<div class="row">
-			<div
-				class="col-lg-3 col-6">
-				<!-- small box -->
-				<div class="small-box bg-info">
-					<div class="inner">
-						<h4>PRIMES</h4>
-						<h5>
-							{{agregats.codemonnaie}}
-							{{agregats.primetotale|number_format(2, ',', '.')}}
-						</h5>
-						Prime nette:
-						{{agregats.codemonnaie}}
-						{{agregats.primenette|number_format(2, ',', '.')}}).
+		class="" style="min-height: 1345.6px;">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col">
+						<small>Champs de recherche</small>
 					</div>
-					<div class="icon">
-						<i class="fa-solid fa-umbrella"></i>
+				</div>
+				<div
+					class="row mb-2">
+					{# BLOC DU MOTEUR DE RECHERCHE #}
+					{{ form_start(search_form) }}
+					<div class="align-content-center">
+						<div class="form-row align-items-end m-2">
+							<div class="col">
+								{{ form_row(search_form.assureur) }}
+							</div>
+							<div class="col">
+								{{ form_row(search_form.produit) }}
+							</div>
+							<div class="col">
+								{{ form_row(search_form.partenaire) }}
+							</div>
+							<div class="col">
+								{{ form_row(search_form.client) }}
+							</div>
+						</div>
+						<div class="form-row align-items-end m-2">
+							<div class="col">
+								{{ form_row(search_form.dateA) }}
+							</div>
+							<div class="col">
+								{{ form_row(search_form.dateB) }}
+							</div>
+							<div class="col">
+								{{ form_row(search_form.motcle) }}
+							</div>
+							<div class="col">
+								<button type="submit" class="btn btn-primary">
+									<i class="fa-solid fa-magnifying-glass"></i>
+									Chercher
+								</button>
+							</div>
+						</div>
+						<div class="form-row align-items-end m-2" style="display:none">
+							<div class="col">
+								{{ form_row(search_form.taxe) }}
+							</div>
+						</div>
 					</div>
-					<a href="#" class="small-box-footer">
-						Primes d'assurances émises
-					</a>
+					{{ form_end(search_form) }}
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<small>Agrégats</small>
+					</div>
+				</div>
+				<div
+					class="row">
+					{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
+					<div
+						class="col-lg-3 col-6">
+						<!-- small box -->
+						<div class="small-box bg-info">
+							<div class="inner">
+								<h4>PRIMES</h4>
+								<h5>
+									{{agregats.codemonnaie}}
+									{{agregats.primetotale|number_format(2, ',', '.')}}
+								</h5>
+								Prime nette:
+								{{agregats.codemonnaie}}
+								{{agregats.primenette|number_format(2, ',', '.')}}).
+							</div>
+							<div class="icon">
+								<i class="fa-solid fa-umbrella"></i>
+							</div>
+							<a href="#" class="small-box-footer">
+								Primes d'assurances émises
+							</a>
+						</div>
+					</div>
+					<!-- ./col -->
+					<div
+						class="col-lg-3 col-6">
+						<!-- small box -->
+						<div class="small-box bg-success">
+							<div class="inner">
+								<h4>COMMISSIONS</h4>
+								<h5>
+									{{agregats.codemonnaie}}
+									{{agregats.commissiontotale|number_format(2, ',', '.')}}
+								</h5>
+								Commissions nettes:
+								{{agregats.codemonnaie}}
+								{{agregats.commissionnette|number_format(2, ',', '.')}}).
+							</div>
+							<div class="icon">
+								<i class="fa-solid fa-house-laptop"></i>
+							</div>
+							<a href="#" class="small-box-footer">
+								Commissions de courtage
+							</a>
+						</div>
+					</div>
+					<!-- ./col -->
+					<div
+						class="col-lg-3 col-6">
+						<!-- small box -->
+						<div class="small-box bg-warning">
+							<div class="inner">
+								<h4>RETRO-COMMISSIONS</h4>
+								<h5>
+									{{agregats.codemonnaie}}
+									{{agregats.retrocommissiontotale|number_format(2, ',', '.')}}
+								</h5>
+								Retro-commissions
+							</div>
+							<div class="icon">
+								<i class="fa-solid fa-handshake"></i>
+							</div>
+							<a href="#" class="small-box-footer">
+								Commissions dues aux partenaires
+							</a>
+						</div>
+					</div>
+					<!-- ./col -->
+					<div
+						class="col-lg-3 col-6">
+						<!-- small box -->
+						<div class="small-box bg-danger">
+							<div class="inner">
+								<h4>IMPOTS & TAXES</h4>
+								<h5>
+									{{agregats.codemonnaie}}
+									{{agregats.impotettaxetotale|number_format(2, ',', '.')}}
+								</h5>
+								Impôts et taxes.
+							</div>
+							<div class="icon">
+								<i class="fa-solid fa-scale-balanced"></i>
+							</div>
+							<a href="#" class="small-box-footer">
+								Impôts et taxes générées.
+							</a>
+						</div>
+					</div>
+					<!-- ./col -->
 				</div>
 			</div>
-			<!-- ./col -->
-			<div
-				class="col-lg-3 col-6">
-				<!-- small box -->
-				<div class="small-box bg-success">
-					<div class="inner">
-						<h4>COMMISSIONS</h4>
-						<h5>
-							{{agregats.codemonnaie}}
-							{{agregats.commissiontotale|number_format(2, ',', '.')}}
-						</h5>
-						Commissions nettes:
-						{{agregats.codemonnaie}}
-						{{agregats.commissionnette|number_format(2, ',', '.')}}).
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col">
+						<small>Grapphiques et histogrammes</small>
 					</div>
-					<div class="icon">
-						<i class="fa-solid fa-house-laptop"></i>
-					</div>
-					<a href="#" class="small-box-footer">
-						Commissions de courtage
-					</a>
 				</div>
-			</div>
-			<!-- ./col -->
-			<div
-				class="col-lg-3 col-6">
-				<!-- small box -->
-				<div class="small-box bg-warning">
-					<div class="inner">
-						<h4>RETRO-COMMISSIONS</h4>
-						<h5>
-							{{agregats.codemonnaie}}
-							{{agregats.retrocommissiontotale|number_format(2, ',', '.')}}
-						</h5>
-						Retro-commissions
+				<div class="row">
+					<div
+						class="col-12">
+						<!-- Bar chart -->
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">
+									<i class="far fa-chart-bar"></i>
+									Prime / Commission encaissée / Commission à recevoire
+								</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-tool" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;">
+									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
+										<svg style="width: 100%; height: 100%;">
+											<g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
+												<text x="180.4045443101363" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text>
+												<text x="260.0642047361894" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text>
+												<text x="337.2883163798939" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text>
+												<text x="23.164914391257547" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text>
+												<text x="409.6593043587425" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text>
+												<text x="95.49566685069692" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text>
+											</g>
+											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
+												<text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text>
+												<text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text>
+												<text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text>
+												<text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text>
+												<text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-body-->
+						</div>
+						<!-- /.card -->
+
 					</div>
-					<div class="icon">
-						<i class="fa-solid fa-handshake"></i>
-					</div>
-					<a href="#" class="small-box-footer">
-						Commissions dues aux partenaires
-					</a>
+					<!-- /.col -->
 				</div>
-			</div>
-			<!-- ./col -->
-			<div
-				class="col-lg-3 col-6">
-				<!-- small box -->
-				<div class="small-box bg-danger">
-					<div class="inner">
-						<h4>IMPOTS & TAXES</h4>
-						<h5>
-							{{agregats.codemonnaie}}
-							{{agregats.impotettaxetotale|number_format(2, ',', '.')}}
-						</h5>
-						Impôts et taxes.
+				<!-- /.row -->
+
+				<div class="row">
+					<div
+						class="col-md-6">
+						<!-- Line chart -->
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">
+									<i class="far fa-chart-bar"></i>
+									Line Chart
+								</h3>
+
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-tool" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="line-chart" style="height: 300px; padding: 0px; position: relative;">
+									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
+										<svg style="width: 100%; height: 100%;">
+											<g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
+												<text x="37" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text>
+												<text x="100.25925925925927" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">2</text>
+												<text x="163.51851851851853" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">4</text>
+												<text x="226.77777777777777" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">6</text>
+												<text x="349.3201243259289" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text>
+												<text x="412.5793835851881" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">12</text>
+												<text x="290.03703703703707" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">8</text>
+											</g>
+											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
+												<text x="1" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.5</text>
+												<text x="1" y="226.66666666666669" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.0</text>
+												<text x="1" y="184.33333333333334" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-0.5</text>
+												<text x="5.975780487060547" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.5</text>
+												<text x="5.975780487060547" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.0</text>
+												<text x="5.975780487060547" y="99.66666666666667" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.5</text>
+												<text x="5.975780487060547" y="57.333333333333336" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.0</text>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-body-->
+						</div>
+						<!-- /.card -->
+
+						<!-- Area chart -->
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">
+									<i class="far fa-chart-bar"></i>
+									Area Chart
+								</h3>
+
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-tool" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="area-chart" style="height: 338px; padding: 0px; position: relative;" class="full-width-chart">
+									<canvas class="flot-base" width="1028" height="676" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 514px; height: 338px;"></canvas>
+									<canvas class="flot-overlay" width="1028" height="676" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 514px; height: 338px;"></canvas>
+								</div>
+							</div>
+							<!-- /.card-body-->
+						</div>
+						<!-- /.card -->
+
 					</div>
-					<div class="icon">
-						<i class="fa-solid fa-scale-balanced"></i>
+					<!-- /.col -->
+
+					<div
+						class="col-md-6">
+						<!-- Bar chart -->
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">
+									<i class="far fa-chart-bar"></i>
+									Bar Chart
+								</h3>
+
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-tool" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;">
+									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
+										<svg style="width: 100%; height: 100%;">
+											<g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
+												<text x="180.4045443101363" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text>
+												<text x="260.0642047361894" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text>
+												<text x="337.2883163798939" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text>
+												<text x="23.164914391257547" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text>
+												<text x="409.6593043587425" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text>
+												<text x="95.49566685069692" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text>
+											</g>
+											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
+												<text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text>
+												<text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text>
+												<text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text>
+												<text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text>
+												<text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-body-->
+						</div>
+						<!-- /.card -->
+
+						<!-- Donut chart -->
+						<div class="card card-primary card-outline">
+							<div class="card-header">
+								<h3 class="card-title">
+									<i class="far fa-chart-bar"></i>
+									Donut Chart
+								</h3>
+
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse">
+										<i class="fas fa-minus"></i>
+									</button>
+									<button type="button" class="btn btn-tool" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<div id="donut-chart" style="height: 300px; padding: 0px; position: relative;">
+									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
+									<span class="pieLabel" id="pieLabel0" style="position: absolute; top: 69.5px; left: 295.956px;">
+										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>30%</div>
+									</span>
+									<span class="pieLabel" id="pieLabel1" style="position: absolute; top: 209.5px; left: 273.956px;">
+										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>20%</div>
+									</span>
+									<span class="pieLabel" id="pieLabel2" style="position: absolute; top: 128.5px; left: 114.956px;">
+										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div>
+									</span>
+								</div>
+							</div>
+							<!-- /.card-body-->
+						</div>
+						<!-- /.card -->
 					</div>
-					<a href="#" class="small-box-footer">
-						Impôts et taxes générées.
-					</a>
+					<!-- /.col -->
 				</div>
+				<!-- /.row -->
 			</div>
-			<!-- ./col -->
-		</div>
-		<!-- /.row -->
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
 	</div>
 
-	{# BLOC DU MOTEUR DE RECHERCHE #}
-	{{ form_start(search_form) }}
-	<div class="align-content-center">
-		<div class="form-row align-items-end m-2">
-			<div class="col">
-				{{ form_row(search_form.assureur) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.produit) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.partenaire) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.client) }}
-			</div>
-		</div>
-		<div class="form-row align-items-end m-2">
-			<div class="col">
-				{{ form_row(search_form.dateA) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.dateB) }}
-			</div>
-			<div class="col">
-				{{ form_row(search_form.motcle) }}
-			</div>
-			<div class="col">
-				<button type="submit" class="btn btn-primary">
-					<i class="fa-solid fa-magnifying-glass"></i>
-					Chercher
-				</button>
-			</div>
-		</div>
-		<div class="form-row align-items-end m-2"  style="display:none">
-			<div class="col">
-				{{ form_row(search_form.taxe) }}
-			</div>
-		</div>
-	</div>
-	{{ form_end(search_form) }}
 
-	{# <small>
-							{% if (polices|length > 0) %}
-								<div class="navigation">
-									{{ knp_pagination_render(polices) }}
-								</div>
-								<div class="row m-2">
-									{% for police in polices %}
-										<div class="card m-2 p-0" style="width: 18rem;">
-											<h5 class="card-header">
-												<i class="fa-solid fa-umbrella"></i>
-												{{police.reference}}
-											</h5>
-											<div class="card-body">
-												<div class="card-subtitle mb-2 text-muted">
-													<i class="fa-solid fa-calendar-day"></i>
-													Du
-													{{police.dateeffet|date("d/m/Y")}}
-													au
-													{{police.dateexpiration|date("d/m/Y")}}
-												</div>
-												<div class="card-subtitle mb-2 text-muted">
-													<i class="fa-solid fa-people-roof"></i>
-													{{police.client.nom}}
-												</div>
-												<div class="card-subtitle mb-2 text-muted">
-													<i class="fa-solid fa-shield-halved"></i>
-													{% for assureur in police.assureurs %}
-														{{assureur.nom}}
-														{% if loop.last == false %}-
-														{% endif %}
-													{% endfor %}
-												</div>
-												{% if police.partenaire != null %}
-													<div class="card-subtitle mb-2 text-muted">
-														<i class="fa-solid fa-handshake"></i>
-														{{police.partenaire.nom}}
-													</div>
-												{% endif %}
-												<p class="card-text">
-													{% if police.typeavenant == 0 %}
-														SOUSCRIPTION
-													{% endif %}
-													{% if police.typeavenant == 1 %}
-														RENOUVELLEMENT
-													{% endif %}
-													{% if police.typeavenant == 2 %}
-														ANNULATION
-													{% endif %}
-													{% if police.typeavenant == 3 %}
-														RESILIATION
-													{% endif %}
-													{% if police.typeavenant == 4 %}
-														RISTOURNE
-													{% endif %}
-													{% if police.typeavenant == 5 %}
-														PROROGATION
-													{% endif %}
-													::
-													{{police.monnaie.code}}
-													{{police.primetotale|number_format(2, ',', '.')}}
-													::
-													{{police.produit.nom}}</p>
-												<a class="btn btn-light btn-sm card-link" href="{{ path('police.details', {id:police.id}) }}">
-													<i class="fa-solid fa-circle-info"></i>
-													Voir les détails
-												</a>
-												<span class="dropdown show">
-													<a class="btn btn-light btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-														<i class="fa-solid fa-screwdriver-wrench"></i>
-														Actions
-													</a>
-					
-													<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-														<a class="dropdown-item" href="{{ path('police.edit', {id:police.id}) }}">
-															<i class="fa-solid fa-pen-to-square"></i>
-															Modifier
-														</a>
-														<a class="dropdown-item text-danger" href="{{ path('police.delete', {id:police.id}) }}">
-															<i class="fa-solid fa-trash-can"></i>
-															Supprimer
-														</a>
-													</div>
-												</span>
-											</div>
-										</div>
-									{% endfor %}
-								</div>
-							{% else %}
-								Aucun résultat.
-							{% endif %}
-						</small> #}
 {% endblock %}

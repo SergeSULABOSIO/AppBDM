@@ -165,18 +165,6 @@ class PoliceRepository extends ServiceEntityRepository
                 $frontingcom_sharable = $police->isCansharefrontingcom() ? $police->getFrontingCom() : 0;
                 $net_com_including_arca_sharable = ($ricom_sharable + $localcom_sharable + $frontingcom_sharable);
 
-                
-
-                // if ($police->isCansharericom() == true) {
-                //     $ricom_sharable = $police->getRiCom();
-                // }
-                // if ($police->isCansharelocalcom() == true) {
-                //     $localcom_sharable = $police->getLocalCom();
-                // }
-                // if ($police->isCansharefrontingcom() == true) {
-                //     $frontingcom_sharable = $police->getFrontingCom();
-                // }
-
                 //Taxes
                 $taxe_charge_assureur = 0;
                 $taxe_charge_courtier = 0;
@@ -201,10 +189,7 @@ class PoliceRepository extends ServiceEntityRepository
                 $net_com_excluding_arca_sharable = $net_com_including_arca_sharable - $taxe_charge_courtier_sharable;
 
                 $taux_retro_com = $police->getPartenaire()?$police->getPartenaire()->getPart():0;
-                //dd($police->getPartenaire()->getPart());
-                // if ($police->getPartenaire()) {
-                //     $taux_retro_com = $police->getPartenaire()->getPart();
-                // }
+                
                 $retrocom += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
 
                 $comnette += $net_com_excluding_arca - $retrocom;
