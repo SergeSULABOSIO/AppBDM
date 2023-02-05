@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Agregats\OutstandingCommissionAgregat;
 use App\Outstanding\CommissionOutstanding;
 use App\Repository\PaiementCommissionRepository;
+use App\Repository\TaxeRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,7 @@ class OutstandingCommissionController extends AbstractController
         Request $request,
         $page,
         $nbre,
+        TaxeRepository $taxeRepository,
         PaiementCommissionRepository $paiementCommissionRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
@@ -44,13 +46,13 @@ class OutstandingCommissionController extends AbstractController
         $searchOutstandingForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchOutstandingForm->getData();
-
+        $taxes = $policeRepository->findAll();
         $data = [];
 
         if ($searchOutstandingForm->isSubmitted() && $searchOutstandingForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres, null);
+            $data = $policeRepository->findByMotCle($criteres, null, $taxes);
             $session->set("criteres_liste_outstanding_commission", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -67,7 +69,7 @@ class OutstandingCommissionController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, null);
+                $data = $policeRepository->findByMotCle($objCritereSession, null, $taxes);
 
                 $searchOutstandingForm = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],

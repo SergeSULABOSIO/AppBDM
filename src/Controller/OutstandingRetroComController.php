@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use PoliceSearchType;
+use App\Repository\TaxeRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
@@ -29,6 +30,7 @@ class OutstandingRetroComController extends AbstractController
         Request $request,
         $page,
         $nbre,
+        TaxeRepository $taxeRepository,
         PaiementCommissionRepository $paiementCommissionRepository,
         PaiementPartenaireRepository $paiementPartenaireRepository,
         PoliceRepository $policeRepository,
@@ -48,13 +50,14 @@ class OutstandingRetroComController extends AbstractController
         $searchOutstandingForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchOutstandingForm->getData();
+        $taxes = $policeRepository->findAll();
 
         $data = [];
 
         if ($searchOutstandingForm->isSubmitted() && $searchOutstandingForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres, null);
+            $data = $policeRepository->findByMotCle($criteres, null, $taxes);
             $session->set($nomSession, $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -71,7 +74,7 @@ class OutstandingRetroComController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, null);
+                $data = $policeRepository->findByMotCle($objCritereSession, null, $taxes);
 
                 $searchOutstandingForm = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],
