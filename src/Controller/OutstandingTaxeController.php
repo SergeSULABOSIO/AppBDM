@@ -59,13 +59,12 @@ class OutstandingTaxeController extends AbstractController
         $searchOutstandingForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchOutstandingForm->getData();
-
         $data = [];
 
         if ($searchOutstandingForm->isSubmitted() && $searchOutstandingForm->isValid()) {
             $page = 1;
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres, null);
+            $data = $policeRepository->findByMotCle($criteres, null, $taxes);
             $session->set($nomSession, $criteres);
             $objTaxeSelected = $criteres['taxe'];
             //dd($objTaxeSelected);
@@ -86,7 +85,7 @@ class OutstandingTaxeController extends AbstractController
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
                 $objTaxeSelected = $session_taxe ? $taxeRepository->find($session_taxe->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, null);
+                $data = $policeRepository->findByMotCle($objCritereSession, null , $taxes);
 
                 $searchOutstandingForm = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],

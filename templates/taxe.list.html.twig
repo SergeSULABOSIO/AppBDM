@@ -53,6 +53,14 @@
 							<i class="fa-solid fa-city"></i>
 							{{taxe.organisation}}
 						</div>
+						<div class="card-subtitle mb-2 text-muted">
+							<i class="fa-solid fa-city"></i>
+							{% if (taxe.payableparcourtier == true) %}
+								Charge du courtier
+							{% else %}
+								Charge de l'assureur
+							{% endif %}
+						</div>
 						<p class="card-text">
 							{{taxe.description}}
 						</p>

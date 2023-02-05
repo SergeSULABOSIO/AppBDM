@@ -14,6 +14,7 @@ use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\AssureurRepository;
 use App\Repository\PartenaireRepository;
+use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class DashboardController extends AbstractController
     #[Route('/index', name: 'dashboard')]
     public function index(
         Request $request,
+        TaxeRepository $taxeRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
         ClientRepository $clientRepository,
@@ -45,11 +47,12 @@ class DashboardController extends AbstractController
         $search_Dashboard_Form->handleRequest($request);
         $session_dashboard = $request->getSession();
         $criteres_dashboard = $search_Dashboard_Form->getData();
+        $taxes = $taxeRepository->findAll();
 
         $data = [];
         if ($search_Dashboard_Form->isSubmitted() && $search_Dashboard_Form->isValid()) {
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard);
+            $data = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard, $taxes);
             $session_dashboard->set($session_name_dashboard, $criteres_dashboard);
             //dd($session->get("criteres_liste_pop_taxe"));
         } else {
@@ -66,7 +69,7 @@ class DashboardController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard);
+                $data = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard, $taxes);
 
                 $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],

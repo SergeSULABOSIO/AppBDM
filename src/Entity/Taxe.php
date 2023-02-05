@@ -36,6 +36,9 @@ class Taxe
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column]
+    private ?bool $payableparcourtier = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,5 +107,17 @@ class Taxe
     public function __toString()
     {
         return $this->nom;
+    }
+
+    public function isPayableparcourtier(): ?bool
+    {
+        return $this->payableparcourtier;
+    }
+
+    public function setPayableparcourtier(bool $payableparcourtier): self
+    {
+        $this->payableparcourtier = $payableparcourtier;
+
+        return $this;
     }
 }
