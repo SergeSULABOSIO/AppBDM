@@ -14,7 +14,6 @@
 
 </head>
 <body>
-{{data_exemple|json_encode()}}
 <div class="container">
 <!-- Main content -->
     <section class="content">
@@ -68,6 +67,7 @@
               </div>
               <div class="card-body">
                 <div id="donut-chart" style="height: 300px;"></div>
+				<div class="diagramme-primes-assureur" data-donnees = "{{data_exemple|serialize(format = 'json')}}"></div>
               </div>
               <!-- /.card-body-->
             </div>
@@ -127,41 +127,8 @@
      * -----------
      */
 
-    var donutData = [
-      {
-        label: 'ACTIVA',
-        data : 30,
-        color: '#3c8dbc'
-      },
-      {
-        label: 'SUNU',
-        data : 35,
-        color: '#0073b7'
-      },
-      {
-        label: 'RAWSUR',
-        data : 50,
-        color: '#00c0ef'
-      },
-      {
-        label: 'PAYFAIR',
-        data : 50,
-        color: 'red'
-      },
-      {
-        label: 'SFA',
-        data : 80,
-        color: 'gray'
-      },
-      {
-        label: 'MAYFAIR',
-        data : 25,
-        color: 'black'
-      }
-    ]
-
-    //donutData = {{data_exemple|json_encode()}};
-
+	var donutData = JSON.parse(document.querySelector('.diagramme-primes-assureur').dataset.donnees);
+    
     $.plot('#donut-chart', donutData, {
       series: {
         pie: {
@@ -174,7 +141,6 @@
             formatter: labelFormatter,
             threshold: 0.01
           }
-
         }
       },
       legend: {
