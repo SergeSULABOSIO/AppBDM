@@ -84,12 +84,12 @@ class DashboardController extends AbstractController
         }
 
         //dd($data);
-
+        
         $data_exemple = [];
         $data_exemple[] = [
             'label' => 'SFA',
             'data' => 85,
-            'color'=> '#3c8dbc'
+            'color'=> 'orange'
         ];
         $data_exemple[] = [
             'label' => 'RAWSUR',
@@ -104,7 +104,7 @@ class DashboardController extends AbstractController
         $data_exemple[] = [
             'label' => 'SUNU',
             'data' => 30,
-            'color'=> 'black'
+            'color'=> 'blue'
         ];
 
         //dd($data_exemple);
