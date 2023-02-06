@@ -53,7 +53,7 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="far fa-chart-bar"></i>
-                  Donut Chart
+                  Diagramme - Primes par assureur
                 </h3>
 
                 <div class="card-tools">
@@ -134,7 +134,7 @@
       },
       {
         label: 'SUNU',
-        data : 20,
+        data : 35,
         color: '#0073b7'
       },
       {
@@ -151,6 +151,11 @@
         label: 'SFA',
         data : 80,
         color: 'gray'
+      },
+      {
+        label: 'MAYFAIR',
+        data : 25,
+        color: 'black'
       }
     ]
     $.plot('#donut-chart', donutData, {
@@ -158,12 +163,12 @@
         pie: {
           show       : true,
           radius     : 1,
-          innerRadius: 0.5,
+          innerRadius: 0.3,
           label      : {
             show     : true,
             radius   : 2 / 3,
             formatter: labelFormatter,
-            threshold: 0.1
+            threshold: 0.01
           }
 
         }
@@ -185,8 +190,8 @@
   function labelFormatter(label, series) {
     return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
       + label
-      + '<br>'
-      + Math.round(series.percent) + '%</div>'
+      + '<br>('
+      + Math.round(series.percent) + '%)</div>'
   }
 </script>
 </body>
