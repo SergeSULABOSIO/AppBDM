@@ -85,12 +85,32 @@ class DashboardController extends AbstractController
 
         //dd($data);
 
+        $data_exemple = [];
+        $data_exemple[] = [
+            'label' => 'SFA',
+            'data' => 30,
+            'color'=> '#3c8dbc'
+        ];
+        $data_exemple[] = [
+            'label' => 'RAWSUR',
+            'data' => 30,
+            'color'=> 'gray'
+        ];
+        $data_exemple[] = [
+            'label' => 'MAYFAIR',
+            'data' => 30,
+            'color'=> 'green'
+        ];
+
+        //dd($data_exemple);
+
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
             'dashboard_test.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
+                'data_exemple' => $data_exemple,
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
             ]
