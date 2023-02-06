@@ -101,14 +101,14 @@
      */
 
     var bar_data = {
-      data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9]],
+      data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9], [7,9], [8,9], [9,9], [10,9], [11,9], [12,9]],
       bars: { show: true }
     }
     $.plot('#bar-chart', [bar_data], {
       grid  : {
         borderWidth: 1,
-        borderColor: '#f3f3f3',
-        tickColor  : '#f3f3f3'
+        borderColor: '#f3f3f3', //'#f3f3f3',
+        tickColor  : '#f3f3f3'	//'#f3f3f3'
       },
       series: {
          bars: {
@@ -117,7 +117,7 @@
       },
       colors: ['#3c8dbc'],
       xaxis : {
-        ticks: [[1,'January'], [2,'February'], [3,'March'], [4,'April'], [5,'May'], [6,'June']]
+        ticks: [[1,'1'], [2,'2'], [3,'3'], [4,'4'], [5,'5'], [6,'6'], [7,'7'], [8,'8'], [9,'9'], [10,'10'], [11,'11'], [12,'12']]
       }
     })
     /* END BAR CHART */
