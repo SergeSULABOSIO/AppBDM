@@ -155,275 +155,266 @@
 
 
   $(function () {
+    /* ChartJS
+      * -------
+      * Here we will create a few charts using ChartJS
+      */
 
+      //--------------
+      //- AREA CHART -
+      //--------------
 
+      // Get context with jQuery - using jQuery's .get() method.
+      //var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
-
-
-
-
-
-
-/* ChartJS
-     * -------
-     * Here we will create a few charts using ChartJS
-     */
-
-    //--------------
-    //- AREA CHART -
-    //--------------
-
-    // Get context with jQuery - using jQuery's .get() method.
-    //var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
-    var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-      datasets: [
-        {
-          label               : 'Digital Goods',
-          backgroundColor     : 'rgba(60,141,188,0.9)',
-          borderColor         : 'rgba(60,141,188,0.8)',
-          pointRadius          : false,
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90]
-        },
-        {
-          label               : 'Electronics',
-          backgroundColor     : 'rgba(210, 214, 222, 1)',
-          borderColor         : 'rgba(210, 214, 222, 1)',
-          pointRadius         : false,
-          pointColor          : 'rgba(210, 214, 222, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40]
-        },
-      ]
-    }
-
-    var areaChartOptions = {
-      maintainAspectRatio : false,
-      responsive : true,
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          gridLines : {
-            display : false,
-          }
-        }],
-        yAxes: [{
-          gridLines : {
-            display : false,
-          }
-        }]
+      var areaChartData = {
+        labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label               : 'Digital Goods',
+            backgroundColor     : 'rgba(60,141,188,0.9)',
+            borderColor         : 'rgba(60,141,188,0.8)',
+            pointRadius          : false,
+            pointColor          : '#3b8bba',
+            pointStrokeColor    : 'rgba(60,141,188,1)',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(60,141,188,1)',
+            data                : [28, 48, 40, 19, 86, 27, 90]
+          },
+          {
+            label               : 'Electronics',
+            backgroundColor     : 'rgba(210, 214, 222, 1)',
+            borderColor         : 'rgba(210, 214, 222, 1)',
+            pointRadius         : false,
+            pointColor          : 'rgba(210, 214, 222, 1)',
+            pointStrokeColor    : '#c1c7d1',
+            pointHighlightFill  : '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data                : [65, 59, 80, 81, 56, 55, 40]
+          },
+        ]
       }
-    }
 
-    // This will get the first returned node in the jQuery collection.
-    //new Chart(areaChartCanvas, {
-    //  type: 'line',
-    //  data: areaChartData,
-    //  options: areaChartOptions
-    //})
-
-    //-------------
-    //- LINE CHART -
-    //--------------
-    //var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
-    var lineChartOptions = $.extend(true, {}, areaChartOptions)
-    var lineChartData = $.extend(true, {}, areaChartData)
-    lineChartData.datasets[0].fill = false;
-    lineChartData.datasets[1].fill = false;
-    lineChartOptions.datasetFill = false
-
-    //var lineChart = new Chart(lineChartCanvas, {
-    //  type: 'line',
-    //  data: lineChartData,
-    //  options: lineChartOptions
-    //})
-
-    //-------------
-    //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    //var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-    var donutData        = {
-      labels: [
-          'Chrome',
-          'IE',
-          'FireFox',
-          'Safari',
-          'Opera',
-          'Navigator',
-      ],
-      datasets: [
-        {
-          data: [700,500,400,600,300,100],
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+      var areaChartOptions = {
+        maintainAspectRatio : false,
+        responsive : true,
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            gridLines : {
+              display : false,
+            }
+          }],
+          yAxes: [{
+            gridLines : {
+              display : false,
+            }
+          }]
         }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    //new Chart(donutChartCanvas, {
-    //  type: 'doughnut',
-    //  data: donutData,
-    //  options: donutOptions
-    //})
-
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    //var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = donutData;
-    var pieOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    //new Chart(pieChartCanvas, {
-    //  type: 'pie',
-    //  data: pieData,
-    //  options: pieOptions
-    //})
-
-    //-------------
-    //- BAR CHART -
-    //-------------
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = $.extend(true, {}, areaChartData)
-    var temp0 = areaChartData.datasets[0]
-    var temp1 = areaChartData.datasets[1]
-    barChartData.datasets[0] = temp1
-    barChartData.datasets[1] = temp0
-
-    var barChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      datasetFill             : false
-    }
-
-    new Chart(barChartCanvas, {
-      type: 'bar',
-      data: barChartData,
-      options: barChartOptions
-    })
-
-    //---------------------
-    //- STACKED BAR CHART -
-    //---------------------
-    //var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    var stackedBarChartData = $.extend(true, {}, barChartData)
-
-    var stackedBarChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      scales: {
-        xAxes: [{
-          stacked: true,
-        }],
-        yAxes: [{
-          stacked: true
-        }]
       }
-    }
 
-    //new Chart(stackedBarChartCanvas, {
-    //  type: 'bar',
-    //  data: stackedBarChartData,
-    //  options: stackedBarChartOptions
-    //})
+      // This will get the first returned node in the jQuery collection.
+      //new Chart(areaChartCanvas, {
+      //  type: 'line',
+      //  data: areaChartData,
+      //  options: areaChartOptions
+      //})
 
+      //-------------
+      //- LINE CHART -
+      //--------------
+      //var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+      var lineChartOptions = $.extend(true, {}, areaChartOptions)
+      var lineChartData = $.extend(true, {}, areaChartData)
+      lineChartData.datasets[0].fill = false;
+      lineChartData.datasets[1].fill = false;
+      lineChartOptions.datasetFill = false
 
+      //var lineChart = new Chart(lineChartCanvas, {
+      //  type: 'line',
+      //  data: lineChartData,
+      //  options: lineChartOptions
+      //})
 
-
-
-
-
-
-
-
-    //SERGE SULA BOSIO
-
-    /*
-     * BAR CHART
-     * ---------
-     */
-
-    var bar_data = {
-      data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9], [7,15], [8,45], [9,65], [10,85], [11,45], [12,50]],
-      bars: { show: true }
-    }
-    $.plot('#bar-chart', [bar_data], {
-      grid  : {
-        borderWidth: 1,
-        borderColor: '#f3f3f3', //'#f3f3f3',
-        tickColor  : '#f3f3f3'	//'#f3f3f3'
-      },
-      series: {
-         bars: {
-          show: true, barWidth: 0.5, align: 'center',
-        },
-      },
-      colors: ['#3c8dbc'],
-      xaxis : {
-        ticks: [[1,'Janv'], [2,'Févr'], [3,'Mars'], [4,'Avr'], [5,'Mais'], [6,'Juin'], [7,'Juil'], [8,'Aout'], [9,'Sept'], [10,'Oct'], [11,'Nov'], [12,'Déc']]
-      }
-    })
-    /* END BAR CHART */
-
-    /*
-     * DONUT CHART
-     * -----------
-     */
-
-	var donutData = JSON.parse(document.querySelector('.diagramme-primes-assureur').dataset.donnees);
-    
-    $.plot('#donut-chart', donutData, {
-      series: {
-        pie: {
-          show       : true,
-          radius     : 1,
-          innerRadius: 0.3,
-          label      : {
-            show     : true,
-            radius   : 2 / 3,
-            formatter: labelFormatter,
-            threshold: 0.01
+      //-------------
+      //- DONUT CHART -
+      //-------------
+      // Get context with jQuery - using jQuery's .get() method.
+      //var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+      var donutData        = {
+        labels: [
+            'Chrome',
+            'IE',
+            'FireFox',
+            'Safari',
+            'Opera',
+            'Navigator',
+        ],
+        datasets: [
+          {
+            data: [700,500,400,600,300,100],
+            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
           }
-        }
-      },
-      legend: {
-        show: false
+        ]
       }
+      var donutOptions     = {
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      //new Chart(donutChartCanvas, {
+      //  type: 'doughnut',
+      //  data: donutData,
+      //  options: donutOptions
+      //})
+
+      //-------------
+      //- PIE CHART -
+      //-------------
+      // Get context with jQuery - using jQuery's .get() method.
+      //var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+      var pieData        = donutData;
+      var pieOptions     = {
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+      //Create pie or douhnut chart
+      // You can switch between pie and douhnut using the method below.
+      //new Chart(pieChartCanvas, {
+      //  type: 'pie',
+      //  data: pieData,
+      //  options: pieOptions
+      //})
+
+      //-------------
+      //- BAR CHART -
+      //-------------
+      var barChartCanvas = $('#barChart').get(0).getContext('2d')
+      var barChartData = $.extend(true, {}, areaChartData)
+      var temp0 = areaChartData.datasets[0]
+      var temp1 = areaChartData.datasets[1]
+      barChartData.datasets[0] = temp1
+      barChartData.datasets[1] = temp0
+
+      var barChartOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        datasetFill             : false
+      }
+
+      new Chart(barChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+      })
+
+      //---------------------
+      //- STACKED BAR CHART -
+      //---------------------
+      //var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
+      var stackedBarChartData = $.extend(true, {}, barChartData)
+
+      var stackedBarChartOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        scales: {
+          xAxes: [{
+            stacked: true,
+          }],
+          yAxes: [{
+            stacked: true
+          }]
+        }
+      }
+
+      //new Chart(stackedBarChartCanvas, {
+      //  type: 'bar',
+      //  data: stackedBarChartData,
+      //  options: stackedBarChartOptions
+      //})
+
+
+
+
+
+
+
+
+
+
+      //SERGE SULA BOSIO
+
+      /*
+      * BAR CHART
+      * ---------
+      */
+
+      var bar_data = {
+        data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9], [7,15], [8,45], [9,65], [10,85], [11,45], [12,50]],
+        bars: { show: true }
+      }
+      $.plot('#bar-chart', [bar_data], {
+        grid  : {
+          borderWidth: 1,
+          borderColor: '#f3f3f3', //'#f3f3f3',
+          tickColor  : '#f3f3f3'	//'#f3f3f3'
+        },
+        series: {
+          bars: {
+            show: true, barWidth: 0.5, align: 'center',
+          },
+        },
+        colors: ['gray'],  //#3c8dbc
+        xaxis : {
+          ticks: [[1,'Janv'], [2,'Févr'], [3,'Mars'], [4,'Avr'], [5,'Mais'], [6,'Juin'], [7,'Juil'], [8,'Aout'], [9,'Sept'], [10,'Oct'], [11,'Nov'], [12,'Déc']]
+        }
+      })
+      /* END BAR CHART */
+
+      /*
+      * DONUT CHART
+      * -----------
+      */
+
+    var donutData = JSON.parse(document.querySelector('.diagramme-primes-assureur').dataset.donnees);
+      
+      $.plot('#donut-chart', donutData, {
+        series: {
+          pie: {
+            show       : true,
+            radius     : 1,
+            innerRadius: 0.3, //Boule blanche au centre du diagramme
+            label      : {
+              show     : true,
+              radius   : 2 / 3,
+              formatter: labelFormatter,
+              threshold: 0.01
+            }
+          }
+        },
+        legend: {
+          show: false
+        }
+      })
+      /*
+      * END DONUT CHART
+      */
+
     })
+
     /*
-     * END DONUT CHART
-     */
-
-  })
-
-  /*
-   * Custom Label formatter
-   * ----------------------
-   */
-  function labelFormatter(label, series) {
-    return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
-      + label
-      + '<br>('
-      + Math.round(series.percent) + '%)</div>'
-  }
+    * Custom Label formatter
+    * ----------------------
+    */
+    function labelFormatter(label, series) {
+      return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+        + label
+        + '<br>('
+        + Math.round(series.percent) + '%)</div>'
+    }
 </script>
 </body>
 </html>
