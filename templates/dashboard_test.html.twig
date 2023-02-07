@@ -305,6 +305,7 @@
         datasetFill             : false
       }
 
+      //On dessine l'histogramme en batons
       new Chart(barChartCanvas, {
         type: 'bar',
         data: barChartData,
@@ -315,20 +316,20 @@
       //- STACKED BAR CHART -
       //---------------------
       //var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-      var stackedBarChartData = $.extend(true, {}, barChartData)
+      //var stackedBarChartData = $.extend(true, {}, barChartData)
 
-      var stackedBarChartOptions = {
-        responsive              : true,
-        maintainAspectRatio     : false,
-        scales: {
-          xAxes: [{
-            stacked: true,
-          }],
-          yAxes: [{
-            stacked: true
-          }]
-        }
-      }
+      //var stackedBarChartOptions = {
+      //  responsive              : true,
+      //  maintainAspectRatio     : false,
+      //  scales: {
+      //    xAxes: [{
+      //      stacked: true,
+      //    }],
+      //    yAxes: [{
+      //      stacked: true
+      //    }]
+      //  }
+      //}
 
       //new Chart(stackedBarChartCanvas, {
       //  type: 'bar',
