@@ -16,16 +16,15 @@
 <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-      
+      <!--Commissions par mois -->
         <div class="row">
           <div class="col-12">
-            <!-- Bar chart -->
+            <!-- Primes par mois -->
             <div class="card card card-gray card-outline">
               <div class="card-header">
                 <h3 class="card-title">
                 <i class="far fa-chart-bar"></i>                
-                Bar Chart</h3>
-
+                Primes par mois</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -37,7 +36,38 @@
               </div>
               <div class="card-body">
                 <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+                  <canvas id="primes_mois" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+
+
+        <!--Commissions par mois -->
+        <div class="row">
+          <div class="col-12">
+            <!-- Commission de courtage par mois -->
+            <div class="card card card-gray card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                <i class="far fa-chart-bar"></i>                
+                Commissions de courtage par mois</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="commission_nette_mois" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+                  <div class="commissions_impayees_mois" data-donnees = "{{data_com_impayees_mois|serialize(format = 'json')}}"></div>
                 </div>
               </div>
               <!-- /.card-body -->
@@ -47,13 +77,13 @@
         </div>
 
         <div class="row">
-          <div class="col-12">
-            <!-- Bar chart -->
+          <div class="col-md-4">
+            <!-- Commissions impayées par assureur -->
             <div class="card card-gray card-outline">
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="far fa-chart-bar"></i>
-                  Bar Chart
+                  Primes / assureur
                 </h3>
 
                 <div class="card-tools">
@@ -66,22 +96,21 @@
                 </div>
               </div>
               <div class="card-body">
-                <div id="bar-chart" style="height: 300px;"></div>
+                <div id="primes_assureur" style="height: 300px;"></div>
+				        <div class="primes_assureur" data-donnees = "{{data_primes|serialize(format = 'json')}}"></div>
               </div>
               <!-- /.card-body-->
             </div>
             <!-- /.card -->
           </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-6">
-            <!-- Bar chart -->
+
+          <div class="col-md-4">
+            <!-- Commissions impayées par assureur -->
             <div class="card card-gray card-outline">
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="far fa-chart-bar"></i>
-                  Bar Chart2
+                  Com. nettes / assureur
                 </h3>
 
                 <div class="card-tools">
@@ -94,43 +123,43 @@
                 </div>
               </div>
               <div class="card-body">
-                <div id="bar-chart2" style="height: 300px;"></div>
-              </div>
-              <!-- /.card-body-->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-
-          <div class="col-md-6">
-            <!-- Donut chart -->
-            <div class="card card-gray card-outline">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="far fa-chart-bar"></i>
-                  Diagramme - Primes par assureur
-                </h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div id="donut-chart" style="height: 300px;"></div>
-				        <div class="diagramme-primes-assureur" data-donnees = "{{data_exemple|serialize(format = 'json')}}"></div>
+                <div id="commissions_nettes_assureur" style="height: 300px;"></div>
+				        <div class="commissions_nettes_assureur" data-donnees = "{{data_com_nettes|serialize(format = 'json')}}"></div>
               </div>
               <!-- /.card-body-->
             </div>
             <!-- /.card -->
           </div>
           <!-- /.col -->
+
+          <div class="col-md-4">
+            <!-- Commissions impayées par assureur -->
+            <div class="card card-gray card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Com. impayées / assureur
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div id="commissions_impayees_assureur" style="height: 300px;"></div>
+				        <div class="commissions_impayees_assureur" data-donnees = "{{data_com_impayees|serialize(format = 'json')}}"></div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
         </div>
-        <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
@@ -157,48 +186,105 @@
       * Here we will create a few charts using ChartJS
       */
 
+
       //--------------
-      //- AREA CHART -
+      //- PRIMES PAR MOIS -
       //--------------
 
-      // Get context with jQuery - using jQuery's .get() method.
-      //var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
-      var areaChartData = {
+      var dataPrimes = {
         labels  : ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
         datasets: [
           {
-            label               : 'Primes',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
+            label               : 'Primes nette',
+            backgroundColor     : 'gray',
+            borderColor         : 'gray',
             pointRadius          : false,
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90]
+            pointColor          : 'gray',
+            pointStrokeColor    : 'gray',
+            pointHighlightFill  : 'gray',
+            pointHighlightStroke: 'gray',
+            data                : [15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
           },
           {
-            label               : 'Commissions',
-            backgroundColor     : 'rgba(210, 214, 222, 1)',
-            borderColor         : 'rgba(210, 214, 222, 1)',
+            label               : 'Primes TTC',
+            backgroundColor     : 'black',
+            borderColor         : 'black',
             pointRadius         : false,
-            pointColor          : 'rgba(210, 214, 222, 1)',
-            pointStrokeColor    : '#c1c7d1',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [65, 59, 80, 81, 56, 55, 40]
+            pointColor          : 'orange',
+            pointStrokeColor    : 'orange',
+            pointHighlightFill  : 'orange',
+            pointHighlightStroke: 'orange',
+            data                : [1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+          },
+        ]
+      }
+      
+      //-------------
+      //- PRIMES / MOIS -
+      //-------------
+      var primesMoisCanvas = $('#primes_mois').get(0).getContext('2d');
+      var primesMoisData = $.extend(true, {}, dataPrimes);
+      var temp0 = dataPrimes.datasets[0];
+      var temp1 = dataPrimes.datasets[1];
+      primesMoisData.datasets[0] = temp1;
+      primesMoisData.datasets[1] = temp0;
+
+      var primesMoisOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        datasetFill             : false
+      };
+
+
+      //On dessine l'histogramme en batons
+      new Chart(primesMoisCanvas, {
+        type: 'bar',
+        data: primesMoisData,
+        options: primesMoisOptions
+      })
+
+
+
+
+      //--------------
+      //- COMMISSION PAR MOIS -
+      //--------------
+
+      var dataCommissions = {
+        labels  : ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
+        datasets: [
+          {
+            label               : 'Commissions encaissées',
+            backgroundColor     : 'gray',
+            borderColor         : 'gray',
+            pointRadius          : false,
+            pointColor          : 'gray',
+            pointStrokeColor    : 'gray',
+            pointHighlightFill  : 'gray',
+            pointHighlightStroke: 'gray',
+            data                : [15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
           },
           {
-            label               : 'Com. impayées',
+            label               : 'Commissions nettes',
+            backgroundColor     : 'orange',
+            borderColor         : 'orange',
+            pointRadius         : false,
+            pointColor          : 'orange',
+            pointStrokeColor    : 'orange',
+            pointHighlightFill  : 'orange',
+            pointHighlightStroke: 'orange',
+            data                : [1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+          },
+          {
+            label               : 'Commissions impayées',
             backgroundColor     : 'red',
-            borderColor         : 'rgba(210, 214, 222, 1)',
+            borderColor         : 'red',
             pointRadius         : false,
-            pointColor          : 'rgba(210, 214, 222, 1)',
-            pointStrokeColor    : '#c1c7d1',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : [10, 20, 8, 6, 15, 5, 21]
+            pointColor          : 'red',
+            pointStrokeColor    : 'red',
+            pointHighlightFill  : 'red',
+            pointHighlightStroke: 'red',
+            data                : JSON.parse(document.querySelector('.commissions_impayees_mois').dataset.donnees) //[13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000]
           },
         ]
       }
@@ -207,12 +293,12 @@
       //-------------
       //- BAR CHART -
       //-------------
-      var barChartCanvas = $('#barChart').get(0).getContext('2d');
-      var barChartData = $.extend(true, {}, areaChartData);
-      var temp0 = areaChartData.datasets[0];
-      var temp1 = areaChartData.datasets[1];
-      barChartData.datasets[0] = temp1;
-      barChartData.datasets[1] = temp0;
+      var commissionsMoisCanvas = $('#commission_nette_mois').get(0).getContext('2d');
+      var commissionsMoisData = $.extend(true, {}, dataCommissions);
+      var temp0 = dataCommissions.datasets[0];
+      var temp1 = dataCommissions.datasets[1];
+      commissionsMoisData.datasets[0] = temp1;
+      commissionsMoisData.datasets[1] = temp0;
 
       var barChartOptions = {
         responsive              : true,
@@ -221,51 +307,24 @@
       };
 
       //On dessine l'histogramme en batons
-      new Chart(barChartCanvas, {
+      new Chart(commissionsMoisCanvas, {
         type: 'bar',
-        data: barChartData,
+        data: commissionsMoisData,
         options: barChartOptions
       })
 
       
 
 
-      //SERGE SULA BOSIO
-      /*
-      * BAR CHART
-      * ---------
-      */
 
-      var bar_data = {
-        data : [[1,10], [2,8], [3,4], [4,13], [5,17], [6,9], [7,15], [8,45], [9,65], [10,85], [11,45], [12,50]],
-        bars: { show: true }
-      }
-      $.plot('#bar-chart', [bar_data], {
-        grid  : {
-          borderWidth: 1,
-          borderColor: '#f3f3f3', //'#f3f3f3',
-          tickColor  : '#f3f3f3'	//'#f3f3f3'
-        },
-        series: {
-          bars: {
-            show: true, barWidth: 0.5, align: 'center',
-          },
-        },
-        colors: ['gray'],  //#3c8dbc
-        xaxis : {
-          ticks: [[1,'Janv'], [2,'Févr'], [3,'Mars'], [4,'Avr'], [5,'Mais'], [6,'Juin'], [7,'Juil'], [8,'Aout'], [9,'Sept'], [10,'Oct'], [11,'Nov'], [12,'Déc']]
-        }
-      })
-      /* END BAR CHART */
 
-      /*
-      * DONUT CHART
+ /*
+      * COMMISSIONS NETTES PAR ASSUREUR
       * -----------
       */
 
-    var donutData = JSON.parse(document.querySelector('.diagramme-primes-assureur').dataset.donnees);
-      
-      $.plot('#donut-chart', donutData, {
+    var data_primes_assureur = JSON.parse(document.querySelector('.primes_assureur').dataset.donnees);
+      $.plot('#primes_assureur', data_primes_assureur, {
         series: {
           pie: {
             show       : true,
@@ -283,12 +342,59 @@
           show: false
         }
       })
+
       /*
-      * END DONUT CHART
+      * COMMISSIONS NETTES PAR ASSUREUR
+      * -----------
       */
 
-    })
+    var data_commissions_nettes_assureur = JSON.parse(document.querySelector('.commissions_nettes_assureur').dataset.donnees);
+      $.plot('#commissions_nettes_assureur', data_commissions_nettes_assureur, {
+        series: {
+          pie: {
+            show       : true,
+            radius     : 1,
+            innerRadius: 0.3, //Boule blanche au centre du diagramme
+            label      : {
+              show     : true,
+              radius   : 2 / 3,
+              formatter: labelFormatter,
+              threshold: 0.01
+            }
+          }
+        },
+        legend: {
+          show: false
+        }
+      })
 
+      /*
+      * COMMISSIONS IMPAYEES PAR ASSUREUR
+      * -----------
+      */
+
+    var data_commissions_impayees_assureur = JSON.parse(document.querySelector('.commissions_impayees_assureur').dataset.donnees);
+      $.plot('#commissions_impayees_assureur', data_commissions_impayees_assureur, {
+        series: {
+          pie: {
+            show       : true,
+            radius     : 1,
+            innerRadius: 0.3, //Boule blanche au centre du diagramme
+            label      : {
+              show     : true,
+              radius   : 2 / 3,
+              formatter: labelFormatter,
+              threshold: 0.01
+            }
+          }
+        },
+        legend: {
+          show: false
+        }
+      })
+      
+
+    })
     /*
     * Custom Label formatter
     * ----------------------
@@ -296,9 +402,13 @@
     function labelFormatter(label, series) {
       return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
         + label
-        + '<br>('
-        + Math.round(series.percent) + '%)</div>'
+        + '<br>(' + Math.round(series.percent) + '%)</div>'
     }
+
+
+
+
+
 </script>
 </body>
 </html>

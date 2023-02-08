@@ -84,28 +84,74 @@ class DashboardController extends AbstractController
         }
 
         //dd($data);
-        
-        $data_exemple = [];
-        $data_exemple[] = [
+        $data_primes[] = [
             'label' => 'SFA',
-            'data' => 85,
-            'color'=> 'orange'
-        ];
-        $data_exemple[] = [
-            'label' => 'RAWSUR',
-            'data' => 65,
-            'color'=> 'gray'
-        ];
-        $data_exemple[] = [
-            'label' => 'MAYFAIR',
-            'data' => 50,
-            'color'=> 'green'
-        ];
-        $data_exemple[] = [
-            'label' => 'SUNU',
-            'data' => 30,
+            'data' => 850000,
             'color'=> 'blue'
         ];
+        $data_primes[] = [
+            'label' => 'RAWSUR',
+            'data' => 650000,
+            'color'=> 'gray'
+        ];
+        $data_primes[] = [
+            'label' => 'MAYFAIR',
+            'data' => 50000,
+            'color'=> 'red'
+        ];
+        $data_primes[] = [
+            'label' => 'SUNU',
+            'data' => 12000,
+            'color'=> 'green'
+        ];
+
+
+        $data_com_nettes[] = [
+            'label' => 'SFA',
+            'data' => 85000,
+            'color'=> 'blue'
+        ];
+        $data_com_nettes[] = [
+            'label' => 'RAWSUR',
+            'data' => 65000,
+            'color'=> 'gray'
+        ];
+        $data_com_nettes[] = [
+            'label' => 'MAYFAIR',
+            'data' => 50000,
+            'color'=> 'red'
+        ];
+        $data_com_nettes[] = [
+            'label' => 'SUNU',
+            'data' => 12000,
+            'color'=> 'green'
+        ];
+
+
+        
+        $data_com_impayees[] = [
+            'label' => 'SFA',
+            'data' => 85000,
+            'color'=> 'blue'
+        ];
+        $data_com_impayees[] = [
+            'label' => 'RAWSUR',
+            'data' => 65000,
+            'color'=> 'gray'
+        ];
+        $data_com_impayees[] = [
+            'label' => 'MAYFAIR',
+            'data' => 5000,
+            'color'=> 'red'
+        ];
+        $data_com_impayees[] = [
+            'label' => 'SUNU',
+            'data' => 150,
+            'color'=> 'green'
+        ];
+
+
+        $data_com_impayees_mois[] = [13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000];
 
         //dd($data_exemple);
 
@@ -115,7 +161,10 @@ class DashboardController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
-                'data_exemple' => $data_exemple,
+                'data_primes' => $data_primes,
+                'data_com_impayees' => $data_com_impayees,
+                'data_com_nettes' => $data_com_nettes,
+                'data_com_impayees_mois' => $data_com_impayees_mois,
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
             ]
