@@ -150,10 +150,48 @@ class DashboardController extends AbstractController
             'color'=> 'green'
         ];
 
+        //[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+        $data_com_nettes_mois[] = 1500;
+        $data_com_nettes_mois[] = 1500;
+        $data_com_nettes_mois[] = 24500;
+        $data_com_nettes_mois[] = 30000;
+        $data_com_nettes_mois[] = 60000;
+        $data_com_nettes_mois[] = 73500;
+        $data_com_nettes_mois[] = 9500;
+        $data_com_nettes_mois[] = 10000;
+        $data_com_nettes_mois[] = 35000;
+        $data_com_nettes_mois[] = 6550;
+        $data_com_nettes_mois[] = 11500;
+        $data_com_nettes_mois[] = 23000;
 
-        $data_com_impayees_mois[] = [13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000];
 
-        //dd($data_exemple);
+        $data_com_encaissees_mois[] = 13500;
+        $data_com_encaissees_mois[] = 500;
+        $data_com_encaissees_mois[] = 500;
+        $data_com_encaissees_mois[] = 5000;
+        $data_com_encaissees_mois[] = 5000;
+        $data_com_encaissees_mois[] = 1500;
+        $data_com_encaissees_mois[] = 500;
+        $data_com_encaissees_mois[] = 5500;
+        $data_com_encaissees_mois[] = 29000;
+        $data_com_encaissees_mois[] = 0;
+        $data_com_encaissees_mois[] = 500;
+        $data_com_encaissees_mois[] = 2000;
+
+        $data_com_impayees_mois[] = 13500;
+        $data_com_impayees_mois[] = 500;
+        $data_com_impayees_mois[] = 500;
+        $data_com_impayees_mois[] = 5000;
+        $data_com_impayees_mois[] = 5000;
+        $data_com_impayees_mois[] = 1500;
+        $data_com_impayees_mois[] = 500;
+        $data_com_impayees_mois[] = 5500;
+        $data_com_impayees_mois[] = 29000;
+        $data_com_impayees_mois[] = 0;
+        $data_com_impayees_mois[] = 500;
+        $data_com_impayees_mois[] = 2000;
+
+        //dd($data_com_impayees_mois);
 
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
@@ -164,6 +202,8 @@ class DashboardController extends AbstractController
                 'data_primes' => $data_primes,
                 'data_com_impayees' => $data_com_impayees,
                 'data_com_nettes' => $data_com_nettes,
+                'data_com_nettes_mois' => $data_com_nettes_mois,
+                'data_com_encaissees_mois' => $data_com_encaissees_mois,
                 'data_com_impayees_mois' => $data_com_impayees_mois,
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
