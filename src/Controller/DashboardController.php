@@ -164,20 +164,21 @@ class DashboardController extends AbstractController
         $data_com_nettes_mois[] = 11500;
         $data_com_nettes_mois[] = 23000;
 
-
-        $data_com_encaissees_mois[] = 13500;
-        $data_com_encaissees_mois[] = 500;
-        $data_com_encaissees_mois[] = 500;
-        $data_com_encaissees_mois[] = 5000;
-        $data_com_encaissees_mois[] = 5000;
-        $data_com_encaissees_mois[] = 1500;
-        $data_com_encaissees_mois[] = 500;
-        $data_com_encaissees_mois[] = 5500;
-        $data_com_encaissees_mois[] = 29000;
-        $data_com_encaissees_mois[] = 0;
-        $data_com_encaissees_mois[] = 500;
+        //[15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
+        $data_com_encaissees_mois[] = 15000;
         $data_com_encaissees_mois[] = 2000;
+        $data_com_encaissees_mois[] = 25000;
+        $data_com_encaissees_mois[] = 35000;
+        $data_com_encaissees_mois[] = 65000;
+        $data_com_encaissees_mois[] = 75000;
+        $data_com_encaissees_mois[] = 10000;
+        $data_com_encaissees_mois[] = 15500;
+        $data_com_encaissees_mois[] = 64000;
+        $data_com_encaissees_mois[] = 6550;
+        $data_com_encaissees_mois[] = 12000;
+        $data_com_encaissees_mois[] = 25000;
 
+        //[13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000]
         $data_com_impayees_mois[] = 13500;
         $data_com_impayees_mois[] = 500;
         $data_com_impayees_mois[] = 500;
