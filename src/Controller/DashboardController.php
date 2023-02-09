@@ -84,22 +84,22 @@ class DashboardController extends AbstractController
         }
 
         //dd($data);
-        $data_primes[] = [
+        $data_primes_assureur[] = [
             'label' => 'SFA',
             'data' => 850000,
             'color'=> 'blue'
         ];
-        $data_primes[] = [
+        $data_primes_assureur[] = [
             'label' => 'RAWSUR',
             'data' => 650000,
             'color'=> 'gray'
         ];
-        $data_primes[] = [
+        $data_primes_assureur[] = [
             'label' => 'MAYFAIR',
             'data' => 50000,
             'color'=> 'red'
         ];
-        $data_primes[] = [
+        $data_primes_assureur[] = [
             'label' => 'SUNU',
             'data' => 12000,
             'color'=> 'green'
@@ -149,6 +149,51 @@ class DashboardController extends AbstractController
             'data' => 150,
             'color'=> 'green'
         ];
+
+
+        //Les primes TTC
+        $data_primes_ttc_mois[] = 15000;
+        $data_primes_ttc_mois[] = 1500;
+        $data_primes_ttc_mois[] = 24500;
+        $data_primes_ttc_mois[] = 30000;
+        $data_primes_ttc_mois[] = 60000;
+        $data_primes_ttc_mois[] = 73500;
+        $data_primes_ttc_mois[] = 9500;
+        $data_primes_ttc_mois[] = 10000;
+        $data_primes_ttc_mois[] = 35000;
+        $data_primes_ttc_mois[] = 6550;
+        $data_primes_ttc_mois[] = 11500;
+        $data_primes_ttc_mois[] = 23000;
+
+        //Les primes nettes ht
+        $data_primes_ht_mois[] = 1000;
+        $data_primes_ht_mois[] = 1000;
+        $data_primes_ht_mois[] = 21500;
+        $data_primes_ht_mois[] = 28000;
+        $data_primes_ht_mois[] = 52000;
+        $data_primes_ht_mois[] = 70500;
+        $data_primes_ht_mois[] = 9100;
+        $data_primes_ht_mois[] = 8500;
+        $data_primes_ht_mois[] = 30000;
+        $data_primes_ht_mois[] = 6050;
+        $data_primes_ht_mois[] = 9500;
+        $data_primes_ht_mois[] = 20000;
+
+
+        //Les fronting
+        $data_fronting_mois[] = 170;
+        $data_fronting_mois[] = 170;
+        $data_fronting_mois[] = 0;
+        $data_fronting_mois[] = 2500;
+        $data_fronting_mois[] = 5000;
+        $data_fronting_mois[] = 7500;
+        $data_fronting_mois[] = 910;
+        $data_fronting_mois[] = 0;
+        $data_fronting_mois[] = 0;
+        $data_fronting_mois[] = 50;
+        $data_fronting_mois[] = 150;
+        $data_fronting_mois[] = 2000;
+
 
         //[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
         $data_com_nettes_mois[] = 1500;
@@ -200,9 +245,16 @@ class DashboardController extends AbstractController
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
-                'data_primes' => $data_primes,
+                //les primes par mois
+                'data_primes_ttc_mois' => $data_primes_ttc_mois,
+                'data_primes_ht_mois' => $data_primes_ht_mois,
+                'data_fronting_mois' => $data_fronting_mois,
+                //les primes par assureur
+                'data_primes_assureur' => $data_primes_assureur,
+                //les commissions en général
                 'data_com_impayees' => $data_com_impayees,
                 'data_com_nettes' => $data_com_nettes,
+                //les commissions par mois
                 'data_com_nettes_mois' => $data_com_nettes_mois,
                 'data_com_encaissees_mois' => $data_com_encaissees_mois,
                 'data_com_impayees_mois' => $data_com_impayees_mois,

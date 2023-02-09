@@ -37,6 +37,9 @@
               <div class="card-body">
                 <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                   <canvas id="primes_mois" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+                  <div class="primes_ttc_mois" data-donnees = "{{data_primes_ttc_mois|serialize(format = 'json')}}"></div>
+                  <div class="primes_ht_mois" data-donnees = "{{data_primes_ht_mois|serialize(format = 'json')}}"></div>
+                  <div class="fronting_mois" data-donnees = "{{data_fronting_mois|serialize(format = 'json')}}"></div>
                 </div>
               </div>
               <!-- /.card-body -->
@@ -99,7 +102,7 @@
               </div>
               <div class="card-body">
                 <div id="primes_assureur" style="height: 300px;"></div>
-				        <div class="primes_assureur" data-donnees = "{{data_primes|serialize(format = 'json')}}"></div>
+				        <div class="primes_assureur" data-donnees = "{{data_primes_assureur|serialize(format = 'json')}}"></div>
               </div>
               <!-- /.card-body-->
             </div>
@@ -197,7 +200,7 @@
         labels  : ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
         datasets: [
           {
-            label               : 'Primes nette',
+            label               : 'Primes (HT)',
             backgroundColor     : 'gray',
             borderColor         : 'gray',
             pointRadius          : false,
@@ -205,10 +208,10 @@
             pointStrokeColor    : 'gray',
             pointHighlightFill  : 'gray',
             pointHighlightStroke: 'gray',
-            data                : [15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
+            data                : JSON.parse(document.querySelector('.primes_ht_mois').dataset.donnees)//[15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
           },
           {
-            label               : 'Primes TTC',
+            label               : 'Primes (TTC)',
             backgroundColor     : 'black',
             borderColor         : 'black',
             pointRadius         : false,
@@ -216,8 +219,19 @@
             pointStrokeColor    : 'orange',
             pointHighlightFill  : 'orange',
             pointHighlightStroke: 'orange',
-            data                : [1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+            data                : JSON.parse(document.querySelector('.primes_ttc_mois').dataset.donnees)//[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
           },
+          {
+            label               : 'Fronting',
+            backgroundColor     : 'blue',
+            borderColor         : 'blue',
+            pointRadius         : false,
+            pointColor          : 'blue',
+            pointStrokeColor    : 'blue',
+            pointHighlightFill  : 'blue',
+            pointHighlightStroke: 'blue',
+            data                : JSON.parse(document.querySelector('.fronting_mois').dataset.donnees)//[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+          }
         ]
       }
       
