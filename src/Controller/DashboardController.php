@@ -241,7 +241,7 @@ class DashboardController extends AbstractController
 
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
-            'dashboard_test.html.twig',
+            'dashboard.html.twig',//'dashboard_test.html.twig',
             [
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
