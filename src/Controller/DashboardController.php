@@ -49,7 +49,7 @@ class DashboardController extends AbstractController
         $criteres_dashboard = $search_Dashboard_Form->getData();
         $taxes = $taxeRepository->findAll();
 
-        $data = [];
+        $data_police = [];
         if ($search_Dashboard_Form->isSubmitted() && $search_Dashboard_Form->isValid()) {
             //dd($criteres);
             $data = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard, $taxes);
@@ -69,7 +69,7 @@ class DashboardController extends AbstractController
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard, $taxes);
+                $data_police = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard, $taxes);
 
                 $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
                     'motcle' => $objCritereSession['motcle'],
