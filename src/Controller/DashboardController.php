@@ -9,6 +9,7 @@ use App\Entity\Entreprise;
 use App\Form\PoliceFormType;
 use App\Agregats\PoliceAgregat;
 use App\Agregats\PoliceAgregats;
+use App\Agregats\TableauDeBord;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
@@ -60,9 +61,10 @@ class DashboardController extends AbstractController
         $data_police = [];
         if ($search_Dashboard_Form->isSubmitted() && $search_Dashboard_Form->isValid()) {
             //dd($criteres);
-            $data = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard, $taxes);
+            $data_police = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard, $taxes);
             $session_dashboard->set($session_name_dashboard, $criteres_dashboard);
             //dd($session->get("criteres_liste_pop_taxe"));
+            //dd($data_police);
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
             $objCritereSession = $session_dashboard->get($session_name_dashboard);
@@ -91,208 +93,20 @@ class DashboardController extends AbstractController
             }
         }
 
+        $tableau_de_bord = new TableauDeBord(
+            $assureurRepository,
+            $automobileRepository,
+            $clientRepository,
+            $contactRepository,
+            $entrepriseRepository,
+            $taxeRepository,
+            $monnaieRepository,
+            $partenaireRepository,
+            $policeRepository,
+            $produitRepository,
+            $data_police
+        );
 
-
-        //dd($assureurRepository->stat_get_nombres_enregistrements());
-
-
-        //nombre d'enregistrements
-        $data_nb_enregistrements["assureurs"] = [
-            "valeur" => $assureurRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["automobiles"] = [
-            "valeur" => $automobileRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["clients"] = [
-            "valeur" => $clientRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["contacts"] = [
-            "valeur" => $contactRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["entreprises"] = [
-            "valeur" => $entrepriseRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["impots_et_taxes"] = [
-            "valeur" => $taxeRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["monnaies"] = [
-            "valeur" => $monnaieRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["partenaires"] = [
-            "valeur" => $partenaireRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["polices"] = [
-            "valeur" => $policeRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-        $data_nb_enregistrements["produits"] = [
-            "valeur" => $produitRepository->stat_get_nombres_enregistrements(),
-            "limit" => null
-        ];
-
-
-        //dd($data_nb_enregistrements);
-        //dd($data);
-        $data_primes_assureur[] = [
-            'label' => 'SFA',
-            'data' => 850000,
-            'color'=> 'blue'
-        ];
-        $data_primes_assureur[] = [
-            'label' => 'RAWSUR',
-            'data' => 650000,
-            'color'=> 'gray'
-        ];
-        $data_primes_assureur[] = [
-            'label' => 'MAYFAIR',
-            'data' => 50000,
-            'color'=> 'red'
-        ];
-        $data_primes_assureur[] = [
-            'label' => 'SUNU',
-            'data' => 12000,
-            'color'=> 'green'
-        ];
-
-
-        $data_com_nettes[] = [
-            'label' => 'SFA',
-            'data' => 85000,
-            'color'=> 'blue'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'RAWSUR',
-            'data' => 65000,
-            'color'=> 'gray'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'MAYFAIR',
-            'data' => 50000,
-            'color'=> 'red'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'SUNU',
-            'data' => 12000,
-            'color'=> 'green'
-        ];
-
-
-        
-        $data_com_impayees[] = [
-            'label' => 'SFA',
-            'data' => 85000,
-            'color'=> 'blue'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'RAWSUR',
-            'data' => 65000,
-            'color'=> 'gray'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'MAYFAIR',
-            'data' => 5000,
-            'color'=> 'red'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'SUNU',
-            'data' => 150,
-            'color'=> 'green'
-        ];
-
-
-        //Les primes TTC
-        $data_primes_ttc_mois[] = 15000;
-        $data_primes_ttc_mois[] = 1500;
-        $data_primes_ttc_mois[] = 24500;
-        $data_primes_ttc_mois[] = 30000;
-        $data_primes_ttc_mois[] = 60000;
-        $data_primes_ttc_mois[] = 73500;
-        $data_primes_ttc_mois[] = 9500;
-        $data_primes_ttc_mois[] = 10000;
-        $data_primes_ttc_mois[] = 35000;
-        $data_primes_ttc_mois[] = 6550;
-        $data_primes_ttc_mois[] = 11500;
-        $data_primes_ttc_mois[] = 23000;
-
-        //Les primes nettes ht
-        $data_primes_ht_mois[] = 1000;
-        $data_primes_ht_mois[] = 1000;
-        $data_primes_ht_mois[] = 21500;
-        $data_primes_ht_mois[] = 28000;
-        $data_primes_ht_mois[] = 52000;
-        $data_primes_ht_mois[] = 70500;
-        $data_primes_ht_mois[] = 9100;
-        $data_primes_ht_mois[] = 8500;
-        $data_primes_ht_mois[] = 30000;
-        $data_primes_ht_mois[] = 6050;
-        $data_primes_ht_mois[] = 9500;
-        $data_primes_ht_mois[] = 20000;
-
-
-        //Les fronting
-        $data_fronting_mois[] = 170;
-        $data_fronting_mois[] = 170;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 2500;
-        $data_fronting_mois[] = 5000;
-        $data_fronting_mois[] = 7500;
-        $data_fronting_mois[] = 910;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 50;
-        $data_fronting_mois[] = 150;
-        $data_fronting_mois[] = 2000;
-
-
-        //[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
-        $data_com_nettes_mois[] = 1500;
-        $data_com_nettes_mois[] = 1500;
-        $data_com_nettes_mois[] = 24500;
-        $data_com_nettes_mois[] = 30000;
-        $data_com_nettes_mois[] = 60000;
-        $data_com_nettes_mois[] = 73500;
-        $data_com_nettes_mois[] = 9500;
-        $data_com_nettes_mois[] = 10000;
-        $data_com_nettes_mois[] = 35000;
-        $data_com_nettes_mois[] = 6550;
-        $data_com_nettes_mois[] = 11500;
-        $data_com_nettes_mois[] = 23000;
-
-        //[15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
-        $data_com_encaissees_mois[] = 15000;
-        $data_com_encaissees_mois[] = 2000;
-        $data_com_encaissees_mois[] = 25000;
-        $data_com_encaissees_mois[] = 35000;
-        $data_com_encaissees_mois[] = 65000;
-        $data_com_encaissees_mois[] = 75000;
-        $data_com_encaissees_mois[] = 10000;
-        $data_com_encaissees_mois[] = 15500;
-        $data_com_encaissees_mois[] = 64000;
-        $data_com_encaissees_mois[] = 6550;
-        $data_com_encaissees_mois[] = 12000;
-        $data_com_encaissees_mois[] = 25000;
-
-        //[13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000]
-        $data_com_impayees_mois[] = 13500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 5000;
-        $data_com_impayees_mois[] = 5000;
-        $data_com_impayees_mois[] = 1500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 5500;
-        $data_com_impayees_mois[] = 29000;
-        $data_com_impayees_mois[] = 0;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 2000;
 
         //dd($data_com_impayees_mois);
 
@@ -303,19 +117,19 @@ class DashboardController extends AbstractController
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
                 //les primes par mois
-                'data_primes_ttc_mois' => $data_primes_ttc_mois,
-                'data_primes_ht_mois' => $data_primes_ht_mois,
-                'data_fronting_mois' => $data_fronting_mois,
+                'data_primes_ttc_mois' => $tableau_de_bord->dash_get_graphique_primes_ttc_mois(),
+                'data_primes_ht_mois' => $tableau_de_bord->dash_get_graphique_primes_ht_mois(),
+                'data_fronting_mois' => $tableau_de_bord->dash_get_graphique_fronting_mois(),
                 //les primes par assureur
-                'data_primes_assureur' => $data_primes_assureur,
+                'data_primes_assureur' => $tableau_de_bord->dash_get_graphique_primes_assureur(),
                 //les commissions en général
-                'data_com_impayees' => $data_com_impayees,
-                'data_com_nettes' => $data_com_nettes,
+                'data_com_impayees' => $tableau_de_bord->dash_get_graphique_commissions_impayees_assureur(),
+                'data_com_nettes' => $tableau_de_bord->dash_get_graphique_commissions_nettes_assureur(),
                 //les commissions par mois
-                'data_com_nettes_mois' => $data_com_nettes_mois,
-                'data_com_encaissees_mois' => $data_com_encaissees_mois,
-                'data_com_impayees_mois' => $data_com_impayees_mois,
-                'data_nb_enregistrements' => $data_nb_enregistrements,
+                'data_com_nettes_mois' => $tableau_de_bord->dash_get_graphique_commissions_nettes_mois(),
+                'data_com_encaissees_mois' => $tableau_de_bord->dash_get_graphique_commissions_encaissees_mois(),
+                'data_com_impayees_mois' => $tableau_de_bord->dash_get_graphique_commissions_impayees_mois(),
+                'data_nb_enregistrements' => $tableau_de_bord->dash_get_nb_enregistrements(),
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
             ]
