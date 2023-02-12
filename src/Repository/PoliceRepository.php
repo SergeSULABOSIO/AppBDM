@@ -151,7 +151,7 @@ class PoliceRepository extends ServiceEntityRepository
                 $primenette += $police->getPrimeNette();
 
                 //La monnaie
-                $codeMonnaie = $police->getMonnaie()?$police->getMonnaie()->getCode():"...";
+                $codeMonnaie = $police->getMonnaie() ? $police->getMonnaie()->getCode() : "...";
 
                 //Commissions
                 $ricom = $police->getRiCom();
@@ -188,8 +188,8 @@ class PoliceRepository extends ServiceEntityRepository
 
                 $net_com_excluding_arca_sharable = $net_com_including_arca_sharable - $taxe_charge_courtier_sharable;
 
-                $taux_retro_com = $police->getPartenaire()?$police->getPartenaire()->getPart():0;
-                
+                $taux_retro_com = $police->getPartenaire() ? $police->getPartenaire()->getPart() : 0;
+
                 $retrocom += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
 
                 $comnette += $net_com_excluding_arca - $retrocom;
@@ -209,5 +209,15 @@ class PoliceRepository extends ServiceEntityRepository
             //dd($agregat);
         }
         return $resultFinal;
+    }
+
+    public function stat_get_nombres_enregistrements()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('count(a.id) as nombre')
+            //    ->select('a.exampleField = :val')
+            //    ->setParameter('val', $value)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

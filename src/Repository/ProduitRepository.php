@@ -63,6 +63,16 @@ class ProduitRepository extends ServiceEntityRepository
         return $query;
     }
 
+    public function stat_get_nombres_enregistrements()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('count(a.id) as nombre')
+            //    ->select('a.exampleField = :val')
+            //    ->setParameter('val', $value)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    public function findOneBySomeField($value): ?Produit
     //    {
     //        return $this->createQueryBuilder('p')

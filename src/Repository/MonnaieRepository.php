@@ -64,6 +64,18 @@ class MonnaieRepository extends ServiceEntityRepository
         return $query;
     }
 
+
+    public function stat_get_nombres_enregistrements()
+       {
+           return $this->createQueryBuilder('a')
+               ->select('count(a.id) as nombre')
+            //    ->select('a.exampleField = :val')
+            //    ->setParameter('val', $value)
+               ->getQuery()
+               ->getSingleScalarResult()
+           ;
+       }
+
     //    public function findOneBySomeField($value): ?Monnaie
     //    {
     //        return $this->createQueryBuilder('m')

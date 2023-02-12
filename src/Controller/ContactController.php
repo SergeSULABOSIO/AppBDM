@@ -35,14 +35,17 @@ class ContactController extends AbstractController
             $data = $contactRepository->findByMotCle($criteres);
             $session->set("criteres_liste_contact", $criteres);
         } else {
-            if ($session->has("criteres_liste_contact")) {
+            $objCritereSession = $session->get("criteres_liste_contact");
+            if ($objCritereSession) {
                 $data = $contactRepository->findByMotCle($session->get("criteres_liste_contact"));
-                $client = $clientRepository->find($session->get("criteres_liste_contact")['client']->getId());
+                $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
+                $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
+                //$client = $clientRepository->find($session->get("criteres_liste_contact")['client']->getId());
                 //dd($session->get("criteres_liste_contact")['client']->getNom());
                 
                 $searchContactForm = $this->createForm(ContactSearchType::class, [
                    'motcle' => $session->get("criteres_liste_contact")['motcle'],
-                   'client' => $client
+                   'client' => $objClient
                 ]);
             } else {
                 $data = $contactRepository->findAll();

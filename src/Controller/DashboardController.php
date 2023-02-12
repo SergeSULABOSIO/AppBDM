@@ -13,6 +13,10 @@ use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\AssureurRepository;
+use App\Repository\AutomobileRepository;
+use App\Repository\ContactRepository;
+use App\Repository\EntrepriseRepository;
+use App\Repository\MonnaieRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,12 +34,16 @@ class DashboardController extends AbstractController
     #[Route('/index', name: 'dashboard')]
     public function index(
         Request $request,
-        TaxeRepository $taxeRepository,
-        PoliceRepository $policeRepository,
-        ProduitRepository $produitRepository,
+        AssureurRepository $assureurRepository,
+        AutomobileRepository $automobileRepository,
         ClientRepository $clientRepository,
+        ContactRepository $contactRepository,
+        EntrepriseRepository $entrepriseRepository,
+        TaxeRepository $taxeRepository,
+        MonnaieRepository $monnaieRepository,
         PartenaireRepository $partenaireRepository,
-        AssureurRepository $assureurRepository
+        PoliceRepository $policeRepository,
+        ProduitRepository $produitRepository
     ): Response {
         $agregats_dashboard = new PoliceAgregat();
         $session_name_dashboard = "criteres_liste_dashboard";
@@ -83,6 +91,55 @@ class DashboardController extends AbstractController
             }
         }
 
+
+
+        //dd($assureurRepository->stat_get_nombres_enregistrements());
+
+
+        //nombre d'enregistrements
+        $data_nb_enregistrements["assureurs"] = [
+            "valeur" => $assureurRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["automobiles"] = [
+            "valeur" => $automobileRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["clients"] = [
+            "valeur" => $clientRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["contacts"] = [
+            "valeur" => $contactRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["entreprises"] = [
+            "valeur" => $entrepriseRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["impots_et_taxes"] = [
+            "valeur" => $taxeRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["monnaies"] = [
+            "valeur" => $monnaieRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["partenaires"] = [
+            "valeur" => $partenaireRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["polices"] = [
+            "valeur" => $policeRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+        $data_nb_enregistrements["produits"] = [
+            "valeur" => $produitRepository->stat_get_nombres_enregistrements(),
+            "limit" => null
+        ];
+
+
+        //dd($data_nb_enregistrements);
         //dd($data);
         $data_primes_assureur[] = [
             'label' => 'SFA',
@@ -258,6 +315,7 @@ class DashboardController extends AbstractController
                 'data_com_nettes_mois' => $data_com_nettes_mois,
                 'data_com_encaissees_mois' => $data_com_encaissees_mois,
                 'data_com_impayees_mois' => $data_com_impayees_mois,
+                'data_nb_enregistrements' => $data_nb_enregistrements,
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
             ]

@@ -33,7 +33,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('assureur.list') }}">
 							<span class="info-box-text">Assureurs</span>
-							<span class="info-box-number">8</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['assureurs']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['assureurs']['limit'] != null %}
+								 sur {{data_nb_enregistrements['assureurs']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -50,7 +56,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('automobile.list') }}">
 							<span class="info-box-text">Automobiles</span>
-							<span class="info-box-number">410</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['automobiles']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['automobiles']['limit'] != null %}
+								 sur {{data_nb_enregistrements['automobiles']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -67,7 +79,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('client.list') }}">
 							<span class="info-box-text">Clients</span>
-							<span class="info-box-number">13,648</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['clients']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['clients']['limit'] != null %}
+								 sur {{data_nb_enregistrements['clients']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -82,9 +100,15 @@
 						<span class="info-box-icon bg-secondary"><i class="fa-solid fa-address-book"></i></span>
 
 						<div class="info-box-content">
-							<a class="text-black" href="{{ path('client.list') }}">
+							<a class="text-black" href="{{ path('contact.list') }}">
 								<span class="info-box-text">Contacts</span>
-								<span class="info-box-number">93,139</span>
+								<span class="info-box-number">
+									<i class="fa-solid fa-paperclip"></i>
+									{{data_nb_enregistrements['contacts']['valeur']|number_format(0, ',', '.')}}
+									{% if data_nb_enregistrements['contacts']['limit'] != null %}
+									sur {{data_nb_enregistrements['contacts']['limit']|number_format(0, ',', '.')}}
+									{% endif %}
+								</span>
 							</a>
 						</div>
 						<!-- /.info-box-content -->
@@ -101,7 +125,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('entreprise.list') }}">
 							<span class="info-box-text">Entreprises</span>
-							<span class="info-box-number">93,139</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['entreprises']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['entreprises']['limit'] != null %}
+								sur {{data_nb_enregistrements['entreprises']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -118,7 +148,13 @@
 						<div class="info-box-content">
 							<a class="text-black" href="{{ path('taxe.list') }}">
 								<span class="info-box-text">Impôts et taxes</span>
-								<span class="info-box-number">93,139</span>
+								<span class="info-box-number">
+									<i class="fa-solid fa-paperclip"></i>
+									{{data_nb_enregistrements['impots_et_taxes']['valeur']|number_format(0, ',', '.')}}
+									{% if data_nb_enregistrements['impots_et_taxes']['limit'] != null %}
+									sur {{data_nb_enregistrements['impots_et_taxes']['limit']|number_format(0, ',', '.')}}
+									{% endif %}
+								</span>
 							</a>
 						</div>
 						<!-- /.info-box-content -->
@@ -135,7 +171,13 @@
 						<div class="info-box-content">
 							<a class="text-black" href="{{ path('monnaie.list') }}">
 								<span class="info-box-text">Monnaies</span>
-								<span class="info-box-number">93,139</span>
+								<span class="info-box-number">
+									<i class="fa-solid fa-paperclip"></i>
+									{{data_nb_enregistrements['monnaies']['valeur']|number_format(0, ',', '.')}}
+									{% if data_nb_enregistrements['monnaies']['limit'] != null %}
+									sur {{data_nb_enregistrements['monnaies']['limit']|number_format(0, ',', '.')}}
+									{% endif %}
+								</span>
 							</a>
 						</div>
 						<!-- /.info-box-content -->
@@ -152,7 +194,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('poppartenaire.list') }}">
 							<span class="info-box-text">Partenaires</span>
-							<span class="info-box-number">93,139</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['partenaires']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['partenaires']['limit'] != null %}
+								sur {{data_nb_enregistrements['partenaires']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -169,7 +217,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('police.list') }}">
 							<span class="info-box-text">Polices</span>
-							<span class="info-box-number">93,139</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['polices']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['polices']['limit'] != null %}
+								sur {{data_nb_enregistrements['polices']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
@@ -187,7 +241,13 @@
 					<div class="info-box-content">
 						<a class="text-black" href="{{ path('produit.list') }}">
 							<span class="info-box-text">Produits</span>
-							<span class="info-box-number">93,139</span>
+							<span class="info-box-number">
+								<i class="fa-solid fa-paperclip"></i>
+								{{data_nb_enregistrements['produits']['valeur']|number_format(0, ',', '.')}}
+								{% if data_nb_enregistrements['produits']['limit'] != null %}
+								sur {{data_nb_enregistrements['produits']['limit']|number_format(0, ',', '.')}}
+								{% endif %}
+							</span>
 						</a>
 					</div>
 					<!-- /.info-box-content -->
