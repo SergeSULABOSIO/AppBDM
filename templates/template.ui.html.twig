@@ -9,17 +9,14 @@
 			{% endblock %}
 		</title>
 
-		<!-- Google Font: Source Sans Pro -->
+		<!-- Liens utiles pour les pages -->
 		<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-		<link href="{{ asset('node_modules/select2/dist/css/select2.min.css') }}" rel="stylesheet"/>
+		<link rel="stylesheet" href="{{ asset('node_modules/select2/dist/css/select2.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}">
-
-
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 		<link rel="stylesheet" href="{{ asset('node_modules/adminlte/plugins/fontawesome-free/css/all.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('node_modules/adminlte/dist/css/adminlte.min.css')}}">
 
-		
 
 	</head>
 	<body class="hold-transition sidebar-mini">
@@ -311,14 +308,260 @@
 		<script src="{{ asset('node_modules/adminlte/plugins/jquery/jquery.min.js')}}"> </script>
 		<script src="{{ asset('node_modules/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 		<script src="{{ asset('node_modules/adminlte/dist/js/adminlte.min.js')}}"></script>
-		<script src="{{ asset('node_modules/adminlte/plugins/flot/jquery.flot.js')}}"></script>
-		<script src="{{ asset('node_modules/adminlte/plugins/flot/plugins/jquery.flot.resize.js')}}"></script>
-		<script src="{{ asset('node_modules/adminlte/plugins/flot/plugins/jquery.flot.pie.js')}}"></script>
 		<script src="{{ asset('assets/js/scripts.js') }}"></script>
 		<script src="{{ asset('node_modules/select2/dist/js/select2.min.js') }}"></script>
 
+		<!-- Pour les graphiques du tableau de bord -->
+		<script src="{{ asset('node_modules/adminlte/plugins/chart.js/Chart.min.js')}}"></script>
+		<script src="{{ asset('node_modules/adminlte/plugins/flot/jquery.flot.js')}}"></script>
+		<script src="{{ asset('node_modules/adminlte/plugins/flot/plugins/jquery.flot.resize.js')}}"></script>
+		<script src="{{ asset('node_modules/adminlte/plugins/flot/plugins/jquery.flot.pie.js')}}"></script>
 
-		{% block javascripts %}{% endblock %}
+
+		{% block javascripts %}
+			<!-- Page specific script -->
+			<script>
+
+			$(function () {
+				//--------------
+				//- PRIMES PAR MOIS -
+				//--------------
+
+				var dataPrimes = {
+					labels  : ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
+					datasets: [
+					{
+						label               : 'Primes (HT)',
+						backgroundColor     : 'gray',
+						borderColor         : 'gray',
+						pointRadius          : false,
+						pointColor          : 'gray',
+						pointStrokeColor    : 'gray',
+						pointHighlightFill  : 'gray',
+						pointHighlightStroke: 'gray',
+						data                : JSON.parse(document.querySelector('.primes_ht_mois').dataset.donnees)//[15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
+					},
+					{
+						label               : 'Primes (TTC)',
+						backgroundColor     : 'black',
+						borderColor         : 'black',
+						pointRadius         : false,
+						pointColor          : 'orange',
+						pointStrokeColor    : 'orange',
+						pointHighlightFill  : 'orange',
+						pointHighlightStroke: 'orange',
+						data                : JSON.parse(document.querySelector('.primes_ttc_mois').dataset.donnees)//[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+					},
+					{
+						label               : 'Fronting',
+						backgroundColor     : 'blue',
+						borderColor         : 'blue',
+						pointRadius         : false,
+						pointColor          : 'blue',
+						pointStrokeColor    : 'blue',
+						pointHighlightFill  : 'blue',
+						pointHighlightStroke: 'blue',
+						data                : JSON.parse(document.querySelector('.fronting_mois').dataset.donnees)//[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+					}
+					]
+				}
+				
+				//-------------
+				//- PRIMES / MOIS -
+				//-------------
+				var primesMoisCanvas = $('#primes_mois').get(0).getContext('2d');
+				var primesMoisData = $.extend(true, {}, dataPrimes);
+				var temp0 = dataPrimes.datasets[0];
+				var temp1 = dataPrimes.datasets[1];
+				primesMoisData.datasets[0] = temp1;
+				primesMoisData.datasets[1] = temp0;
+
+				var primesMoisOptions = {
+					responsive              : true,
+					maintainAspectRatio     : false,
+					datasetFill             : false
+				};
+
+
+				//On dessine l'histogramme en batons
+				new Chart(primesMoisCanvas, {
+					type: 'bar',
+					data: primesMoisData,
+					options: primesMoisOptions
+				})
+
+
+
+
+				//--------------
+				//- COMMISSION PAR MOIS -
+				//--------------
+
+				var dataCommissions = {
+					labels  : ['Janv', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sept', 'Oct', 'Nov', 'Déc'],
+					datasets: [
+					{
+						label               : 'Commissions encaissées',
+						backgroundColor     : 'gray',
+						borderColor         : 'gray',
+						pointRadius         : false,
+						pointColor          : 'gray',
+						pointStrokeColor    : 'gray',
+						pointHighlightFill  : 'gray',
+						pointHighlightStroke: 'gray',
+						data                : JSON.parse(document.querySelector('.commissions_encaissees_mois').dataset.donnees)//[15000, 2000, 25000, 35000, 65000, 75000, 10000, 15500, 64000, 6550, 12000, 25000]
+					},
+					{
+						label               : 'Commissions nettes',
+						backgroundColor     : 'orange',
+						borderColor         : 'orange',
+						pointRadius         : false,
+						pointColor          : 'orange',
+						pointStrokeColor    : 'orange',
+						pointHighlightFill  : 'orange',
+						pointHighlightStroke: 'orange',
+						data                : JSON.parse(document.querySelector('.commissions_nettes_mois').dataset.donnees)//[1500, 1500, 24500, 30000, 60000, 73500, 9500, 10000, 35000, 6550, 11500, 23000]
+					},
+					{
+						label               : 'Commissions impayées',
+						backgroundColor     : 'red',
+						borderColor         : 'red',
+						pointRadius         : false,
+						pointColor          : 'red',
+						pointStrokeColor    : 'red',
+						pointHighlightFill  : 'red',
+						pointHighlightStroke: 'red',
+						data                : JSON.parse(document.querySelector('.commissions_impayees_mois').dataset.donnees) //[13500, 500, 500, 5000, 5000, 1500, 500, 5500, 29000, 0, 500, 2000]
+					},
+					]
+				}
+				
+						
+				//-------------
+				//- BAR CHART -
+				//-------------
+				var commissionsMoisCanvas = $('#commission_nette_mois').get(0).getContext('2d');
+				var commissionsMoisData = $.extend(true, {}, dataCommissions);
+				var temp0 = dataCommissions.datasets[0];
+				var temp1 = dataCommissions.datasets[1];
+				commissionsMoisData.datasets[0] = temp1;
+				commissionsMoisData.datasets[1] = temp0;
+
+				var barChartOptions = {
+					responsive              : true,
+					maintainAspectRatio     : false,
+					datasetFill             : false
+				};
+
+				//On dessine l'histogramme en batons
+				new Chart(commissionsMoisCanvas, {
+					type: 'bar',
+					data: commissionsMoisData,
+					options: barChartOptions
+				})
+
+				
+
+
+
+
+			/*
+				* COMMISSIONS NETTES PAR ASSUREUR
+				* -----------
+				*/
+
+				var data_primes_assureur = JSON.parse(document.querySelector('.primes_assureur').dataset.donnees);
+				$.plot('#primes_assureur', data_primes_assureur, {
+					series: {
+					pie: {
+						show       : true,
+						radius     : 1,
+						innerRadius: 0.3, //Boule blanche au centre du diagramme
+						label      : {
+						show     : true,
+						radius   : 2 / 3,
+						formatter: labelFormatter,
+						threshold: 0.01
+						}
+					}
+					},
+					legend: {
+					show: false
+					}
+				})
+
+				/*
+				* COMMISSIONS NETTES PAR ASSUREUR
+				* -----------
+				*/
+
+				var data_commissions_nettes_assureur = JSON.parse(document.querySelector('.commissions_nettes_assureur').dataset.donnees);
+				$.plot('#commissions_nettes_assureur', data_commissions_nettes_assureur, {
+					series: {
+					pie: {
+						show       : true,
+						radius     : 1,
+						innerRadius: 0.3, //Boule blanche au centre du diagramme
+						label      : {
+						show     : true,
+						radius   : 2 / 3,
+						formatter: labelFormatter,
+						threshold: 0.01
+						}
+					}
+					},
+					legend: {
+					show: false
+					}
+				})
+
+				/*
+				* COMMISSIONS IMPAYEES PAR ASSUREUR
+				* -----------
+				*/
+
+				var data_commissions_impayees_assureur = JSON.parse(document.querySelector('.commissions_impayees_assureur').dataset.donnees);
+				$.plot('#commissions_impayees_assureur', data_commissions_impayees_assureur, {
+					series: {
+					pie: {
+						show       : true,
+						radius     : 1,
+						innerRadius: 0.3, //Boule blanche au centre du diagramme
+						label      : {
+						show     : true,
+						radius   : 2 / 3,
+						formatter: labelFormatter,
+						threshold: 0.01
+						}
+					}
+					},
+					legend: {
+					show: false
+					}
+				})
+
+
+
+				
+				
+
+				});
+				/*
+				* Custom Label formatter
+				* ----------------------
+				*/
+				function labelFormatter(label, series) {
+				return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+					+ label
+					+ '<br>(' + Math.round(series.percent) + '%)</div>'
+				}
+
+
+
+
+
+			</script>
+		{% endblock %}
 
 		
 

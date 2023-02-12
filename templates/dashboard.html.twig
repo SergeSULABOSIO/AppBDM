@@ -165,7 +165,7 @@
 				<div class="col-md-2 col-sm-6 col-12">
 					<div class="info-box">
 					<span class="info-box-icon bg-secondary"><i class="fa-solid fa-hands-holding-child"></i></span>
-	
+
 					<div class="info-box-content">
 						<span class="info-box-text">Produits</span>
 						<span class="info-box-number">93,139</span>
@@ -182,6 +182,7 @@
 						<small>Champs de recherche</small>
 					</div>
 				</div>
+
 				<div class="row mb-2">
 					{# BLOC DU MOTEUR DE RECHERCHE #}
 					{{ form_start(search_form) }}
@@ -225,13 +226,14 @@
 					</div>
 					{{ form_end(search_form) }}
 				</div>
+
 				<div class="row">
 					<div class="col-sm-6">
 						<small>Agrégats</small>
 					</div>
 				</div>
-				<div
-					class="row">
+
+				<div class="row">
 					{# BLOC DES AGREGATEURS / CHIFFRES GLOBAUX #}
 					<div
 						class="col-lg-3 col-6">
@@ -334,236 +336,1128 @@
 						<small>Grapphiques et histogrammes</small>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-12">
-						<!-- Bar chart -->
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<h3 class="card-title">
-									<i class="far fa-chart-bar"></i>
-									Prime / Commission encaissée / Commission à recevoire
-								</h3>
-								<div class="card-tools">
-									<button type="button" class="btn btn-tool" data-card-widget="collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-tool" data-card-widget="remove">
-										<i class="fas fa-times"></i>
-									</button>
-								</div>
-							</div>
-							<div class="card-body">
-								<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;">
-									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
-										<svg style="width: 100%; height: 100%;">
-											<g
-												class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
-												{# <text x="23.164914391257547" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text>
-																								<text x="95.49566685069692" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text>
-																								<text x="180.4045443101363" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text>
-																								<text x="260.0642047361894" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text>
-																								<text x="337.2883163798939" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text>
-																								<text x="409.6593043587425" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text> #}
-												<text x="25" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Jan.</text>
-												<text x="95" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Fév.</text>
-												<text x="165" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Mar.</text>
-												<text x="235" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Avr.</text>
-												<text x="305" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Mai</text>
-												<text x="375" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Juin</text>
-												<text x="445" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Juil.</text>
-												<text x="515" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Aout</text>
-												<text x="585" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Sept.</text>
-												<text x="655" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Oct.</text>
-												<text x="725" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Nov.</text>
-												<text x="795" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">Déc.</text>
-											</g>
-											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
-												<text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text>
-												<text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text>
-												<text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text>
-												<text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text>
-												<text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text>
-											</g>
-										</svg>
-									</div>
-								</div>
-							</div>
-							<!-- /.card-body-->
-						</div>
-						<!-- /.card -->
 
+				<!--Graphique :  Primes par mois -->
+				<div class="row">
+				<div class="col-12">
+					<!-- Graphique : Primes par mois -->
+					<div class="card card card-gray card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="far fa-chart-bar"></i>                
+						Primes par mois</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
 					</div>
-					<!-- /.col -->
+					<div class="card-body">
+						<div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+						<canvas id="primes_mois" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+						<div class="primes_ttc_mois" data-donnees = "{{data_primes_ttc_mois|serialize(format = 'json')}}"></div>
+						<div class="primes_ht_mois" data-donnees = "{{data_primes_ht_mois|serialize(format = 'json')}}"></div>
+						<div class="fronting_mois" data-donnees = "{{data_fronting_mois|serialize(format = 'json')}}"></div>
+						</div>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
 				</div>
-				<!-- /.row -->
-				<div class="row">
-					<div class="col-md-6">
-						<!-- Line chart -->
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<h3 class="card-title">
-									<i class="far fa-chart-bar"></i>
-									Line Chart
-								</h3>
+				</div>
 
-								<div class="card-tools">
-									<button type="button" class="btn btn-tool" data-card-widget="collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-tool" data-card-widget="remove">
-										<i class="fas fa-times"></i>
-									</button>
-								</div>
+
+				<!-- Graphique : Commissions par mois -->
+				<div class="row">
+				<!-- Graphique : Commission de courtage par mois -->
+				<div class="col-12">
+					<!-- Graphique : Commission de courtage par mois -->
+					<div class="card card card-gray card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="far fa-chart-bar"></i>                
+						Commissions de courtage par mois</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+						<canvas id="commission_nette_mois" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 476px;" width="952" height="500" class="chartjs-render-monitor"></canvas>
+						<div class="commissions_nettes_mois" data-donnees = "{{data_com_nettes_mois|serialize(format = 'json')}}"></div>
+						<div class="commissions_encaissees_mois" data-donnees = "{{data_com_encaissees_mois|serialize(format = 'json')}}"></div>
+						<div class="commissions_impayees_mois" data-donnees = "{{data_com_impayees_mois|serialize(format = 'json')}}"></div>
+						</div>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				</div>
+
+
+				<!-- Graphique : Primes par assureur -->
+				<div class="row">
+					<!-- Graphique : Primes par assureur -->
+					<div class="col-md-4">
+						<!-- Graphique : Primes par assureur -->
+						<div class="card card-gray card-outline">
+						<div class="card-header">
+							<h3 class="card-title">
+							<i class="far fa-chart-bar"></i>
+							Primes / assureur
+							</h3>
+
+							<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
 							</div>
-							<div class="card-body">
-								<div id="line-chart" style="height: 300px; padding: 0px; position: relative;">
-									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
-										<svg style="width: 100%; height: 100%;">
-											<g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
-												<text x="37" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text>
-												<text x="100.25925925925927" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">2</text>
-												<text x="163.51851851851853" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">4</text>
-												<text x="226.77777777777777" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">6</text>
-												<text x="349.3201243259289" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text>
-												<text x="412.5793835851881" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">12</text>
-												<text x="290.03703703703707" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">8</text>
-											</g>
-											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
-												<text x="1" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.5</text>
-												<text x="1" y="226.66666666666669" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.0</text>
-												<text x="1" y="184.33333333333334" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-0.5</text>
-												<text x="5.975780487060547" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.5</text>
-												<text x="5.975780487060547" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.0</text>
-												<text x="5.975780487060547" y="99.66666666666667" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.5</text>
-												<text x="5.975780487060547" y="57.333333333333336" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.0</text>
-											</g>
-										</svg>
-									</div>
-								</div>
-							</div>
-							<!-- /.card-body-->
+						</div>
+						<div class="card-body">
+							<div id="primes_assureur" style="height: 300px;"></div>
+									<div class="primes_assureur" data-donnees = "{{data_primes_assureur|serialize(format = 'json')}}"></div>
+						</div>
+						<!-- /.card-body-->
 						</div>
 						<!-- /.card -->
+					</div>
 
-						<!-- Area chart -->
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<h3 class="card-title">
-									<i class="far fa-chart-bar"></i>
-									Area Chart
-								</h3>
+					<!-- Commissions nette par assureur -->
+					<div class="col-md-4">
+						<!-- Commissions nette par assureur -->
+						<div class="card card-gray card-outline">
+						<div class="card-header">
+							<h3 class="card-title">
+							<i class="far fa-chart-bar"></i>
+							Com. nettes / assureur
+							</h3>
 
-								<div class="card-tools">
-									<button type="button" class="btn btn-tool" data-card-widget="collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-tool" data-card-widget="remove">
-										<i class="fas fa-times"></i>
-									</button>
-								</div>
+							<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
 							</div>
-							<div class="card-body">
-								<div id="area-chart" style="height: 338px; padding: 0px; position: relative;" class="full-width-chart">
-									<canvas class="flot-base" width="1028" height="676" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 514px; height: 338px;"></canvas>
-									<canvas class="flot-overlay" width="1028" height="676" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 514px; height: 338px;"></canvas>
-								</div>
-							</div>
-							<!-- /.card-body-->
+						</div>
+						<div class="card-body">
+							<div id="commissions_nettes_assureur" style="height: 300px;"></div>
+									<div class="commissions_nettes_assureur" data-donnees = "{{data_com_nettes|serialize(format = 'json')}}"></div>
+						</div>
+						<!-- /.card-body-->
 						</div>
 						<!-- /.card -->
 					</div>
 					<!-- /.col -->
 
-					<div class="col-md-6">
-						<!-- Bar chart -->
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<h3 class="card-title">
-									<i class="far fa-chart-bar"></i>
-									Bar Chart
-								</h3>
+					<!-- Commissions impayées par assureur -->
+					<div class="col-md-4">
+						<!-- Commissions impayées par assureur -->
+						<div class="card card-gray card-outline">
+						<div class="card-header">
+							<h3 class="card-title">
+							<i class="far fa-chart-bar"></i>
+							Com. impayées / assureur
+							</h3>
 
-								<div class="card-tools">
-									<button type="button" class="btn btn-tool" data-card-widget="collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-tool" data-card-widget="remove">
-										<i class="fas fa-times"></i>
-									</button>
-								</div>
+							<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
 							</div>
-							<div class="card-body">
-								<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;">
-									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;">
-										<svg style="width: 100%; height: 100%;">
-											<g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
-												<text x="180.4045443101363" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text>
-												<text x="260.0642047361894" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text>
-												<text x="337.2883163798939" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text>
-												<text x="23.164914391257547" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text>
-												<text x="409.6593043587425" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text>
-												<text x="95.49566685069692" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text>
-											</g>
-											<g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
-												<text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text>
-												<text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text>
-												<text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text>
-												<text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text>
-												<text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text>
-											</g>
-										</svg>
-									</div>
-								</div>
-							</div>
-							<!-- /.card-body-->
 						</div>
-						<!-- /.card -->
-
-						<!-- Donut chart -->
-						<div class="card card-primary card-outline">
-							<div class="card-header">
-								<h3 class="card-title">
-									<i class="far fa-chart-bar"></i>
-									Donut Chart
-								</h3>
-
-								<div class="card-tools">
-									<button type="button" class="btn btn-tool" data-card-widget="collapse">
-										<i class="fas fa-minus"></i>
-									</button>
-									<button type="button" class="btn btn-tool" data-card-widget="remove">
-										<i class="fas fa-times"></i>
-									</button>
-								</div>
-							</div>
-							<div class="card-body">
-								<div id="donut-chart" style="height: 300px; padding: 0px; position: relative;">
-									<canvas class="flot-base" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<canvas class="flot-overlay" width="952" height="600" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 476px; height: 300px;"></canvas>
-									<span class="pieLabel" id="pieLabel0" style="position: absolute; top: 69.5px; left: 295.956px;">
-										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series2<br>30%</div>
-									</span>
-									<span class="pieLabel" id="pieLabel1" style="position: absolute; top: 209.5px; left: 273.956px;">
-										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series3<br>20%</div>
-									</span>
-									<span class="pieLabel" id="pieLabel2" style="position: absolute; top: 128.5px; left: 114.956px;">
-										<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">Series4<br>50%</div>
-									</span>
-								</div>
-							</div>
-							<!-- /.card-body-->
+						<div class="card-body">
+							<div id="commissions_impayees_assureur" style="height: 300px;"></div>
+									<div class="commissions_impayees_assureur" data-donnees = "{{data_com_impayees|serialize(format = 'json')}}"></div>
+						</div>
+						<!-- /.card-body-->
 						</div>
 						<!-- /.card -->
 					</div>
 					<!-- /.col -->
 				</div>
-				<!-- /.row -->
+
+				<!-- Synthèse - Les listes d'enregistrements -->
+				<div class="row mt-4">
+					<div class="col">
+						<small>Synthèses</small>
+					</div>
+				</div>
+
+
+				<!--Synthèse production par assureur -->
+				<div class="row">
+				<div class="col-12">
+
+					<!-- Primes par assureur -->
+					<div class="card card-gray card-outline collapsed-card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fa-solid fa-umbrella"></i>        
+						Synthèse - Production par assureur</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body table-responsive p-1" style="display:none;">
+						<table class="table table-hover text-nowrap table-sm">
+						<thead>
+							<tr class="bg-secondary">
+							<th>ETIQUETTES</th>
+							<th class="text-right">PRIMES TTC</th>
+							<th class="text-right">COM. HT</th>
+							<th class="text-right">TVA @16%</th>
+							<th class="text-right">ARCA @2%</th>
+							<th class="text-right">COM. TTC</th>
+							<th class="text-right">COM. ENCAISSEE</th>
+							<th class="text-right">SOLDE DU</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mai</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juin</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juillet</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Août</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Septembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Octobre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Novembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Décembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">SFA</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+						</tbody>
+						<thead>
+							<tr class="bg-secondary">
+							<th>GRAND TOTAL</th>
+							<th class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 10.000,05</th>
+							</tr>
+						</thead>
+						</table>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				</div>
+
+
+				<!--Synthèse production par mois -->
+				<div class="row">
+				<div class="col-12">
+
+					<!-- Primes par mois -->
+					<div class="card card-gray card-outline collapsed-card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fa-solid fa-umbrella"></i>                
+						Synthèse - Production par mois</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body table-responsive p-1" style="display:none;">
+						<table class="table table-hover text-nowrap table-sm">
+						<thead>
+							<tr class="bg-secondary">
+							<th>ETIQUETTES</th>
+							<th class="text-right">PRIMES TTC</th>
+							<th class="text-right">COM. HT</th>
+							<th class="text-right">TVA @16%</th>
+							<th class="text-right">ARCA @2%</th>
+							<th class="text-right">COM. TTC</th>
+							<th class="text-right">COM. ENCAISSEE</th>
+							<th class="text-right">SOLDE DU</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">SUNU</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">RAWSUR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">MAYFAIR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">Février</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">SUNU</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">RAWSUR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">MAYFAIR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">Mars</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">SUNU</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">RAWSUR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">MAYFAIR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">Avril</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">SUNU</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">RAWSUR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">MAYFAIR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">Mai</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">ACTIVA</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">SUNU</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">RAWSUR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">MAYFAIR</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+						</tbody>
+						<thead>
+							<tr class="bg-secondary">
+							<th>GRAND TOTAL</th>
+							<th class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 10.000,05</th>
+							</tr>
+						</thead>
+						</table>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				</div>
+
+
+				<!--Synthèse retrocommission -->
+				<div class="row">
+				<div class="col-12">
+
+					<!-- Retrocommission -->
+					<div class="card card-gray card-outline collapsed-card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fa-solid fa-filter-circle-dollar"></i>        
+						Synthèse - Retrocommissions</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body table-responsive p-1" style="display:none;">
+						<table class="table table-hover text-nowrap table-sm">
+						<thead>
+							<tr class="bg-secondary">
+							<th>ETIQUETTES</th>
+							<th class="text-right">COM. RECUE</th>
+							<th class="text-right">-TVA @16%</th>
+							<th class="text-right">-ARCA @2%</th>
+							<th class="text-right">COM. HT</th>
+							<th class="text-right">COM. DUE</th>
+							<th class="text-right">COM. PAYEE</th>
+							<th class="text-right">SOLDE DU</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">AFINBRO (@50%)</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ -45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ -45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mai</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juin</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juillet</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Août</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Septembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Octobre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Novembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Décembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">OLEA (@45%)</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ -45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ -45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ -20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+						</tbody>
+						<thead>
+							<tr class="bg-secondary">
+							<th>GRAND TOTAL</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ -45.454.456,95</th>
+							<th class="text-right">$ -45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 10.000,05</th>
+							</tr>
+						</thead>
+						</table>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				</div>
+
+
+				<!--Synthèse impôt et taxes -->
+				<div class="row">
+				<div class="col-12">
+
+					<!-- Impôts et taxes -->
+					<div class="card card-gray card-outline collapsed-card">
+					<div class="card-header">
+						<h3 class="card-title">
+						<i class="fa-solid fa-scale-balanced"></i>       
+						Synthèse - Impôts et Taxes</h3>
+						<div class="card-tools">
+						<button type="button" class="btn btn-tool" data-card-widget="collapse">
+							<i class="fas fa-plus"></i>
+						</button>
+						<button type="button" class="btn btn-tool" data-card-widget="remove">
+							<i class="fas fa-times"></i>
+						</button>
+						</div>
+					</div>
+					<!-- /.card-header -->
+					<div class="card-body table-responsive p-1" style="display:none;">
+						<table class="table table-hover text-nowrap table-sm">
+						<thead>
+							<tr class="bg-secondary">
+							<th>ETIQUETTES</th>
+							<th class="text-right">COMMISSIONS ENCAISSEES</th>
+							<th class="text-right">TAXES DUES</th>
+							<th class="text-right">TAXES PAYEES</th>
+							<th class="text-right">SOLDE A PAYER</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">TAXE SUR LA VALEUR AJOUTEE - TVA (@16%)</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mai</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juin</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Juillet</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Août</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Septembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Octobre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Novembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Décembre</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr class="bg-light">
+							<td><span class="font-weight-bold">FRAIS DE SURVEILLANCE - ARCA (@2%)</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Janvier</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Février</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Mars</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+							<tr>
+							<td><span class="font-weight-light pl-3">Avril</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
+							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
+							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
+							</tr>
+						</tbody>
+						<thead>
+							<tr class="bg-secondary">
+							<th>GRAND TOTAL</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 45.454.456,95</th>
+							<th class="text-right">$ 10.000,05</th>
+							</tr>
+						</thead>
+						</table>
+					</div>
+					<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+				</div>
+				</div>
+
 			</div>
 			<!-- /.container-fluid -->
 		</section>
