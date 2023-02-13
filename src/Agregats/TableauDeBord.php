@@ -3,6 +3,7 @@
 namespace App\Agregats;
 
 use App\Entity\Police;
+use Doctrine\ORM\Query\Expr\Func;
 use App\Repository\TaxeRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
@@ -12,15 +13,16 @@ use App\Repository\ProduitRepository;
 use App\Repository\AssureurRepository;
 use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
-use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PartenaireRepository;
-use Doctrine\ORM\Query\Expr\Func;
 use SebastianBergmann\Environment\Console;
+use App\Repository\PaiementCommissionRepository;
+use App\Repository\OutstandingCommissionRepository;
 
 class TableauDeBord
 {
     
     public function __construct(
+        private PaiementCommissionRepository $paiementCommissionRepository,
         private AssureurRepository $assureurRepository,
         private AutomobileRepository $automobileRepository,
         private ClientRepository $clientRepository,
@@ -163,18 +165,30 @@ class TableauDeBord
 
 
     public function dash_get_graphique_commissions_encaissees_mois(){
-        $data_com_encaissees_mois[] = 15000;
-        $data_com_encaissees_mois[] = 2000;
-        $data_com_encaissees_mois[] = 25000;
-        $data_com_encaissees_mois[] = 35000;
-        $data_com_encaissees_mois[] = 65000;
-        $data_com_encaissees_mois[] = 75000;
-        $data_com_encaissees_mois[] = 10000;
-        $data_com_encaissees_mois[] = 15500;
-        $data_com_encaissees_mois[] = 64000;
-        $data_com_encaissees_mois[] = 6550;
-        $data_com_encaissees_mois[] = 12000;
-        $data_com_encaissees_mois[] = 25000;
+         $data_com_encaissees_mois[] = 15000;
+        // $data_com_encaissees_mois[] = 2000;
+        // $data_com_encaissees_mois[] = 25000;
+        // $data_com_encaissees_mois[] = 35000;
+        // $data_com_encaissees_mois[] = 65000;
+        // $data_com_encaissees_mois[] = 75000;
+        // $data_com_encaissees_mois[] = 10000;
+        // $data_com_encaissees_mois[] = 15500;
+        // $data_com_encaissees_mois[] = 64000;
+        // $data_com_encaissees_mois[] = 6550;
+        // $data_com_encaissees_mois[] = 12000;
+        // $data_com_encaissees_mois[] = 25000;
+        
+        $agregats = new PopCommissionAgregat();
+        $this->criteres_dashboard['police'] = null;
+        $data = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats);
+        //dd($data);
+        //de janvier à décembre [0 - 11]
+        for ($i=0; $i < 12; $i++) { 
+            
+        }
+
+
+
         return $data_com_encaissees_mois;
     }
 

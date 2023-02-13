@@ -19,6 +19,7 @@ use App\Repository\ContactRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\MonnaieRepository;
 use App\Repository\OutstandingCommissionRepository;
+use App\Repository\PaiementCommissionRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -46,7 +47,8 @@ class DashboardController extends AbstractController
         PartenaireRepository $partenaireRepository,
         PoliceRepository $policeRepository,
         ProduitRepository $produitRepository,
-        OutstandingCommissionRepository $outstandingCommissionRepository
+        OutstandingCommissionRepository $outstandingCommissionRepository,
+        PaiementCommissionRepository $paiementCommissionRepository
     ): Response {
         $agregats_dashboard = new PoliceAgregat();
         $session_name_dashboard = "criteres_liste_dashboard";
@@ -68,6 +70,7 @@ class DashboardController extends AbstractController
             //dd($session->get("criteres_liste_pop_taxe"));
             //dd($data_police);
             $tableau_de_bord = new TableauDeBord(
+                $paiementCommissionRepository,
                 $assureurRepository,
                 $automobileRepository,
                 $clientRepository,
@@ -110,6 +113,7 @@ class DashboardController extends AbstractController
 
 
                 $tableau_de_bord = new TableauDeBord(
+                    $paiementCommissionRepository,
                     $assureurRepository,
                     $automobileRepository,
                     $clientRepository,
