@@ -125,11 +125,7 @@
 							</div>
 							<div class="card-subtitle mb-2 text-muted">
 								<i class="fa-solid fa-shield-halved"></i>
-								{% for assureur in outstanding.police.assureurs %}
-									{{assureur.nom}}
-									{% if loop.last == false %}-
-									{% endif %}
-								{% endfor %}
+								{{outstanding.police.assureur.nom}}
 							</div>
 							{% if outstanding.police.partenaire != null %}
 								<div class="card-subtitle mb-2 text-muted">

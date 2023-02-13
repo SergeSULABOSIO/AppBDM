@@ -117,10 +117,8 @@ class PoliceRepository extends ServiceEntityRepository
         $resultAssureur = [];
         if ($criteres['assureur']) {
             foreach ($resultPartenaire as $police) {
-                foreach ($police->getAssureurs() as $assureur) {
-                    if ($assureur->getId() == $criteres['assureur']->getId()) {
-                        $resultAssureur[] = $police;
-                    }
+                if ($police->getAssureur()->getId() == $criteres['assureur']->getId()) {
+                    $resultAssureur[] = $police;
                 }
             }
         } else {
