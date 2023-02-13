@@ -190,28 +190,6 @@ class TableauDeBord
 
 
     public function dash_get_graphique_primes_assureur(){
-        // $data_primes_assureur[] = [
-        //     'label' => 'SFA',
-        //     'data' => 850000,
-        //     'color'=> 'blue'
-        // ];
-        // $data_primes_assureur[] = [
-        //     'label' => 'RAWSUR',
-        //     'data' => 650000,
-        //     'color'=> 'gray'
-        // ];
-        // $data_primes_assureur[] = [
-        //     'label' => 'MAYFAIR',
-        //     'data' => 50000,
-        //     'color'=> 'red'
-        // ];
-        // $data_primes_assureur[] = [
-        //     'label' => 'SUNU',
-        //     'data' => 12000,
-        //     'color'=> 'green'
-        // ];
-        //dd($this->polices);
-
         $data_primes_assureur = null;
         
         foreach ($this->assureurRepository->findAll() as $assureur) {
@@ -231,7 +209,6 @@ class TableauDeBord
                 'color'=> $color
             ];
         }
-        
         //dd($data_primes_assureur);
         return $data_primes_assureur;
     }
