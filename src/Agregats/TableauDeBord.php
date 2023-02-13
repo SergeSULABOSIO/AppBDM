@@ -217,7 +217,8 @@ class TableauDeBord
         foreach ($this->assureurRepository->findAll() as $assureur) {
             $label = $assureur->getNom();
             $data = 0;
-            $color = "green";
+            $color = $this->getCouleur();
+            
             foreach ($this->polices as $police) {
                 //dd($police->getAssureur());
                 if($police->getAssureur() == $assureur){
@@ -234,6 +235,12 @@ class TableauDeBord
         //dd($data_primes_assureur);
         return $data_primes_assureur;
     }
+
+    function getCouleur()
+    {
+        return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+    }
+
 
 
     public function dash_get_nb_enregistrements(){
