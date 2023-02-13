@@ -177,11 +177,12 @@ class TableauDeBord
         // $data_com_encaissees_mois[] = 6550;
         // $data_com_encaissees_mois[] = 12000;
         // $data_com_encaissees_mois[] = 25000;
-        
+
         $agregats = new PopCommissionAgregat();
         $this->criteres_dashboard['police'] = null;
         $data = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats);
-        //dd($data);
+        dd($data);
+        //dd($this->criteres_dashboard);
         //de janvier à décembre [0 - 11]
         for ($i=0; $i < 12; $i++) { 
             
