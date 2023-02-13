@@ -238,7 +238,8 @@ class TableauDeBord
 
     function getCouleur()
     {
-        return 'rgb(' . rand(128, 220) . ',' . rand(128, 225) . ',' . rand(128, 225) . ')'; #using the inbuilt random function
+        //return 'rgb(' . rand(128, 220) . ',' . rand(128, 225) . ',' . rand(128, 225) . ')'; #using the inbuilt random function
+        return 'rgb(' . rand(10, 140) . ',' . rand(80, 128) . ',' . rand(80, 128) . ')';
     }
 
 
