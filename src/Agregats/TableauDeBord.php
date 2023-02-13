@@ -14,6 +14,7 @@ use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\Query\Expr\Func;
+use SebastianBergmann\Environment\Console;
 
 class TableauDeBord
 {
@@ -166,35 +167,29 @@ class TableauDeBord
 
 
     public function dash_get_graphique_commissions_nettes_assureur(){
-        $data_com_nettes[] = [
-            'label' => 'SFA',
-            'data' => 85000,
-            'color'=> 'blue'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'RAWSUR',
-            'data' => 65000,
-            'color'=> 'gray'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'MAYFAIR',
-            'data' => 50000,
-            'color'=> 'red'
-        ];
-        $data_com_nettes[] = [
-            'label' => 'SUNU',
-            'data' => 12000,
-            'color'=> 'green'
-        ];
-
-
-        dd($this->criteres_dashboard);
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         
-        //$data = $this->policeRepository->findByMotCle($objCritereSession, $agregats, $taxes);
-
-
+        if ($this->criteres_dashboard['assureur'] == null) {
+            foreach ($this->assureurRepository->findAll() as $assureur) {
+                $this->criteres_dashboard['assureur'] = $assureur;
+                $data = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+                //dd($agregats);
+                $data_com_nettes[] = [
+                    'label' => $assureur->getNom(),
+                    'data' => $agregats->getCommissionNette(),
+                    'color'=> $this->getCouleur()
+                ];
+            }
+        } else {
+            $data = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+            //dd($agregats);
+            $data_com_nettes[] = [
+                'label' => $this->criteres_dashboard['assureur']->getNom(),
+                'data' => $agregats->getCommissionNette(),
+                'color'=> $this->getCouleur()
+            ];
+        }
         return $data_com_nettes;
     }
 
