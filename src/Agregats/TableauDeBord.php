@@ -219,6 +219,7 @@ class TableauDeBord
             $data = 0;
             $color = "green";
             foreach ($this->polices as $police) {
+                //dd($police->getAssureur());
                 if($police->getAssureur() == $assureur){
                     $data += $police->getPrimeTotale();
                 }
@@ -230,7 +231,7 @@ class TableauDeBord
             ];
         }
         
-
+        //dd($data_primes_assureur);
         return $data_primes_assureur;
     }
 

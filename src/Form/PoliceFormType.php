@@ -335,19 +335,32 @@ class PoliceFormType extends AbstractType
                     'class' => 'input-group'
                 ]
             ])
-            ->add('assureurs', EntityType::class, [
+            ->add('assureur', EntityType::class, [
                 'expanded' => false,
-                'multiple' => true,
+                'multiple' => false,
                 'required' => true,
-                'attr' => [
-                    'class' => 'select2'
-                ],
+                // 'attr' => [
+                //     'class' => 'select2'
+                // ],
                 'class'  => Assureur::class,
-                'label' => "Assureurs",
-                // 'row_attr' => [
-                //     'class' => 'input-group'
-                // ]
+                'label' => "Assureur",
+                'row_attr' => [
+                    'class' => 'input-group'
+                ]
             ])
+            // ->add('assureurs', EntityType::class, [
+            //     'expanded' => false,
+            //     'multiple' => true,
+            //     'required' => true,
+            //     'attr' => [
+            //         'class' => 'select2'
+            //     ],
+            //     'class'  => Assureur::class,
+            //     'label' => "Assureurs",
+            //     // 'row_attr' => [
+            //     //     'class' => 'input-group'
+            //     // ]
+            // ])
             ->add('Enregistrer', SubmitType::class);
     }
 

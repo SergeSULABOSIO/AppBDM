@@ -104,9 +104,6 @@ class Police
     #[ORM\JoinColumn(nullable: false)]
     private ?Produit $produit = null;
 
-    #[ORM\ManyToMany(targetEntity: Assureur::class)]
-    private Collection $assureurs;
-
     #[ORM\ManyToOne]
     private ?Partenaire $partenaire = null;
 
@@ -131,10 +128,14 @@ class Police
     #[ORM\Column(length: 255)]
     private ?string $frontingcompayableby = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Assureur $assureur = null;
+
 
     public function __construct()
     {
-        $this->assureurs = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -430,30 +431,6 @@ class Police
         return $this;
     }
 
-    /**
-     * @return Collection<int, Assureur>
-     */
-    public function getAssureurs(): Collection
-    {
-        return $this->assureurs;
-    }
-
-    public function addAssureur(Assureur $assureur): self
-    {
-        if (!$this->assureurs->contains($assureur)) {
-            $this->assureurs->add($assureur);
-        }
-
-        return $this;
-    }
-
-    public function removeAssureur(Assureur $assureur): self
-    {
-        $this->assureurs->removeElement($assureur);
-
-        return $this;
-    }
-
     public function getPartenaire(): ?Partenaire
     {
         return $this->partenaire;
@@ -551,6 +528,18 @@ class Police
     public function setFrontingcompayableby(string $frontingcompayableby): self
     {
         $this->frontingcompayableby = $frontingcompayableby;
+
+        return $this;
+    }
+
+    public function getAssureur(): ?Assureur
+    {
+        return $this->assureur;
+    }
+
+    public function setAssureur(?Assureur $assureur): self
+    {
+        $this->assureur = $assureur;
 
         return $this;
     }
