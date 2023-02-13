@@ -48,7 +48,7 @@ class DashboardController extends AbstractController
     ): Response {
         $agregats_dashboard = new PoliceAgregat();
         $session_name_dashboard = "criteres_liste_dashboard";
-
+        $tableau_de_bord = null;
         $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
             'dateA' => new DateTime('now'),
             'dateB' => new DateTime('now')
@@ -65,6 +65,20 @@ class DashboardController extends AbstractController
             $session_dashboard->set($session_name_dashboard, $criteres_dashboard);
             //dd($session->get("criteres_liste_pop_taxe"));
             //dd($data_police);
+            $tableau_de_bord = new TableauDeBord(
+                $assureurRepository,
+                $automobileRepository,
+                $clientRepository,
+                $contactRepository,
+                $entrepriseRepository,
+                $taxeRepository,
+                $monnaieRepository,
+                $partenaireRepository,
+                $policeRepository,
+                $produitRepository,
+                $data_police,
+                $criteres_dashboard
+            );
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
             $objCritereSession = $session_dashboard->get($session_name_dashboard);
@@ -90,22 +104,26 @@ class DashboardController extends AbstractController
                     'dateA' => $objCritereSession['dateA'],
                     'dateB' => $objCritereSession['dateB']
                 ]);
+
+
+                $tableau_de_bord = new TableauDeBord(
+                    $assureurRepository,
+                    $automobileRepository,
+                    $clientRepository,
+                    $contactRepository,
+                    $entrepriseRepository,
+                    $taxeRepository,
+                    $monnaieRepository,
+                    $partenaireRepository,
+                    $policeRepository,
+                    $produitRepository,
+                    $data_police,
+                    $objCritereSession
+                );
             }
         }
 
-        $tableau_de_bord = new TableauDeBord(
-            $assureurRepository,
-            $automobileRepository,
-            $clientRepository,
-            $contactRepository,
-            $entrepriseRepository,
-            $taxeRepository,
-            $monnaieRepository,
-            $partenaireRepository,
-            $policeRepository,
-            $produitRepository,
-            $data_police
-        );
+        
 
 
         //dd($data_com_impayees_mois);

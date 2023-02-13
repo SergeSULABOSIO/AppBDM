@@ -30,6 +30,7 @@ class TableauDeBord
         private PoliceRepository $policeRepository,
         private ProduitRepository $produitRepository,
         private $polices,
+        private $criteres_dashboard
     )
     {
         
@@ -185,6 +186,15 @@ class TableauDeBord
             'data' => 12000,
             'color'=> 'green'
         ];
+
+
+        dd($this->criteres_dashboard);
+        $agregats = new PoliceAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        
+        //$data = $this->policeRepository->findByMotCle($objCritereSession, $agregats, $taxes);
+
+
         return $data_com_nettes;
     }
 
@@ -216,7 +226,7 @@ class TableauDeBord
     function getCouleur()
     {
         //return 'rgb(' . rand(128, 220) . ',' . rand(128, 225) . ',' . rand(128, 225) . ')'; #using the inbuilt random function
-        return 'rgb(' . rand(10, 140) . ',' . rand(80, 128) . ',' . rand(80, 128) . ')';
+        return 'rgb(' . rand(0, 140) . ',' . rand(0, 128) . ',' . rand(0, 128) . ')';
     }
 
 
