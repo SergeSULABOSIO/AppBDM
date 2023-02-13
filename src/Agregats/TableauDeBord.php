@@ -199,9 +199,6 @@ class TableauDeBord
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         
-
-        //dd($this->criteres_dashboard);
-
         if ($this->criteres_dashboard['assureur'] == null) {
             $ancien_assureur_selected = $this->criteres_dashboard['assureur'];
             foreach ($this->assureurRepository->findAll() as $assureur) {
