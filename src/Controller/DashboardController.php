@@ -18,6 +18,7 @@ use App\Repository\AutomobileRepository;
 use App\Repository\ContactRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\MonnaieRepository;
+use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\TaxeRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -44,7 +45,8 @@ class DashboardController extends AbstractController
         MonnaieRepository $monnaieRepository,
         PartenaireRepository $partenaireRepository,
         PoliceRepository $policeRepository,
-        ProduitRepository $produitRepository
+        ProduitRepository $produitRepository,
+        OutstandingCommissionRepository $outstandingCommissionRepository
     ): Response {
         $agregats_dashboard = new PoliceAgregat();
         $session_name_dashboard = "criteres_liste_dashboard";
@@ -76,6 +78,7 @@ class DashboardController extends AbstractController
                 $partenaireRepository,
                 $policeRepository,
                 $produitRepository,
+                $outstandingCommissionRepository,
                 $data_police,
                 $criteres_dashboard
             );
@@ -117,6 +120,7 @@ class DashboardController extends AbstractController
                     $partenaireRepository,
                     $policeRepository,
                     $produitRepository,
+                    $outstandingCommissionRepository,
                     $data_police,
                     $objCritereSession
                 );

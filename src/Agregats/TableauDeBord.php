@@ -12,6 +12,7 @@ use App\Repository\ProduitRepository;
 use App\Repository\AssureurRepository;
 use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
+use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\Query\Expr\Func;
 use SebastianBergmann\Environment\Console;
@@ -30,6 +31,7 @@ class TableauDeBord
         private PartenaireRepository $partenaireRepository,
         private PoliceRepository $policeRepository,
         private ProduitRepository $produitRepository,
+        private OutstandingCommissionRepository $outstandingCommissionRepository,
         private $polices,
         private $criteres_dashboard
     )
@@ -92,26 +94,53 @@ class TableauDeBord
 
 
     public function dash_get_graphique_commissions_impayees_assureur(){
-        $data_com_impayees[] = [
-            'label' => 'SFA',
-            'data' => 85000,
-            'color'=> 'blue'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'RAWSUR',
-            'data' => 65000,
-            'color'=> 'gray'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'MAYFAIR',
-            'data' => 5000,
-            'color'=> 'red'
-        ];
-        $data_com_impayees[] = [
-            'label' => 'SUNU',
-            'data' => 150,
-            'color'=> 'green'
-        ];
+        // $data_com_impayees[] = [
+        //     'label' => 'SFA',
+        //     'data' => 85000,
+        //     'color'=> 'blue'
+        // ];
+        // $data_com_impayees[] = [
+        //     'label' => 'RAWSUR',
+        //     'data' => 65000,
+        //     'color'=> 'gray'
+        // ];
+        // $data_com_impayees[] = [
+        //     'label' => 'MAYFAIR',
+        //     'data' => 5000,
+        //     'color'=> 'red'
+        // ];
+        // $data_com_impayees[] = [
+        //     'label' => 'SUNU',
+        //     'data' => 150,
+        //     'color'=> 'green'
+        // ];
+
+        $agregats = new OutstandingCommissionAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        
+        if ($this->criteres_dashboard['assureur'] == null) {
+            $ancien_assureur_selected = $this->criteres_dashboard['assureur'];
+            foreach ($this->assureurRepository->findAll() as $assureur) {
+                $this->criteres_dashboard['assureur'] = $assureur;
+                $data = $this->outstandingCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+                //dd($agregats);
+                $data_com_impayees[] = [
+                    'label' => $assureur->getNom(),
+                    'data' => $agregats->getMontant(),
+                    'color'=> $this->getCouleur()
+                ];
+            }
+            $this->criteres_dashboard['assureur'] = $ancien_assureur_selected;
+        } else {
+            $data = $this->outstandingCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+            //dd($agregats);
+            $data_com_impayees[] = [
+                'label' => $this->criteres_dashboard['assureur']->getNom(),
+                'data' => $agregats->getMontant(),
+                'color'=> $this->getCouleur()
+            ];
+        }
+        //dd($data_com_impayees);
         return $data_com_impayees;
     }
 
@@ -170,7 +199,11 @@ class TableauDeBord
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         
+
+        //dd($this->criteres_dashboard);
+
         if ($this->criteres_dashboard['assureur'] == null) {
+            $ancien_assureur_selected = $this->criteres_dashboard['assureur'];
             foreach ($this->assureurRepository->findAll() as $assureur) {
                 $this->criteres_dashboard['assureur'] = $assureur;
                 $data = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
@@ -181,6 +214,7 @@ class TableauDeBord
                     'color'=> $this->getCouleur()
                 ];
             }
+            $this->criteres_dashboard['assureur'] = $ancien_assureur_selected;
         } else {
             $data = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
             //dd($agregats);
@@ -190,6 +224,7 @@ class TableauDeBord
                 'color'=> $this->getCouleur()
             ];
         }
+        //dd($data_com_nettes);
         return $data_com_nettes;
     }
 

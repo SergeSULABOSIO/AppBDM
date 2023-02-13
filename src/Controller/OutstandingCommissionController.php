@@ -13,6 +13,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Agregats\OutstandingCommissionAgregat;
 use App\Outstanding\CommissionOutstanding;
+use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\TaxeRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,8 @@ class OutstandingCommissionController extends AbstractController
         ClientRepository $clientRepository,
         PartenaireRepository $partenaireRepository,
         AssureurRepository $assureurRepository,
-        PaginatorInterface $paginatorInterface
+        PaginatorInterface $paginatorInterface,
+        OutstandingCommissionRepository $outstandingCommissionRepository
     ): Response {
         $agregats = new OutstandingCommissionAgregat();
 
@@ -55,6 +57,8 @@ class OutstandingCommissionController extends AbstractController
             $data = $policeRepository->findByMotCle($criteres, null, $taxes);
             $session->set("criteres_liste_outstanding_commission", $criteres);
             //dd($session->get("criteres_liste_pop_taxe"));
+
+            $outstandings = $outstandingCommissionRepository->findByMotCle($criteres, $agregats, $taxes);
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
             $objCritereSession = $session->get("criteres_liste_outstanding_commission");
@@ -80,43 +84,48 @@ class OutstandingCommissionController extends AbstractController
                     'dateA' => $objCritereSession['dateA'],
                     'dateB' => $objCritereSession['dateB']
                 ]);
+
+                $outstandings = $outstandingCommissionRepository->findByMotCle($objCritereSession, $agregats, $taxes);
             }
         }
 
         //dd($data);
 
-        $outstandings = [];
 
-        //$polices = $paginatorInterface->paginate($data, $page, $nbre);
-        $agreg_codeMonnaie = "...";
-        $agreg_montant = 0;
-        $agreg_montant_net = 0;
-        foreach ($data as $police) {
-            //On va vérifier aussi les paiements possibles
-            $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
-                'dateA' => "",
-                'dateB' => "",
-                'motcle' => "",
-                'police' => $police,
-                'assureur' => null,
-                'client' => $police->getClient(),
-                'partenaire' => $police->getPartenaire()
-            ], null);
 
-            $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
+        
 
-            //dd($commOustanding);
+        // $outstandings = [];
 
-            if ($commOustanding->montantSolde != 0) {
-                $agreg_montant += $commOustanding->montantSolde;
-                $agreg_montant_net += ($commOustanding->montantSolde) / 1.16;
-                $agreg_codeMonnaie = $commOustanding->codeMonnaie;
-                $outstandings[] = $commOustanding;
-            }
-        }
-        $agregats->setCodeMonnaie($agreg_codeMonnaie);
-        $agregats->setMontant($agreg_montant);
-        $agregats->setMontantNet($agreg_montant_net);
+        // $agreg_codeMonnaie = "...";
+        // $agreg_montant = 0;
+        // $agreg_montant_net = 0;
+        // foreach ($data as $police) {
+        //     //On va vérifier aussi les paiements possibles
+        //     $data_paiementsCommissions = $paiementCommissionRepository->findByMotCle([
+        //         'dateA' => "",
+        //         'dateB' => "",
+        //         'motcle' => "",
+        //         'police' => $police,
+        //         'assureur' => null,
+        //         'client' => $police->getClient(),
+        //         'partenaire' => $police->getPartenaire()
+        //     ], null);
+
+        //     $commOustanding = new CommissionOutstanding($police, $data_paiementsCommissions);
+
+        //     //dd($commOustanding);
+
+        //     if ($commOustanding->montantSolde != 0) {
+        //         $agreg_montant += $commOustanding->montantSolde;
+        //         $agreg_montant_net += ($commOustanding->montantSolde) / 1.16;
+        //         $agreg_codeMonnaie = $commOustanding->codeMonnaie;
+        //         $outstandings[] = $commOustanding;
+        //     }
+        // }
+        // $agregats->setCodeMonnaie($agreg_codeMonnaie);
+        // $agregats->setMontant($agreg_montant);
+        // $agregats->setMontantNet($agreg_montant_net);
         //dd($outstandings);
 
 
