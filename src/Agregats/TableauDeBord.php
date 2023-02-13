@@ -218,7 +218,7 @@ class TableauDeBord
             $label = $assureur->getNom();
             $data = 0;
             $color = $this->getCouleur();
-            
+
             foreach ($this->polices as $police) {
                 //dd($police->getAssureur());
                 if($police->getAssureur() == $assureur){
@@ -238,7 +238,7 @@ class TableauDeBord
 
     function getCouleur()
     {
-        return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+        return 'rgb(' . rand(128, 220) . ',' . rand(128, 225) . ',' . rand(128, 225) . ')'; #using the inbuilt random function
     }
 
 
