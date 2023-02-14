@@ -17,6 +17,7 @@ use App\Repository\PartenaireRepository;
 use SebastianBergmann\Environment\Console;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
+use DateTime;
 
 class TableauDeBord
 {
@@ -178,17 +179,22 @@ class TableauDeBord
         // $data_com_encaissees_mois[] = 12000;
         // $data_com_encaissees_mois[] = 25000;
 
-        $agregats = new PopCommissionAgregat();
+        //$agregats = new PopCommissionAgregat();
+        //l'objet critère a besoin d'un champ Police, même vide / null.
         $this->criteres_dashboard['police'] = null;
-        $data = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats);
-        dd($data);
+        $data_paiements_commissions = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, null);
+        //dd($data_paiements_commissions);
         //dd($this->criteres_dashboard);
         //de janvier à décembre [0 - 11]
-        for ($i=0; $i < 12; $i++) { 
+        for ($i=0; $i < 12; $i++) {
+            foreach ($data_paiements_commissions as $com_encaissee) {
+                //DateTime $date_paiement = new DateTime($com_encaissee->getDate());
+                //strtotime("10:30pm April 15 2014");
+                //dd(date("m", strtotime("now")));
+                dd($com_encaissee->getDate());
+            }
             
         }
-
-
 
         return $data_com_encaissees_mois;
     }
