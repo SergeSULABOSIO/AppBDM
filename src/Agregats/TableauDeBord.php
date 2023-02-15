@@ -191,7 +191,8 @@ class TableauDeBord
                 //DateTime $date_paiement = new DateTime($com_encaissee->getDate());
                 //strtotime("10:30pm April 15 2014");
                 //dd(date("m", strtotime("now")));
-                dd($com_encaissee->getDate()->format("m"));
+                $mois_paiement = $com_encaissee->getDate()->format("m");
+                dd($mois_paiement == 2);
                 //var_dump($com_encaissee->getDate()->format("m"));
             }
             
