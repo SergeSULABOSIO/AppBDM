@@ -166,7 +166,7 @@ class TableauDeBord
 
 
     public function dash_get_graphique_commissions_encaissees_mois(){
-         $data_com_encaissees_mois[] = 15000;
+        //$data_com_encaissees_mois[] = 15000;
         // $data_com_encaissees_mois[] = 2000;
         // $data_com_encaissees_mois[] = 25000;
         // $data_com_encaissees_mois[] = 35000;
@@ -186,17 +186,16 @@ class TableauDeBord
         //dd($data_paiements_commissions);
         //dd($this->criteres_dashboard);
         //de janvier à décembre [0 - 11]
-        for ($i=0; $i < 12; $i++) {
+        for ($i=1; $i <= 12; $i++) {
+            $montant_mensuel = 0;
             foreach ($data_paiements_commissions as $com_encaissee) {
-                //DateTime $date_paiement = new DateTime($com_encaissee->getDate());
-                //strtotime("10:30pm April 15 2014");
-                //dd(date("m", strtotime("now")));
                 $mois_paiement = $com_encaissee->getDate()->format("m");
                 if ($mois_paiement == $i) {
-                    dd($com_encaissee->getDate());
+                    //dd($com_encaissee->getDate()->format("d/m/y") . " = " . $i);
+                    $montant_mensuel += $com_encaissee->getMontant();
                 }
             }
-            
+            $data_com_encaissees_mois[] = $montant_mensuel;
         }
 
         return $data_com_encaissees_mois;

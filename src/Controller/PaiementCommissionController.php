@@ -123,6 +123,7 @@ class PaiementCommissionController extends AbstractController
         }
 
         $form = $this->createForm(PaiementCommissionFormType::class, $popcommission);
+        
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

@@ -24,7 +24,7 @@ class PaiementCommissionFormType extends AbstractType
                 'label' => "Date de l'opération",
                 'widget' => 'single_text',
                 'required' => false,
-                'data' => new DateTime('now'),
+                //'data' => new DateTime('now'),
                 'empty_data' => null
             ])
             ->add('montant', NumberType::class, [
