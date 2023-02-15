@@ -69,70 +69,61 @@ class DashboardController extends AbstractController
             $session_dashboard->set($session_name_dashboard, $criteres_dashboard);
             //dd($session->get("criteres_liste_pop_taxe"));
             //dd($data_police);
-            $tableau_de_bord = new TableauDeBord(
-                $paiementCommissionRepository,
-                $assureurRepository,
-                $automobileRepository,
-                $clientRepository,
-                $contactRepository,
-                $entrepriseRepository,
-                $taxeRepository,
-                $monnaieRepository,
-                $partenaireRepository,
-                $policeRepository,
-                $produitRepository,
-                $outstandingCommissionRepository,
-                $data_police,
-                $criteres_dashboard
-            );
         } else {
             //dd($session->get("criteres_liste_pop_taxe"));
-            $objCritereSession = $session_dashboard->get($session_name_dashboard);
-            if ($objCritereSession) {
-                $session_produit = $objCritereSession['produit'] ? $objCritereSession['produit'] : null;
-                $session_partenaire = $objCritereSession['partenaire'] ? $objCritereSession['partenaire'] : null;
-                $session_client = $objCritereSession['client'] ? $objCritereSession['client'] : null;
-                $session_assureur = $objCritereSession['assureur'] ? $objCritereSession['assureur'] : null;
+            $criteres_dashboard = $session_dashboard->get($session_name_dashboard);
+            if ($criteres_dashboard) {
+                $session_produit = $criteres_dashboard['produit'] ? $criteres_dashboard['produit'] : null;
+                $session_partenaire = $criteres_dashboard['partenaire'] ? $criteres_dashboard['partenaire'] : null;
+                $session_client = $criteres_dashboard['client'] ? $criteres_dashboard['client'] : null;
+                $session_assureur = $criteres_dashboard['assureur'] ? $criteres_dashboard['assureur'] : null;
 
                 $objproduit = $session_produit ? $produitRepository->find($session_produit->getId()) : null;
                 $objPartenaire = $session_partenaire ? $partenaireRepository->find($session_partenaire->getId()) : null;
                 $objClient = $session_client ? $clientRepository->find($session_client->getId()) : null;
                 $objAssureur = $session_assureur ? $assureurRepository->find($session_assureur->getId()) : null;
 
-                $data_police = $policeRepository->findByMotCle($objCritereSession, $agregats_dashboard, $taxes);
+                $data_police = $policeRepository->findByMotCle($criteres_dashboard, $agregats_dashboard, $taxes);
 
                 $search_Dashboard_Form = $this->createForm(PoliceSearchType::class, [
-                    'motcle' => $objCritereSession['motcle'],
+                    'motcle' => $criteres_dashboard['motcle'],
                     'produit' => $objproduit,
                     'partenaire' => $objPartenaire,
                     'client' => $objClient,
                     'assureur' => $objAssureur,
-                    'dateA' => $objCritereSession['dateA'],
-                    'dateB' => $objCritereSession['dateB']
+                    'dateA' => $criteres_dashboard['dateA'],
+                    'dateB' => $criteres_dashboard['dateB']
                 ]);
-
-
-                $tableau_de_bord = new TableauDeBord(
-                    $paiementCommissionRepository,
-                    $assureurRepository,
-                    $automobileRepository,
-                    $clientRepository,
-                    $contactRepository,
-                    $entrepriseRepository,
-                    $taxeRepository,
-                    $monnaieRepository,
-                    $partenaireRepository,
-                    $policeRepository,
-                    $produitRepository,
-                    $outstandingCommissionRepository,
-                    $data_police,
-                    $objCritereSession
-                );
+            }else{
+                $criteres_dashboard = $search_Dashboard_Form->getData();
+                $criteres_dashboard['assureur'] = null;
+                $criteres_dashboard['produit'] = null;
+                $criteres_dashboard['client'] = null;
+                $criteres_dashboard['partenaire'] = null;
+                $criteres_dashboard['motcle'] = null;
             }
         }
 
         
 
+
+        $tableau_de_bord = new TableauDeBord(
+            $paiementCommissionRepository,
+            $assureurRepository,
+            $automobileRepository,
+            $clientRepository,
+            $contactRepository,
+            $entrepriseRepository,
+            $taxeRepository,
+            $monnaieRepository,
+            $partenaireRepository,
+            $policeRepository,
+            $produitRepository,
+            $outstandingCommissionRepository,
+            $data_police,
+            $criteres_dashboard
+        );
+        //dd($tableau_de_bord);
 
         //dd($data_com_impayees_mois);
 
