@@ -177,6 +177,7 @@ class PaiementCommissionController extends AbstractController
             //dd($popcommission);
 
             $form = $this->createForm(PaiementCommissionFormType::class, $popcommission);
+            $form->get("date")->setData(new DateTime("now"));
             //vérifions le contenu de l'objet requete
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
