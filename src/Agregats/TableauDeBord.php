@@ -178,26 +178,21 @@ class TableauDeBord
         // $data_com_encaissees_mois[] = 6550;
         // $data_com_encaissees_mois[] = 12000;
         // $data_com_encaissees_mois[] = 25000;
-
-        //$agregats = new PopCommissionAgregat();
+        
         //l'objet critère a besoin d'un champ Police, même vide / null.
         $this->criteres_dashboard['police'] = null;
         $data_paiements_commissions = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, null);
-        //dd($data_paiements_commissions);
-        //dd($this->criteres_dashboard);
         //de janvier à décembre [0 - 11]
         for ($i=1; $i <= 12; $i++) {
             $montant_mensuel = 0;
             foreach ($data_paiements_commissions as $com_encaissee) {
                 $mois_paiement = $com_encaissee->getDate()->format("m");
                 if ($mois_paiement == $i) {
-                    //dd($com_encaissee->getDate()->format("d/m/y") . " = " . $i);
                     $montant_mensuel += $com_encaissee->getMontant();
                 }
             }
             $data_com_encaissees_mois[] = $montant_mensuel;
         }
-
         return $data_com_encaissees_mois;
     }
 
