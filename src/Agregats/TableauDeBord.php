@@ -218,7 +218,7 @@ class TableauDeBord
             foreach ($polices_enregistreees as $police) {
                 $mois_police = $police->getDateeffet()->format("m");
                 if ($mois_police == $i) {
-                    $montant_mensuel += $police->getPrimetotale();
+                    $montant_mensuel += 0;
                 }
             }
             $data_com_nettes_mois[] = $montant_mensuel;
