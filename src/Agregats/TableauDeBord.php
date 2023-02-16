@@ -149,18 +149,18 @@ class TableauDeBord
 
 
     public function dash_get_graphique_commissions_impayees_mois(){
-        $data_com_impayees_mois[] = 13500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 5000;
-        $data_com_impayees_mois[] = 5000;
-        $data_com_impayees_mois[] = 1500;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 5500;
-        $data_com_impayees_mois[] = 29000;
         $data_com_impayees_mois[] = 0;
-        $data_com_impayees_mois[] = 500;
-        $data_com_impayees_mois[] = 2000;
+        // $data_com_impayees_mois[] = 500;
+        // $data_com_impayees_mois[] = 500;
+        // $data_com_impayees_mois[] = 5000;
+        // $data_com_impayees_mois[] = 5000;
+        // $data_com_impayees_mois[] = 1500;
+        // $data_com_impayees_mois[] = 500;
+        // $data_com_impayees_mois[] = 5500;
+        // $data_com_impayees_mois[] = 29000;
+        // $data_com_impayees_mois[] = 0;
+        // $data_com_impayees_mois[] = 500;
+        // $data_com_impayees_mois[] = 2000;
         return $data_com_impayees_mois;
     }
 
@@ -178,7 +178,7 @@ class TableauDeBord
         // $data_com_encaissees_mois[] = 6550;
         // $data_com_encaissees_mois[] = 12000;
         // $data_com_encaissees_mois[] = 25000;
-        
+
         //l'objet critère a besoin d'un champ Police, même vide / null.
         $this->criteres_dashboard['police'] = null;
         $data_paiements_commissions = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, null);
@@ -197,18 +197,33 @@ class TableauDeBord
     }
 
     public function dash_get_graphique_commissions_nettes_mois(){
-        $data_com_nettes_mois[] = 1500;
-        $data_com_nettes_mois[] = 1500;
-        $data_com_nettes_mois[] = 24500;
-        $data_com_nettes_mois[] = 30000;
-        $data_com_nettes_mois[] = 60000;
-        $data_com_nettes_mois[] = 73500;
-        $data_com_nettes_mois[] = 9500;
-        $data_com_nettes_mois[] = 10000;
-        $data_com_nettes_mois[] = 35000;
-        $data_com_nettes_mois[] = 6550;
-        $data_com_nettes_mois[] = 11500;
-        $data_com_nettes_mois[] = 23000;
+        // $data_com_nettes_mois[] = 1500;
+        // $data_com_nettes_mois[] = 1500;
+        // $data_com_nettes_mois[] = 24500;
+        // $data_com_nettes_mois[] = 30000;
+        // $data_com_nettes_mois[] = 60000;
+        // $data_com_nettes_mois[] = 73500;
+        // $data_com_nettes_mois[] = 9500;
+        // $data_com_nettes_mois[] = 10000;
+        // $data_com_nettes_mois[] = 35000;
+        // $data_com_nettes_mois[] = 6550;
+        // $data_com_nettes_mois[] = 11500;
+        // $data_com_nettes_mois[] = 23000;
+
+        $agregats = new PoliceAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        for ($i=1; $i <= 12; $i++) { 
+            $montant_mensuel = 0;
+            foreach ($polices_enregistreees as $police) {
+                $mois_police = $police->getDateeffet()->format("m");
+                if ($mois_police == $i) {
+                    $montant_mensuel += $police->getPrimetotale();
+                }
+            }
+            $data_com_nettes_mois[] = $montant_mensuel;
+        }
+
         return $data_com_nettes_mois;
     }
 
