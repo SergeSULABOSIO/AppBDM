@@ -113,6 +113,7 @@ class PaiementCommissionController extends AbstractController
 
         $appTitreRubrique = "";
         $adjectif = "";
+        $datePaiement = new DateTime("now");
         if ($popcommission == null) {
             $appTitreRubrique = "Paiement de Commission / Ajout";
             $adjectif = "ajouté";
@@ -120,9 +121,11 @@ class PaiementCommissionController extends AbstractController
         } else {
             $appTitreRubrique = "Paiement de Commission / Edition";
             $adjectif = "modifié";
+            $datePaiement = $popcommission->getDate();
         }
 
         $form = $this->createForm(PaiementCommissionFormType::class, $popcommission);
+        $form->get("date")->setData($datePaiement);
         
         //vérifions le contenu de l'objet requete
         $form->handleRequest($request);
