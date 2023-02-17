@@ -134,8 +134,10 @@ class PaiementCommissionRepository extends ServiceEntityRepository
         $resultAssureur = [];
         if ($criteres['assureur']) {
             foreach ($resultPartenaire as $popCommission) {
-                foreach ($popCommission->getPolices() as $police) {
-                    foreach ($police->getAssureurs() as $assureur) {
+                $police = $popCommission->getPolice();
+                if ($police != null) {
+                    $assureur = $police->getAssureur();
+                    if ($assureur != null) {
                         if ($assureur->getId() == $criteres['assureur']->getId()) {
                             $resultAssureur[] = $popCommission;
                         }
