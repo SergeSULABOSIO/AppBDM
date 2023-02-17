@@ -49,18 +49,32 @@ class TableauDeBord
 
     public function dash_get_graphique_fronting_mois()
     {
-        $data_fronting_mois[] = 170;
-        $data_fronting_mois[] = 170;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 2500;
-        $data_fronting_mois[] = 5000;
-        $data_fronting_mois[] = 7500;
-        $data_fronting_mois[] = 910;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 0;
-        $data_fronting_mois[] = 50;
-        $data_fronting_mois[] = 150;
-        $data_fronting_mois[] = 2000;
+        // $data_fronting_mois[] = 170;
+        // $data_fronting_mois[] = 170;
+        // $data_fronting_mois[] = 0;
+        // $data_fronting_mois[] = 2500;
+        // $data_fronting_mois[] = 5000;
+        // $data_fronting_mois[] = 7500;
+        // $data_fronting_mois[] = 910;
+        // $data_fronting_mois[] = 0;
+        // $data_fronting_mois[] = 0;
+        // $data_fronting_mois[] = 50;
+        // $data_fronting_mois[] = 150;
+        // $data_fronting_mois[] = 2000;
+        $agregats = new PoliceAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        for ($i = 1; $i <= 12; $i++) {
+            $fronting_montant_mensuel = 0;
+            foreach ($polices_enregistreees as $police) {
+                $mois_police = $police->getDateeffet()->format("m");
+                if ($mois_police == $i) {
+                    $fronting_montant_mensuel += $police->getFronting();
+                }
+            }
+            $data_fronting_mois[] = $fronting_montant_mensuel;
+        }
+
         return $data_fronting_mois;
     }
 

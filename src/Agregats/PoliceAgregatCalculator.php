@@ -9,6 +9,7 @@ class PoliceAgregatCalculator
     private $codemonnaie = "";
     private $primenette = 0;
     private $primetotale = 0;
+    private $fronting = 0;
     private $commissiontotale = 0;
     private $commissionnette = 0;
     private $retrocommissiontotale = 0;
@@ -19,6 +20,7 @@ class PoliceAgregatCalculator
         //Calcul des données
         $this->primetotale = $this->police->getPrimeTotale();
         $this->primenette = $this->police->getPrimeNette();
+        $this->fronting = $this->police->getFronting();
 
         //La monnaie
         $this->codemonnaie = $this->police->getMonnaie() ? $this->police->getMonnaie()->getCode() : "...";
@@ -71,6 +73,11 @@ class PoliceAgregatCalculator
     public function getCodeMonnaie()
     {
         return $this->codemonnaie;
+    }
+
+    public function getFronting()
+    {
+        return $this->fronting;
     }
 
     public function setCodeMonnaie($valeur)
