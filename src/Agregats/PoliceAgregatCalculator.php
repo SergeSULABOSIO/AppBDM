@@ -40,6 +40,8 @@ class PoliceAgregatCalculator
         $taxe_charge_courtier = 0;
         $taxe_charge_courtier_sharable = 0;
 
+        $impot = 0;
+
         foreach ($this->taxes as $taxe) {
             $taux = $taxe->getTaux();
             if ($taxe->isPayableparcourtier() == true) {
@@ -49,8 +51,9 @@ class PoliceAgregatCalculator
                 $taxe_charge_assureur += $net_com_including_arca * ($taux / 100);
             }
             //On cumule le tout confondu
-            $this->impotettaxetotale += $net_com_including_arca * ($taux / 100);
+            $impot += $net_com_including_arca * ($taux / 100);
         }
+        $this->impotettaxetotale = $impot;
 
         $net_com_excluding_arca = $net_com_including_arca - $taxe_charge_courtier;
 

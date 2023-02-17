@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Police;
 use App\Agregats\PoliceAgregat;
+use App\Agregats\PoliceAgregatCalculator;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -139,58 +140,17 @@ class PoliceRepository extends ServiceEntityRepository
             $comnette = 0;
             //Partageable
             $retrocom = 0;
-
             $importettaxe = 0;
-
-
+            
             foreach ($resultFinal as $police) {
-                //Primes
-                $primetotale += $police->getPrimeTotale();
-                $primenette += $police->getPrimeNette();
-
-                //La monnaie
-                $codeMonnaie = $police->getMonnaie() ? $police->getMonnaie()->getCode() : "...";
-
-                //Commissions
-                $ricom = $police->getRiCom();
-                $localcom = $police->getLocalCom();
-                $frontingcom = $police->getFrontingCom();
-                $net_com_including_arca = ($ricom + $localcom + $frontingcom);
-
-                //Commissions partageables
-                $ricom_sharable = $police->isCansharericom() ? $police->getRiCom() : 0;
-                $localcom_sharable = $police->isCansharelocalcom() ? $police->getLocalCom() : 0;
-                $frontingcom_sharable = $police->isCansharefrontingcom() ? $police->getFrontingCom() : 0;
-                $net_com_including_arca_sharable = ($ricom_sharable + $localcom_sharable + $frontingcom_sharable);
-
-                //Taxes
-                $taxe_charge_assureur = 0;
-                $taxe_charge_courtier = 0;
-                $taxe_charge_courtier_sharable = 0;
-
-                foreach ($taxes as $taxe) {
-                    $taux = $taxe->getTaux();
-                    if ($taxe->isPayableparcourtier() == true) {
-                        $taxe_charge_courtier += $net_com_including_arca * ($taux / 100);
-                        $taxe_charge_courtier_sharable += $net_com_including_arca_sharable * ($taux / 100);
-                    } else {
-                        $taxe_charge_assureur += $net_com_including_arca * ($taux / 100);
-                    }
-                    //On cumule le tout confondu
-                    $importettaxe += $net_com_including_arca * ($taux / 100);
-                }
-
-                $net_com_excluding_arca = $net_com_including_arca - $taxe_charge_courtier;
-
-                $comtotale += $net_com_including_arca + $taxe_charge_assureur;
-
-                $net_com_excluding_arca_sharable = $net_com_including_arca_sharable - $taxe_charge_courtier_sharable;
-
-                $taux_retro_com = $police->getPartenaire() ? $police->getPartenaire()->getPart() : 0;
-
-                $retrocom += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
-
-                $comnette += $net_com_excluding_arca - $retrocom;
+                $agrecalculateur = new PoliceAgregatCalculator($police, $taxes);
+                $codeMonnaie = $agrecalculateur->getCodeMonnaie();
+                $primetotale += $agrecalculateur->getPrimeTotale();
+                $primenette += $agrecalculateur->getPrimeNette();
+                $importettaxe += $agrecalculateur->getImpotEtTaxeTotale();
+                $comtotale += $agrecalculateur->getCommissionTotale();
+                $retrocom += $agrecalculateur->getRetroCommissionTotale();
+                $comnette += $agrecalculateur->getCommissionNette();
             }
             //PRIMES
             $agregat->setPrimeTotale($primetotale);

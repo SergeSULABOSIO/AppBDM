@@ -2,6 +2,7 @@
 
 namespace App\Agregats;
 
+use DateTime;
 use App\Entity\Police;
 use Doctrine\ORM\Query\Expr\Func;
 use App\Repository\TaxeRepository;
@@ -14,10 +15,10 @@ use App\Repository\AssureurRepository;
 use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
+use App\Agregats\PoliceAgregatCalculator;
 use SebastianBergmann\Environment\Console;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
-use DateTime;
 
 class TableauDeBord
 {
@@ -214,14 +215,14 @@ class TableauDeBord
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
         for ($i=1; $i <= 12; $i++) { 
-            $montant_mensuel = 0;
+            $commission_montant_mensuel = 0;
             foreach ($polices_enregistreees as $police) {
                 $mois_police = $police->getDateeffet()->format("m");
                 if ($mois_police == $i) {
-                    $montant_mensuel += 0;
+                    $commission_montant_mensuel += (new PoliceAgregatCalculator($police, $taxes))->getCommissionNette();
                 }
             }
-            $data_com_nettes_mois[] = $montant_mensuel;
+            $data_com_nettes_mois[] = $commission_montant_mensuel;
         }
 
         return $data_com_nettes_mois;
