@@ -7,8 +7,8 @@ use Symfony\Component\Validator\Constraints\Collection;
 
 class CommissionOutstanding
 {
-    private ?Police $police = null;
-    private $popcommissions = [];
+    public ?Police $police = null;
+    public $popcommissions = [];
     public $montantDu;
     public $montantEncaisse;
     public $montantSolde;
@@ -52,7 +52,7 @@ class CommissionOutstanding
         }
     }
 
-    public function getPolice()
+    public function getPolice():Police
     {
         return $this->police;
     }

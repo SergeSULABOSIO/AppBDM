@@ -15,11 +15,20 @@ use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
 use App\Agregats\PoliceAgregatCalculator;
 use App\Agregats\OutstandingCommissionAgregat;
+use App\Entity\Police;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
 
 class TableauDeBord
 {
+    private $ttr_ETIQUETTE = "ETIQUETTE";
+    private $ttr_PRIMES_TTC = "PRIMES TTC";
+    private $ttr_COM_HT = "COM. HT";
+    private $ttr_TVA = "TVA @16%";
+    private $ttr_ARCA = "ARCA @2%";
+    private $ttr_COM_TTC = "COM. TTC";
+    private $ttr_COM_ENCAISSEE = "COM. ENCAISSEE";
+    private $ttr_SOLDE_DU = "SOLDE DU";
 
     public function __construct(
         private PaiementCommissionRepository $paiementCommissionRepository,
@@ -40,40 +49,61 @@ class TableauDeBord
     }
 
 
-    public function dash_get_synthse_production_assureur(){
-        $production_assureur [] = [
-            'titre' => [
-                'ETIQUETTE' => 'ACTIVA',
-                'PRIMES TTC' => '$ 45.454.456,95',
-                'COM. HT' => '$ 45.454.456,95',
-                'TVA @16%' => '$ 45.454.456,95',
-                'ARCA @2%' => '$ 45.454.456,95',
-                'COM. TTC' => '$ 45.454.456,95',
-                'COM. ENCAISSEE' => '$ 45.454.456,95',
-                'SOLDE DU' => '$ 45.454.456,95'
+    public function dash_get_synthse_production_assureur()
+    {
+        $production_assureur[] = [
+            'titres' => [
+                $this->ttr_ETIQUETTE,
+                $this->ttr_PRIMES_TTC,
+                $this->ttr_COM_HT,
+                $this->ttr_TVA,
+                $this->ttr_ARCA,
+                $this->ttr_COM_TTC,
+                $this->ttr_COM_ENCAISSEE,
+                $this->ttr_SOLDE_DU
             ],
             'donnees' => [
-
-            ]
+                [
+                    'sous-total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
+                    'lignes' => [
+                        ['Janvier', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Février', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Mars', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Avril', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Mai', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Juin', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Juillet', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Aout', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Septembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Octobre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Novembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        ['Décembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000]
+                    ]
+                ]
+            ],
+            'totaux' => ['GRAND TOTAL', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
         ];
         return $production_assureur;
     }
 
-    public function dash_get_synthse_production_mois(){
-        $production_mois [] = null;
-        
+    public function dash_get_synthse_production_mois()
+    {
+        $production_mois[] = null;
+
         return $production_mois;
     }
 
-    public function dash_get_synthse_retrocommissoins_mois(){
-        $retrocom_mois [] = null;
-        
+    public function dash_get_synthse_retrocommissoins_mois()
+    {
+        $retrocom_mois[] = null;
+
         return $retrocom_mois;
     }
 
-    public function dash_get_synthse_impots_et_taxes_mois(){
-        $impots_et_taxes_mois [] = null;
-        
+    public function dash_get_synthse_impots_et_taxes_mois()
+    {
+        $impots_et_taxes_mois[] = null;
+
         return $impots_et_taxes_mois;
     }
 
