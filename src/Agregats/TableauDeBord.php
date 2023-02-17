@@ -41,8 +41,21 @@ class TableauDeBord
 
 
     public function dash_get_synthse_production_assureur(){
-        $production_assureur [] = null;
+        $production_assureur [] = [
+            'titre' => [
+                'ETIQUETTE' => 'ACTIVA',
+                'PRIMES TTC' => '$ 45.454.456,95',
+                'COM. HT' => '$ 45.454.456,95',
+                'TVA @16%' => '$ 45.454.456,95',
+                'ARCA @2%' => '$ 45.454.456,95',
+                'COM. TTC' => '$ 45.454.456,95',
+                'COM. ENCAISSEE' => '$ 45.454.456,95',
+                'SOLDE DU' => '$ 45.454.456,95'
+            ],
+            'donnees' => [
 
+            ]
+        ];
         return $production_assureur;
     }
 

@@ -126,6 +126,7 @@ class DashboardController extends AbstractController
         //dd($tableau_de_bord);
 
         //dd($data_com_impayees_mois);
+        dd($tableau_de_bord->dash_get_synthse_production_assureur());
 
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
