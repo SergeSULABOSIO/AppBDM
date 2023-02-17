@@ -67,36 +67,65 @@ class TableauDeBord
 
     public function dash_get_graphique_primes_ht_mois()
     {
-        $data_primes_ht_mois[] = 1000;
-        $data_primes_ht_mois[] = 1000;
-        $data_primes_ht_mois[] = 21500;
-        $data_primes_ht_mois[] = 28000;
-        $data_primes_ht_mois[] = 52000;
-        $data_primes_ht_mois[] = 70500;
-        $data_primes_ht_mois[] = 9100;
-        $data_primes_ht_mois[] = 8500;
-        $data_primes_ht_mois[] = 30000;
-        $data_primes_ht_mois[] = 6050;
-        $data_primes_ht_mois[] = 9500;
-        $data_primes_ht_mois[] = 20000;
+        // $data_primes_ht_mois[] = 1000;
+        // $data_primes_ht_mois[] = 1000;
+        // $data_primes_ht_mois[] = 21500;
+        // $data_primes_ht_mois[] = 28000;
+        // $data_primes_ht_mois[] = 52000;
+        // $data_primes_ht_mois[] = 70500;
+        // $data_primes_ht_mois[] = 9100;
+        // $data_primes_ht_mois[] = 8500;
+        // $data_primes_ht_mois[] = 30000;
+        // $data_primes_ht_mois[] = 6050;
+        // $data_primes_ht_mois[] = 9500;
+        // $data_primes_ht_mois[] = 20000;
+        $agregats = new PoliceAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        for ($i = 1; $i <= 12; $i++) {
+            $prime_ttc_montant_mensuel = 0;
+            foreach ($polices_enregistreees as $police) {
+                $mois_police = $police->getDateeffet()->format("m");
+                if ($mois_police == $i) {
+                    $prime_ttc_montant_mensuel += (new PoliceAgregatCalculator($police, $taxes))->getPrimeNette();
+                }
+            }
+            $data_primes_ht_mois[] = $prime_ttc_montant_mensuel;
+        }
+
         return $data_primes_ht_mois;
     }
 
 
     public function dash_get_graphique_primes_ttc_mois()
     {
-        $data_primes_ttc_mois[] = 15000;
-        $data_primes_ttc_mois[] = 1500;
-        $data_primes_ttc_mois[] = 24500;
-        $data_primes_ttc_mois[] = 30000;
-        $data_primes_ttc_mois[] = 60000;
-        $data_primes_ttc_mois[] = 73500;
-        $data_primes_ttc_mois[] = 9500;
-        $data_primes_ttc_mois[] = 10000;
-        $data_primes_ttc_mois[] = 35000;
-        $data_primes_ttc_mois[] = 6550;
-        $data_primes_ttc_mois[] = 11500;
-        $data_primes_ttc_mois[] = 23000;
+        // $data_primes_ttc_mois[] = 15000;
+        // $data_primes_ttc_mois[] = 1500;
+        // $data_primes_ttc_mois[] = 24500;
+        // $data_primes_ttc_mois[] = 30000;
+        // $data_primes_ttc_mois[] = 60000;
+        // $data_primes_ttc_mois[] = 73500;
+        // $data_primes_ttc_mois[] = 9500;
+        // $data_primes_ttc_mois[] = 10000;
+        // $data_primes_ttc_mois[] = 35000;
+        // $data_primes_ttc_mois[] = 6550;
+        // $data_primes_ttc_mois[] = 11500;
+        // $data_primes_ttc_mois[] = 23000;
+
+        $agregats = new PoliceAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        for ($i = 1; $i <= 12; $i++) {
+            $prime_ttc_montant_mensuel = 0;
+            foreach ($polices_enregistreees as $police) {
+                $mois_police = $police->getDateeffet()->format("m");
+                if ($mois_police == $i) {
+                    $prime_ttc_montant_mensuel += (new PoliceAgregatCalculator($police, $taxes))->getPrimeTotale();
+                }
+            }
+            $data_primes_ttc_mois[] = $prime_ttc_montant_mensuel;
+        }
+
         return $data_primes_ttc_mois;
     }
 
