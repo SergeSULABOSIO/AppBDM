@@ -61,4 +61,8 @@ class CommissionOutstanding
     {
         return $this->popcommissions;
     }
+
+    public function getSoldeDue(){
+        return $this->montantSolde;
+    }
 }

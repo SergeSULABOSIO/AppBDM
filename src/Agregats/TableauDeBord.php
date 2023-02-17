@@ -4,6 +4,7 @@ namespace App\Agregats;
 
 use DateTime;
 use App\Entity\Police;
+use App\Agregats\PoliceAgregat;
 use Doctrine\ORM\Query\Expr\Func;
 use App\Repository\TaxeRepository;
 use App\Repository\ClientRepository;
@@ -16,13 +17,15 @@ use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
 use App\Agregats\PoliceAgregatCalculator;
+use App\Outstanding\CommissionOutstanding;
 use SebastianBergmann\Environment\Console;
+use App\Agregats\OutstandingCommissionAgregat;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
 
 class TableauDeBord
 {
-    
+
     public function __construct(
         private PaiementCommissionRepository $paiementCommissionRepository,
         private AssureurRepository $assureurRepository,
@@ -38,15 +41,14 @@ class TableauDeBord
         private OutstandingCommissionRepository $outstandingCommissionRepository,
         private $polices,
         private $criteres_dashboard
-    )
-    {
-        
+    ) {
     }
 
 
 
 
-    public function dash_get_graphique_fronting_mois(){
+    public function dash_get_graphique_fronting_mois()
+    {
         $data_fronting_mois[] = 170;
         $data_fronting_mois[] = 170;
         $data_fronting_mois[] = 0;
@@ -63,7 +65,8 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_primes_ht_mois(){
+    public function dash_get_graphique_primes_ht_mois()
+    {
         $data_primes_ht_mois[] = 1000;
         $data_primes_ht_mois[] = 1000;
         $data_primes_ht_mois[] = 21500;
@@ -80,7 +83,8 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_primes_ttc_mois(){
+    public function dash_get_graphique_primes_ttc_mois()
+    {
         $data_primes_ttc_mois[] = 15000;
         $data_primes_ttc_mois[] = 1500;
         $data_primes_ttc_mois[] = 24500;
@@ -97,7 +101,8 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_commissions_impayees_assureur(){
+    public function dash_get_graphique_commissions_impayees_assureur()
+    {
         // $data_com_impayees[] = [
         //     'label' => 'SFA',
         //     'data' => 85000,
@@ -121,7 +126,7 @@ class TableauDeBord
 
         $agregats = new OutstandingCommissionAgregat();
         $taxes = $this->taxeRepository->findAll();
-        
+
         if ($this->criteres_dashboard['assureur'] == null) {
             $ancien_assureur_selected = $this->criteres_dashboard['assureur'];
             foreach ($this->assureurRepository->findAll() as $assureur) {
@@ -131,7 +136,7 @@ class TableauDeBord
                 $data_com_impayees[] = [
                     'label' => $assureur->getNom(),
                     'data' => $agregats->getMontant(),
-                    'color'=> $this->getCouleur()
+                    'color' => $this->getCouleur()
                 ];
             }
             $this->criteres_dashboard['assureur'] = $ancien_assureur_selected;
@@ -141,7 +146,7 @@ class TableauDeBord
             $data_com_impayees[] = [
                 'label' => $this->criteres_dashboard['assureur']->getNom(),
                 'data' => $agregats->getMontant(),
-                'color'=> $this->getCouleur()
+                'color' => $this->getCouleur()
             ];
         }
         //dd($data_com_impayees);
@@ -149,8 +154,9 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_commissions_impayees_mois(){
-        $data_com_impayees_mois[] = 0;
+    public function dash_get_graphique_commissions_impayees_mois()
+    {
+        //$data_com_impayees_mois[] = 0;
         // $data_com_impayees_mois[] = 500;
         // $data_com_impayees_mois[] = 500;
         // $data_com_impayees_mois[] = 5000;
@@ -162,11 +168,28 @@ class TableauDeBord
         // $data_com_impayees_mois[] = 0;
         // $data_com_impayees_mois[] = 500;
         // $data_com_impayees_mois[] = 2000;
+
+        $agregats = new OutstandingCommissionAgregat();
+        $taxes = $this->taxeRepository->findAll();
+        $data = $this->outstandingCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        //dd($agregats);
+
+        for ($i = 1; $i <= 12; $i++) {
+            $montant_mensuel = 0;
+            foreach ($data as $com_impayee) {
+                $mois_impayee = $com_impayee->getPolice()->getDateeffet()->format("m");
+                if ($mois_impayee == $i) {
+                    $montant_mensuel += $com_impayee->getSoldeDue();
+                }
+            }
+            $data_com_impayees_mois[] = $montant_mensuel;
+        }
         return $data_com_impayees_mois;
     }
 
 
-    public function dash_get_graphique_commissions_encaissees_mois(){
+    public function dash_get_graphique_commissions_encaissees_mois()
+    {
         //$data_com_encaissees_mois[] = 15000;
         // $data_com_encaissees_mois[] = 2000;
         // $data_com_encaissees_mois[] = 25000;
@@ -184,7 +207,7 @@ class TableauDeBord
         $this->criteres_dashboard['police'] = null;
         $data_paiements_commissions = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, null);
         //de janvier à décembre [0 - 11]
-        for ($i=1; $i <= 12; $i++) {
+        for ($i = 1; $i <= 12; $i++) {
             $montant_mensuel = 0;
             foreach ($data_paiements_commissions as $com_encaissee) {
                 $mois_paiement = $com_encaissee->getDate()->format("m");
@@ -197,7 +220,8 @@ class TableauDeBord
         return $data_com_encaissees_mois;
     }
 
-    public function dash_get_graphique_commissions_nettes_mois(){
+    public function dash_get_graphique_commissions_nettes_mois()
+    {
         // $data_com_nettes_mois[] = 1500;
         // $data_com_nettes_mois[] = 1500;
         // $data_com_nettes_mois[] = 24500;
@@ -214,7 +238,7 @@ class TableauDeBord
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
-        for ($i=1; $i <= 12; $i++) { 
+        for ($i = 1; $i <= 12; $i++) {
             $commission_montant_mensuel = 0;
             foreach ($polices_enregistreees as $police) {
                 $mois_police = $police->getDateeffet()->format("m");
@@ -229,10 +253,11 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_commissions_nettes_assureur(){
+    public function dash_get_graphique_commissions_nettes_assureur()
+    {
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
-        
+
         if ($this->criteres_dashboard['assureur'] == null) {
             $ancien_assureur_selected = $this->criteres_dashboard['assureur'];
             foreach ($this->assureurRepository->findAll() as $assureur) {
@@ -242,7 +267,7 @@ class TableauDeBord
                 $data_com_nettes[] = [
                     'label' => $assureur->getNom(),
                     'data' => $agregats->getCommissionNette(),
-                    'color'=> $this->getCouleur()
+                    'color' => $this->getCouleur()
                 ];
             }
             $this->criteres_dashboard['assureur'] = $ancien_assureur_selected;
@@ -252,7 +277,7 @@ class TableauDeBord
             $data_com_nettes[] = [
                 'label' => $this->criteres_dashboard['assureur']->getNom(),
                 'data' => $agregats->getCommissionNette(),
-                'color'=> $this->getCouleur()
+                'color' => $this->getCouleur()
             ];
         }
         //dd($data_com_nettes);
@@ -260,9 +285,10 @@ class TableauDeBord
     }
 
 
-    public function dash_get_graphique_primes_assureur(){
+    public function dash_get_graphique_primes_assureur()
+    {
         $data_primes_assureur = null;
-        
+
         foreach ($this->assureurRepository->findAll() as $assureur) {
             $label = $assureur->getNom();
             $data = 0;
@@ -270,14 +296,14 @@ class TableauDeBord
 
             foreach ($this->polices as $police) {
                 //dd($police->getAssureur());
-                if($police->getAssureur() == $assureur){
+                if ($police->getAssureur() == $assureur) {
                     $data += $police->getPrimeTotale();
                 }
             }
             $data_primes_assureur[] = [
                 'label' => $label,
                 'data' => $data,
-                'color'=> $color
+                'color' => $color
             ];
         }
         //dd($data_primes_assureur);
@@ -292,7 +318,8 @@ class TableauDeBord
 
 
 
-    public function dash_get_nb_enregistrements(){
+    public function dash_get_nb_enregistrements()
+    {
         $data_nb_enregistrements["assureurs"] = [
             "valeur" => $this->assureurRepository->stat_get_nombres_enregistrements(),
             "limit" => null
@@ -336,5 +363,4 @@ class TableauDeBord
 
         return $data_nb_enregistrements;
     }
-
 }
