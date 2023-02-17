@@ -147,6 +147,11 @@ class DashboardController extends AbstractController
                 'data_com_encaissees_mois' => $tableau_de_bord->dash_get_graphique_commissions_encaissees_mois(),
                 'data_com_impayees_mois' => $tableau_de_bord->dash_get_graphique_commissions_impayees_mois(),
                 'data_nb_enregistrements' => $tableau_de_bord->dash_get_nb_enregistrements(),
+                //les synthèses de production & taxes
+                'data_syntheses_production_assureur' => $tableau_de_bord->dash_get_synthse_production_assureur(),
+                'data_syntheses_production_mois' => $tableau_de_bord->dash_get_synthse_production_mois(),
+                'data_syntheses_retrocommissions_mois' => $tableau_de_bord->dash_get_synthse_retrocommissoins_mois(),
+                'data_syntheses_impots_et_taxes_mois' => $tableau_de_bord->dash_get_synthse_impots_et_taxes_mois(),
                 //'polices' => $polices,
                 'agregats' => $agregats_dashboard
             ]

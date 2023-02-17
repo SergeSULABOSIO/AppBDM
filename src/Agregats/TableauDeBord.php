@@ -2,10 +2,7 @@
 
 namespace App\Agregats;
 
-use DateTime;
-use App\Entity\Police;
 use App\Agregats\PoliceAgregat;
-use Doctrine\ORM\Query\Expr\Func;
 use App\Repository\TaxeRepository;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
@@ -17,8 +14,6 @@ use App\Repository\AutomobileRepository;
 use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
 use App\Agregats\PoliceAgregatCalculator;
-use App\Outstanding\CommissionOutstanding;
-use SebastianBergmann\Environment\Console;
 use App\Agregats\OutstandingCommissionAgregat;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
@@ -45,22 +40,33 @@ class TableauDeBord
     }
 
 
+    public function dash_get_synthse_production_assureur(){
+        $production_assureur [] = null;
+
+        return $production_assureur;
+    }
+
+    public function dash_get_synthse_production_mois(){
+        $production_mois [] = null;
+        
+        return $production_mois;
+    }
+
+    public function dash_get_synthse_retrocommissoins_mois(){
+        $retrocom_mois [] = null;
+        
+        return $retrocom_mois;
+    }
+
+    public function dash_get_synthse_impots_et_taxes_mois(){
+        $impots_et_taxes_mois [] = null;
+        
+        return $impots_et_taxes_mois;
+    }
 
 
     public function dash_get_graphique_fronting_mois()
     {
-        // $data_fronting_mois[] = 170;
-        // $data_fronting_mois[] = 170;
-        // $data_fronting_mois[] = 0;
-        // $data_fronting_mois[] = 2500;
-        // $data_fronting_mois[] = 5000;
-        // $data_fronting_mois[] = 7500;
-        // $data_fronting_mois[] = 910;
-        // $data_fronting_mois[] = 0;
-        // $data_fronting_mois[] = 0;
-        // $data_fronting_mois[] = 50;
-        // $data_fronting_mois[] = 150;
-        // $data_fronting_mois[] = 2000;
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
@@ -81,18 +87,6 @@ class TableauDeBord
 
     public function dash_get_graphique_primes_ht_mois()
     {
-        // $data_primes_ht_mois[] = 1000;
-        // $data_primes_ht_mois[] = 1000;
-        // $data_primes_ht_mois[] = 21500;
-        // $data_primes_ht_mois[] = 28000;
-        // $data_primes_ht_mois[] = 52000;
-        // $data_primes_ht_mois[] = 70500;
-        // $data_primes_ht_mois[] = 9100;
-        // $data_primes_ht_mois[] = 8500;
-        // $data_primes_ht_mois[] = 30000;
-        // $data_primes_ht_mois[] = 6050;
-        // $data_primes_ht_mois[] = 9500;
-        // $data_primes_ht_mois[] = 20000;
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
@@ -113,19 +107,6 @@ class TableauDeBord
 
     public function dash_get_graphique_primes_ttc_mois()
     {
-        // $data_primes_ttc_mois[] = 15000;
-        // $data_primes_ttc_mois[] = 1500;
-        // $data_primes_ttc_mois[] = 24500;
-        // $data_primes_ttc_mois[] = 30000;
-        // $data_primes_ttc_mois[] = 60000;
-        // $data_primes_ttc_mois[] = 73500;
-        // $data_primes_ttc_mois[] = 9500;
-        // $data_primes_ttc_mois[] = 10000;
-        // $data_primes_ttc_mois[] = 35000;
-        // $data_primes_ttc_mois[] = 6550;
-        // $data_primes_ttc_mois[] = 11500;
-        // $data_primes_ttc_mois[] = 23000;
-
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
@@ -146,27 +127,6 @@ class TableauDeBord
 
     public function dash_get_graphique_commissions_impayees_assureur()
     {
-        // $data_com_impayees[] = [
-        //     'label' => 'SFA',
-        //     'data' => 85000,
-        //     'color'=> 'blue'
-        // ];
-        // $data_com_impayees[] = [
-        //     'label' => 'RAWSUR',
-        //     'data' => 65000,
-        //     'color'=> 'gray'
-        // ];
-        // $data_com_impayees[] = [
-        //     'label' => 'MAYFAIR',
-        //     'data' => 5000,
-        //     'color'=> 'red'
-        // ];
-        // $data_com_impayees[] = [
-        //     'label' => 'SUNU',
-        //     'data' => 150,
-        //     'color'=> 'green'
-        // ];
-
         $agregats = new OutstandingCommissionAgregat();
         $taxes = $this->taxeRepository->findAll();
 
@@ -199,24 +159,10 @@ class TableauDeBord
 
     public function dash_get_graphique_commissions_impayees_mois()
     {
-        //$data_com_impayees_mois[] = 0;
-        // $data_com_impayees_mois[] = 500;
-        // $data_com_impayees_mois[] = 500;
-        // $data_com_impayees_mois[] = 5000;
-        // $data_com_impayees_mois[] = 5000;
-        // $data_com_impayees_mois[] = 1500;
-        // $data_com_impayees_mois[] = 500;
-        // $data_com_impayees_mois[] = 5500;
-        // $data_com_impayees_mois[] = 29000;
-        // $data_com_impayees_mois[] = 0;
-        // $data_com_impayees_mois[] = 500;
-        // $data_com_impayees_mois[] = 2000;
-
         $agregats = new OutstandingCommissionAgregat();
         $taxes = $this->taxeRepository->findAll();
         $data = $this->outstandingCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
         //dd($agregats);
-
         for ($i = 1; $i <= 12; $i++) {
             $montant_mensuel = 0;
             foreach ($data as $com_impayee) {
@@ -233,19 +179,6 @@ class TableauDeBord
 
     public function dash_get_graphique_commissions_encaissees_mois()
     {
-        //$data_com_encaissees_mois[] = 15000;
-        // $data_com_encaissees_mois[] = 2000;
-        // $data_com_encaissees_mois[] = 25000;
-        // $data_com_encaissees_mois[] = 35000;
-        // $data_com_encaissees_mois[] = 65000;
-        // $data_com_encaissees_mois[] = 75000;
-        // $data_com_encaissees_mois[] = 10000;
-        // $data_com_encaissees_mois[] = 15500;
-        // $data_com_encaissees_mois[] = 64000;
-        // $data_com_encaissees_mois[] = 6550;
-        // $data_com_encaissees_mois[] = 12000;
-        // $data_com_encaissees_mois[] = 25000;
-
         //l'objet critère a besoin d'un champ Police, même vide / null.
         $this->criteres_dashboard['police'] = null;
         $data_paiements_commissions = $this->paiementCommissionRepository->findByMotCle($this->criteres_dashboard, null);
@@ -265,19 +198,6 @@ class TableauDeBord
 
     public function dash_get_graphique_commissions_nettes_mois()
     {
-        // $data_com_nettes_mois[] = 1500;
-        // $data_com_nettes_mois[] = 1500;
-        // $data_com_nettes_mois[] = 24500;
-        // $data_com_nettes_mois[] = 30000;
-        // $data_com_nettes_mois[] = 60000;
-        // $data_com_nettes_mois[] = 73500;
-        // $data_com_nettes_mois[] = 9500;
-        // $data_com_nettes_mois[] = 10000;
-        // $data_com_nettes_mois[] = 35000;
-        // $data_com_nettes_mois[] = 6550;
-        // $data_com_nettes_mois[] = 11500;
-        // $data_com_nettes_mois[] = 23000;
-
         $agregats = new PoliceAgregat();
         $taxes = $this->taxeRepository->findAll();
         $polices_enregistreees = $this->policeRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
