@@ -21,6 +21,7 @@ use App\Repository\OutstandingCommissionRepository;
 
 class TableauDeBord
 {
+    private $ttr_GRAND_TOTAL = "GRAND TOTAL";
     private $ttr_ETIQUETTE = "ETIQUETTE";
     private $ttr_PRIMES_TTC = "PRIMES TTC";
     private $ttr_COM_HT = "COM. HT";
@@ -29,6 +30,20 @@ class TableauDeBord
     private $ttr_COM_TTC = "COM. TTC";
     private $ttr_COM_ENCAISSEE = "COM. ENCAISSEE";
     private $ttr_SOLDE_DU = "SOLDE DU";
+    private $tab_MOIS_ANNEE = [
+        "Janvier", 
+        "Févier", 
+        "Mars", 
+        "Avril", 
+        "Mai", 
+        "Juin", 
+        "Juillet", 
+        "Août", 
+        "Septembre", 
+        "Octobre", 
+        "Novembre", 
+        "Décembre"
+    ]; 
 
     public function __construct(
         private PaiementCommissionRepository $paiementCommissionRepository,
@@ -66,22 +81,22 @@ class TableauDeBord
                 [
                     'sous-total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
                     'lignes' => [
-                        ['Janvier', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Février', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Mars', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Avril', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Mai', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Juin', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Juillet', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Aout', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Septembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Octobre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Novembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        ['Décembre', 15000, 4000, 5600, 4500, 3000, 1120, 1000]
+                        [$this->tab_MOIS_ANNEE[0], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[1], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[2], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[3], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[4], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[5], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[6], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[7], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[8], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[9], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[10], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+                        [$this->tab_MOIS_ANNEE[11], 15000, 4000, 5600, 4500, 3000, 1120, 1000]
                     ]
                 ]
             ],
-            'totaux' => ['GRAND TOTAL', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
+            'totaux' => [$this->ttr_GRAND_TOTAL, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
         ];
         return $production_assureur;
     }
@@ -205,6 +220,7 @@ class TableauDeBord
         $agregats = new OutstandingCommissionAgregat();
         $taxes = $this->taxeRepository->findAll();
         $data = $this->outstandingCommissionRepository->findByMotCle($this->criteres_dashboard, $agregats, $taxes);
+        
         //dd($agregats);
         for ($i = 1; $i <= 12; $i++) {
             $montant_mensuel = 0;
