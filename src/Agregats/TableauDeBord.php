@@ -66,7 +66,7 @@ class TableauDeBord
 
     public function dash_get_synthse_production_assureur()
     {
-        $production_assureur[] = [
+        $production_assureur = [
             'titres' => [
                 $this->ttr_ETIQUETTE,
                 $this->ttr_PRIMES_TTC,
