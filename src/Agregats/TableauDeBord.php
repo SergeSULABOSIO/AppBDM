@@ -66,29 +66,29 @@ class TableauDeBord
 
     public function dash_get_synthse_production_assureur()
     {
-        $production_assureur = [
-            'titres' => [$this->ttr_ETIQUETTE, $this->ttr_PRIMES_TTC, $this->ttr_COM_HT, $this->ttr_TVA, $this->ttr_ARCA, $this->ttr_COM_TTC, $this->ttr_COM_ENCAISSEE, $this->ttr_SOLDE_DU],
-            'donnees' => [
-                [
-                    'sous_total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
-                    'lignes' => [
-                        [$this->tab_MOIS_ANNEE[0], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[1], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[2], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[3], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[4], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[5], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[6], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[7], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[8], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[9], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[10], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-                        [$this->tab_MOIS_ANNEE[11], 15000, 4000, 5600, 4500, 3000, 1120, 1000]
-                    ]
-                ]
-            ],
-            'totaux' => [$this->ttr_GRAND_TOTAL, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
-        ];
+        // $production_assureur = [
+        //     'titres' => [$this->ttr_ETIQUETTE, $this->ttr_PRIMES_TTC, $this->ttr_COM_HT, $this->ttr_TVA, $this->ttr_ARCA, $this->ttr_COM_TTC, $this->ttr_COM_ENCAISSEE, $this->ttr_SOLDE_DU],
+        //     'donnees' => [
+        //         [
+        //             'sous_total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
+        //             'lignes' => [
+        //                 [$this->tab_MOIS_ANNEE[0], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[1], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[2], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[3], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[4], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[5], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[6], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[7], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[8], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[9], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[10], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
+        //                 [$this->tab_MOIS_ANNEE[11], 15000, 4000, 5600, 4500, 3000, 1120, 1000]
+        //             ]
+        //         ]
+        //     ],
+        //     'totaux' => [$this->ttr_GRAND_TOTAL, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
+        // ];
 
         //chargement des titres
         $production_assureur['titres'] = [
@@ -102,7 +102,30 @@ class TableauDeBord
             $this->ttr_SOLDE_DU
         ];
 
-        //chargement des totaux
+
+        $assureurs = $this->assureurRepository->findAll();
+        foreach ($assureurs as $assureur) {
+            $lignes = null;
+            for ($i=0; $i < 12; $i++) {
+                $ligne_mois = [$this->tab_MOIS_ANNEE[$i], 10, 10, 10, 10, 10, 10, 10];
+                $lignes[] = $ligne_mois;
+            }
+            //chargement des données - chargement des sous totaux
+            $sous_total = [
+                $assureur->getNom(), 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
+            ];
+
+            //chargement des données - chargement des lignes
+            $production_assureur['donnees'][] = [
+                'sous_total' => $sous_total,
+                'lignes' => $lignes
+            ];
+        }
+        
+        
+
+
+        //chargement des grands totaux
         $production_assureur['totaux'] = [
             $this->ttr_GRAND_TOTAL, 
             45000000, 
@@ -113,6 +136,8 @@ class TableauDeBord
             45000000, 
             45000000
         ];
+
+        //dd($production_assureur);
 
         return $production_assureur;
     }
