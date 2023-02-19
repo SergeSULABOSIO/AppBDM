@@ -605,213 +605,73 @@
 						<table class="table table-hover text-nowrap table-sm">
 						<thead>
 							<tr class="bg-secondary">
-								{% set compteur = 0 %}
+								{% set compteur_titre = 0 %}
 								{% for titre in data_syntheses_production_assureur.titres %}
-									{% if compteur == 0 %}
+									{% if compteur_titre == 0 %}
 										<th>{{ titre }}</th>
 									{% else %}
 										<th class="text-right">{{ titre }}</th>
 									{% endif %}
-									{% set compteur = compteur + 1 %}
+									{% set compteur_titre = compteur_titre + 1 %}
 								{% endfor %}
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="bg-light">
-							<td><span class="font-weight-bold">ACTIVA</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Janvier</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Février</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Mars</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Avril</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Mai</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Juin</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Juillet</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Août</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Septembre</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Octobre</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Novembre</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Décembre</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr class="bg-light">
-							<td><span class="font-weight-bold">SFA</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 45.454.456,95</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Janvier</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Février</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Mars</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
-							<tr>
-							<td><span class="font-weight-light pl-3">Avril</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 20.000,45</span></td>
-							<td class="text-right"><span class="font-weight-bold">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.800,45</span></td>
-							<td class="text-right"><span class="font-weight-light">$ 5.000,45</span></td>
-							<td class="text-right text-danger"><span class="font-weight-bold">$ 800,00</span></td>
-							</tr>
+							
+							{% for donnee in data_syntheses_production_assureur.donnees %}
+								<tr class="bg-light">
+									{% set compteur_sous_total = 0 %}
+									{% for sous_total in donnee.sous_total %}
+										{% if compteur_sous_total == 0 %}
+											<td><span class="font-weight-bold">{{ sous_total }}</span></td>
+										{% else %}
+											{% if compteur_sous_total == 7 %}
+												<td class="text-right text-danger"><span class="font-weight-bold">$ {{ sous_total|number_format(2, ',', '.') }}</span></td>
+											{% else %}
+												<td class="text-right"><span class="font-weight-bold">$ {{ sous_total|number_format(2, ',', '.') }}</span></td>
+											{% endif %}
+										{% endif %}
+										{% set compteur_sous_total = compteur_sous_total + 1 %}
+									{% endfor %}
+								</tr>
+								{% for ligne in donnee.lignes %}
+									<tr>
+										{% set compteur_ligne = 0 %}
+										{% for valeur in ligne %}
+											{% if compteur_ligne == 0 %}
+												<td><span class="font-weight-light pl-3">{{ valeur }}</span></td>
+											{% else %}
+												{% if compteur_ligne == 2 %}
+													<td class="text-right"><span class="font-weight-bold">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+												{% else %}
+													{% if compteur_ligne == 7 %}
+														<td class="text-right text-danger"><span class="font-weight-bold">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+													{% else %}
+														<td class="text-right"><span class="font-weight-light">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+													{% endif %}
+												{% endif %}
+											{% endif %}
+											{% set compteur_ligne = compteur_ligne + 1 %}
+										{% endfor %}
+									</tr>
+								{% endfor %}
+								
+							{% endfor %}
 						</tbody>
 						<thead>
 							<tr class="bg-secondary">
-								{% set compteur = 0 %}
+								{% set compteur_grand_total = 0 %}
 								{% for grand_total in data_syntheses_production_assureur.totaux %}
-									{% if compteur == 0 %}
+									{% if compteur_grand_total == 0 %}
 										<th>{{ grand_total }}</th>
 									{% else %}
-										{% if compteur == 1 %}
-											<th class="text-right"><span class="font-weight-bold">{{ grand_total }}</span></th>
+										{% if compteur_grand_total == 1 %}
+											<th class="text-right"><span class="font-weight-bold">$ {{ grand_total|number_format(2, ',', '.') }}</span></th>
 										{% else %}
-											<th class="text-right">{{ grand_total }}</th>
+											<th class="text-right">$ {{ grand_total|number_format(2, ',', '.') }}</th>
 										{% endif %}
 									{% endif %}
-									{% set compteur = compteur + 1 %}
+									{% set compteur_grand_total = compteur_grand_total + 1 %}
 								{% endfor %}
 							</tr>
 						</thead>

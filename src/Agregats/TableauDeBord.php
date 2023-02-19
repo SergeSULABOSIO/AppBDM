@@ -67,19 +67,10 @@ class TableauDeBord
     public function dash_get_synthse_production_assureur()
     {
         $production_assureur = [
-            'titres' => [
-                $this->ttr_ETIQUETTE,
-                $this->ttr_PRIMES_TTC,
-                $this->ttr_COM_HT,
-                $this->ttr_TVA,
-                $this->ttr_ARCA,
-                $this->ttr_COM_TTC,
-                $this->ttr_COM_ENCAISSEE,
-                $this->ttr_SOLDE_DU
-            ],
+            'titres' => [$this->ttr_ETIQUETTE, $this->ttr_PRIMES_TTC, $this->ttr_COM_HT, $this->ttr_TVA, $this->ttr_ARCA, $this->ttr_COM_TTC, $this->ttr_COM_ENCAISSEE, $this->ttr_SOLDE_DU],
             'donnees' => [
                 [
-                    'sous-total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
+                    'sous_total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
                     'lignes' => [
                         [$this->tab_MOIS_ANNEE[0], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
                         [$this->tab_MOIS_ANNEE[1], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
@@ -98,6 +89,31 @@ class TableauDeBord
             ],
             'totaux' => [$this->ttr_GRAND_TOTAL, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
         ];
+
+        //chargement des titres
+        $production_assureur['titres'] = [
+            $this->ttr_ETIQUETTE,
+            $this->ttr_PRIMES_TTC,
+            $this->ttr_COM_HT,
+            $this->ttr_TVA,
+            $this->ttr_ARCA,
+            $this->ttr_COM_TTC,
+            $this->ttr_COM_ENCAISSEE,
+            $this->ttr_SOLDE_DU
+        ];
+
+        //chargement des totaux
+        $production_assureur['totaux'] = [
+            $this->ttr_GRAND_TOTAL, 
+            45000000, 
+            45000000, 
+            45000000, 
+            45000000, 
+            45000000, 
+            45000000, 
+            45000000
+        ];
+
         return $production_assureur;
     }
 
