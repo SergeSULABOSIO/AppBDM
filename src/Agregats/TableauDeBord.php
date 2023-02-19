@@ -104,31 +104,49 @@ class TableauDeBord
 
 
         $assureurs = $this->assureurRepository->findAll();
+        $taxes = $this->taxeRepository->findAll();
+
+        $prime_grand_total = 0;
         foreach ($assureurs as $assureur) {
             $lignes = null;
+            $primes_assureur = 0;
             for ($i=0; $i < 12; $i++) {
-                $ligne_mois = [$this->tab_MOIS_ANNEE[$i], 10, 10, 10, 10, 10, 10, 10];
-                $lignes[] = $ligne_mois;
+                $prime_mois = 0;
+                foreach ($this->polices as $police) {
+                    if($police->getAssureur() == $assureur){
+                        $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+                        $date_mois_police = $police->getDateEffet()->format("m");
+                        //dd($date_police);
+                        if($date_mois_police == ($i + 1)){
+                            $prime_mois += $aggregat_police->getPrimeTotale();
+                        }
+                    }
+                }
+                if($prime_mois != 0){
+                    $primes_assureur += $prime_mois;
+                    $ligne_mois = [$this->tab_MOIS_ANNEE[$i], $prime_mois, 10, 10, 10, 10, 10, 10];
+                    $lignes[] = $ligne_mois;
+                }
             }
             //chargement des données - chargement des sous totaux
-            $sous_total = [
-                $assureur->getNom(), 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
-            ];
-
-            //chargement des données - chargement des lignes
-            $production_assureur['donnees'][] = [
-                'sous_total' => $sous_total,
-                'lignes' => $lignes
-            ];
+            if($primes_assureur != 0){
+                $sous_total = [
+                    $assureur->getNom(), $primes_assureur, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
+                ];
+    
+                //chargement des données - chargement des lignes
+                $production_assureur['donnees'][] = [
+                    'sous_total' => $sous_total,
+                    'lignes' => $lignes
+                ];
+                $prime_grand_total += $primes_assureur;
+            }
         }
         
-        
-
-
         //chargement des grands totaux
         $production_assureur['totaux'] = [
             $this->ttr_GRAND_TOTAL, 
-            45000000, 
+            $prime_grand_total, 
             45000000, 
             45000000, 
             45000000, 
