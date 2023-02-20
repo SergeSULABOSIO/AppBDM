@@ -146,9 +146,10 @@ class TableauDeBord
                                 'dateA' => null,
                                 'dateB' => null
                             ], null);
-                            dd($tab_com_encaissees);
-
-
+                            //dd($tab_com_encaissees);
+                            foreach ($tab_com_encaissees as $encaissement) {
+                                $comReceived += $encaissement->getMontant();
+                            }
 
                             $com_encaissee_mois += $comReceived;
                             $arca_mois += 0;
