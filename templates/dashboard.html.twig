@@ -626,9 +626,25 @@
 											<td><span class="font-weight-bold">{{ sous_total }}</span></td>
 										{% else %}
 											{% if compteur_sous_total == 7 %}
-												<td class="text-right text-danger"><span class="font-weight-bold">$ {{ sous_total|number_format(2, ',', '.') }}</span></td>
+												<td class="text-right text-danger">
+												<span class="font-weight-bold">
+													{% if sous_total == 0 %}
+														-
+													{% else %}
+														$ {{ sous_total|number_format(2, ',', '.') }}
+													{% endif %}
+												</span>
+												</td>
 											{% else %}
-												<td class="text-right"><span class="font-weight-bold">$ {{ sous_total|number_format(2, ',', '.') }}</span></td>
+												<td class="text-right">
+													<span class="font-weight-bold">
+														{% if sous_total == 0 %}
+															-
+														{% else %}
+															$ {{ sous_total|number_format(2, ',', '.') }}
+														{% endif %}
+													</span>
+												</td>
 											{% endif %}
 										{% endif %}
 										{% set compteur_sous_total = compteur_sous_total + 1 %}
@@ -642,12 +658,36 @@
 												<td><span class="font-weight-light pl-3">{{ valeur }}</span></td>
 											{% else %}
 												{% if compteur_ligne == 2 %}
-													<td class="text-right"><span class="font-weight-bold">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+													<td class="text-right">
+														<span class="font-weight-bold">
+															{% if valeur == 0 %}
+																-
+															{% else %}
+																$ {{ valeur|number_format(2, ',', '.') }}
+															{% endif %}
+														</span>
+													</td>
 												{% else %}
 													{% if compteur_ligne == 7 %}
-														<td class="text-right text-danger"><span class="font-weight-bold">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+														<td class="text-right text-danger">
+															<span class="font-weight-bold">
+																{% if valeur == 0 %}
+																	-
+																{% else %}
+																	$ {{ valeur|number_format(2, ',', '.') }}
+																{% endif %}
+															</span>
+														</td>
 													{% else %}
-														<td class="text-right"><span class="font-weight-light">$ {{ valeur|number_format(2, ',', '.') }}</span></td>
+														<td class="text-right">
+															<span class="font-weight-light">
+																{% if valeur == 0 %}
+																	-
+																{% else %}
+																	$ {{ valeur|number_format(2, ',', '.') }}
+																{% endif %}
+															</span>
+														</td>
 													{% endif %}
 												{% endif %}
 											{% endif %}
@@ -666,9 +706,23 @@
 										<th>{{ grand_total }}</th>
 									{% else %}
 										{% if compteur_grand_total == 1 %}
-											<th class="text-right"><span class="font-weight-bold">$ {{ grand_total|number_format(2, ',', '.') }}</span></th>
+											<th class="text-right">
+												<span class="font-weight-bold">
+													{% if grand_total == 0 %}
+														-
+													{% else %}
+														$ {{ grand_total|number_format(2, ',', '.') }}
+													{% endif %}
+												</span>
+											</th>
 										{% else %}
-											<th class="text-right">$ {{ grand_total|number_format(2, ',', '.') }}</th>
+											<th class="text-right">
+												{% if grand_total == 0 %}
+													-
+												{% else %}
+													$ {{ grand_total|number_format(2, ',', '.') }}
+												{% endif %}
+											</th>
 										{% endif %}
 									{% endif %}
 									{% set compteur_grand_total = compteur_grand_total + 1 %}
