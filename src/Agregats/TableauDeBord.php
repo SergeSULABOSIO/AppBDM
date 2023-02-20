@@ -66,29 +66,22 @@ class TableauDeBord
 
     public function dash_get_synthse_production_assureur()
     {
-        // $production_assureur = [
-        //     'titres' => [$this->ttr_ETIQUETTE, $this->ttr_PRIMES_TTC, $this->ttr_COM_HT, $this->ttr_TVA, $this->ttr_ARCA, $this->ttr_COM_TTC, $this->ttr_COM_ENCAISSEE, $this->ttr_SOLDE_DU],
-        //     'donnees' => [
-        //         [
-        //             'sous_total' => ['ACTIVA', 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000],
-        //             'lignes' => [
-        //                 [$this->tab_MOIS_ANNEE[0], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[1], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[2], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[3], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[4], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[5], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[6], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[7], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[8], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[9], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[10], 15000, 4000, 5600, 4500, 3000, 1120, 1000],
-        //                 [$this->tab_MOIS_ANNEE[11], 15000, 4000, 5600, 4500, 3000, 1120, 1000]
-        //             ]
-        //         ]
-        //     ],
-        //     'totaux' => [$this->ttr_GRAND_TOTAL, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000]
-        // ];
+        //on prévoit quand-même un tableau vide
+        $production_assureur = [
+            'titres' => [],
+            'donnees' => [
+                [
+                    'sous_total' => [],
+                    'lignes' => [
+                        [],
+                        []
+                    ]
+                ]
+            ],
+            'totaux' => []
+        ];
+
+        //dd($production_assureur);
 
         //chargement des titres
         $production_assureur['titres'] = [
@@ -106,32 +99,71 @@ class TableauDeBord
         $assureurs = $this->assureurRepository->findAll();
         $taxes = $this->taxeRepository->findAll();
 
-        $prime_grand_total = 0;
+        $prime_ttc_grand_total = 0;
+        $com_ht_grand_total = 0;
+        $tva_grand_total = 0;
+        $arca_grand_total = 0;
+        $com_ttc_grand_total = 0;
+        $com_encaissee_grand_total = 0;
+        $solde_du_grand_total = 0;
+        //filtre par assureur
         foreach ($assureurs as $assureur) {
             $lignes = null;
-            $primes_assureur = 0;
+            $primes_ttc_assureur = 0;
+            $com_ht_assureur = 0;
+            $tva_assureur = 0;
+            $arca_assureur = 0;
+            $com_ttc_assureur = 0;
+            $com_encaissee_assureur = 0;
+            $solde_du_assureur = 0;
+            //filtre pour chaque mois de l'année
             for ($i=0; $i < 12; $i++) {
-                $prime_mois = 0;
+                $prime_ttc_mois = 0;
+                $com_ht_mois = 0;
+                $tva_mois = 0;
+                $arca_mois = 0;
+                $com_ttc_mois = 0;
+                $com_encaissee_mois = 0;
+                $solde_du_mois = 0;
                 foreach ($this->polices as $police) {
                     if($police->getAssureur() == $assureur){
                         $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            $prime_mois += $aggregat_police->getPrimeTotale();
+                            $prime_ttc_mois += $aggregat_police->getPrimeTotale();
+                            $com_ht_mois += $aggregat_police->getCommissionNette();
+                            $tva_mois += $aggregat_police->getImpotEtTaxeTotale();
+                            $comTot = $aggregat_police->getCommissionTotale();
+                            $comReceived = 0;
+                            $com_encaissee_mois += $comReceived;
+                            $arca_mois += 0;
+                            $com_ttc_mois += $comTot;
+                            $solde_du_mois += ($comTot - $comReceived);
+                            dd($aggregat_police->getTab_Taxes());
                         }
                     }
                 }
-                if($prime_mois != 0){
-                    $primes_assureur += $prime_mois;
-                    $ligne_mois = [$this->tab_MOIS_ANNEE[$i], $prime_mois, 10, 10, 10, 10, 10, 10];
+                if($prime_ttc_mois != 0){
+                    $primes_ttc_assureur += $prime_ttc_mois;
+                    $com_ht_assureur += $com_ht_mois;
+                    $tva_assureur += $tva_mois;
+                    $arca_assureur += $arca_mois;
+                    $com_ttc_assureur += $com_ttc_mois;
+                    $com_encaissee_assureur += $com_encaissee_mois;
+                    $solde_du_assureur = 0;
+
+
+
+
+                    $ligne_mois = [$this->tab_MOIS_ANNEE[$i], $prime_ttc_mois, $com_ht_mois, $tva_mois, $arca_mois, $com_ttc_mois, $com_encaissee_mois, $solde_du_mois];
                     $lignes[] = $ligne_mois;
                 }
             }
             //chargement des données - chargement des sous totaux
-            if($primes_assureur != 0){
+            if($primes_ttc_assureur != 0){
                 $sous_total = [
-                    $assureur->getNom(), $primes_assureur, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
+                    $assureur->getNom(), $primes_ttc_assureur, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
                 ];
     
                 //chargement des données - chargement des lignes
@@ -139,22 +171,21 @@ class TableauDeBord
                     'sous_total' => $sous_total,
                     'lignes' => $lignes
                 ];
-                $prime_grand_total += $primes_assureur;
+                $prime_ttc_grand_total += $primes_ttc_assureur;
             }
         }
         
         //chargement des grands totaux
         $production_assureur['totaux'] = [
             $this->ttr_GRAND_TOTAL, 
-            $prime_grand_total, 
-            45000000, 
-            45000000, 
-            45000000, 
-            45000000, 
-            45000000, 
-            45000000
+            $prime_ttc_grand_total, 
+            $com_ht_grand_total, 
+            $tva_grand_total, 
+            $arca_grand_total, 
+            $com_ttc_grand_total, 
+            $com_encaissee_grand_total, 
+            $solde_du_grand_total
         ];
-
         //dd($production_assureur);
 
         return $production_assureur;

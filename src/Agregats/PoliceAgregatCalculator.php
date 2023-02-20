@@ -14,6 +14,7 @@ class PoliceAgregatCalculator
     private $commissionnette = 0;
     private $retrocommissiontotale = 0;
     private $impotettaxetotale = 0;
+    private $tab_taxes = null;
 
     public function __construct(private Police $police, private $taxes)
     {
@@ -53,8 +54,13 @@ class PoliceAgregatCalculator
                 $taxe_charge_assureur += $net_com_including_arca * ($taux / 100);
             }
             //On cumule le tout confondu
-            $impot += $net_com_including_arca * ($taux / 100);
+            $montant_taxe = $net_com_including_arca * ($taux / 100);
+            $impot += $montant_taxe;
+            $this->tab_taxes[] = [
+                $taxe->getNom() => $montant_taxe
+            ];
         }
+
         $this->impotettaxetotale = $impot;
 
         $net_com_excluding_arca = $net_com_including_arca - $taxe_charge_courtier;
@@ -68,6 +74,11 @@ class PoliceAgregatCalculator
         $this->retrocommissiontotale += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
         
         $this->commissionnette += $net_com_excluding_arca - $this->retrocommissiontotale;
+    }
+
+    public function getTab_Taxes()
+    {
+        return $this->tab_taxes;
     }
 
     public function getCodeMonnaie()
