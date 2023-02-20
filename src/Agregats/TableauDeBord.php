@@ -137,8 +137,16 @@ class TableauDeBord
                             $comTot = $aggregat_police->getCommissionTotale();
                             //encaissements - recherche
                             $comReceived = 0;
-
-
+                            $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+                                'police' => $police,
+                                'client' => $police->getClient(),
+                                'assureur' => $assureur,
+                                'partenaire' => $police->getPartenaire(),
+                                'motcle' => "",
+                                'dateA' => null,
+                                'dateB' => null
+                            ], null);
+                            dd($tab_com_encaissees);
 
 
 
@@ -146,7 +154,7 @@ class TableauDeBord
                             $arca_mois += 0;
                             $com_ttc_mois += $comTot;
                             $solde_du_mois += ($comTot - $comReceived);
-                            dd($aggregat_police->getTab_Taxes());
+                            //dd($aggregat_police->getTab_Taxes());
                         }
                     }
                 }
