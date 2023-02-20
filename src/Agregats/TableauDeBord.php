@@ -135,7 +135,13 @@ class TableauDeBord
                             $com_ht_mois += $aggregat_police->getCommissionNette();
                             $tva_mois += $aggregat_police->getImpotEtTaxeTotale();
                             $comTot = $aggregat_police->getCommissionTotale();
+                            //encaissements - recherche
                             $comReceived = 0;
+
+
+
+
+
                             $com_encaissee_mois += $comReceived;
                             $arca_mois += 0;
                             $com_ttc_mois += $comTot;
