@@ -151,10 +151,7 @@ class TableauDeBord
                     $arca_assureur += $arca_mois;
                     $com_ttc_assureur += $com_ttc_mois;
                     $com_encaissee_assureur += $com_encaissee_mois;
-                    $solde_du_assureur = 0;
-
-
-
+                    $solde_du_assureur += $solde_du_mois;
 
                     $ligne_mois = [$this->tab_MOIS_ANNEE[$i], $prime_ttc_mois, $com_ht_mois, $tva_mois, $arca_mois, $com_ttc_mois, $com_encaissee_mois, $solde_du_mois];
                     $lignes[] = $ligne_mois;
@@ -163,7 +160,7 @@ class TableauDeBord
             //chargement des données - chargement des sous totaux
             if($primes_ttc_assureur != 0){
                 $sous_total = [
-                    $assureur->getNom(), $primes_ttc_assureur, 45000000, 45000000, 45000000, 45000000, 45000000, 45000000
+                    $assureur->getNom(), $primes_ttc_assureur, $com_ht_assureur, $tva_assureur, $arca_assureur, $com_ttc_assureur, $com_encaissee_assureur, $solde_du_assureur
                 ];
     
                 //chargement des données - chargement des lignes
@@ -171,7 +168,14 @@ class TableauDeBord
                     'sous_total' => $sous_total,
                     'lignes' => $lignes
                 ];
+
                 $prime_ttc_grand_total += $primes_ttc_assureur;
+                $com_ht_grand_total += $com_ht_assureur;
+                $tva_grand_total += $tva_assureur;
+                $arca_grand_total += $arca_assureur;
+                $com_ttc_grand_total += $com_ttc_assureur;
+                $com_encaissee_grand_total += $com_encaissee_assureur;
+                $solde_du_grand_total += $solde_du_assureur;
             }
         }
         

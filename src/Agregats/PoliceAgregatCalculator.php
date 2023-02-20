@@ -56,8 +56,11 @@ class PoliceAgregatCalculator
             //On cumule le tout confondu
             $montant_taxe = $net_com_including_arca * ($taux / 100);
             $impot += $montant_taxe;
+            
             $this->tab_taxes[] = [
-                $taxe->getNom() => $montant_taxe
+                'nom' => $taxe->getNom(),
+                'montant' => $montant_taxe,
+                'taux' => $taux
             ];
         }
 
