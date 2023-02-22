@@ -66,6 +66,8 @@ class TableauDeBord
 
     public function dash_get_synthse_production_assureur()
     {
+        $assureurs = $this->assureurRepository->findAll();
+        $taxes = $this->taxeRepository->findAll();
         //on prévoit quand-même un tableau vide
         $production_assureur = [
             'titres' => [],
@@ -84,20 +86,31 @@ class TableauDeBord
         //dd($production_assureur);
 
         //chargement des titres
-        $production_assureur['titres'] = [
-            $this->ttr_ETIQUETTE,
-            $this->ttr_PRIMES_TTC,
-            $this->ttr_COM_HT,
-            $this->ttr_TVA,
-            $this->ttr_ARCA,
-            $this->ttr_COM_TTC,
-            $this->ttr_COM_ENCAISSEE,
-            $this->ttr_SOLDE_DU
-        ];
+        // $production_assureur['titres'] = [
+        //     $this->ttr_ETIQUETTE,
+        //     $this->ttr_PRIMES_TTC,
+        //     $this->ttr_COM_HT,
+        //     $this->ttr_TVA,
+        //     $this->ttr_ARCA,
+        //     $this->ttr_COM_TTC,
+        //     $this->ttr_COM_ENCAISSEE,
+        //     $this->ttr_SOLDE_DU
+        // ];
+        $production_assureur['titres'][] = $this->ttr_ETIQUETTE;
+        $production_assureur['titres'][] = $this->ttr_PRIMES_TTC;
+        $production_assureur['titres'][] = $this->ttr_COM_HT;
+        foreach ($taxes as $taxe) {
+            $production_assureur['titres'][] = $taxe . " @" . ($taxe->getTaux()) . "%";
+        }
+        // $production_assureur['titres'][] = $this->ttr_TVA;
+        // $production_assureur['titres'][] = $this->ttr_ARCA;
+        $production_assureur['titres'][] = $this->ttr_COM_TTC;
+        $production_assureur['titres'][] = $this->ttr_COM_ENCAISSEE;
+        $production_assureur['titres'][] = $this->ttr_SOLDE_DU;
 
+        //dd($production_assureur);
 
-        $assureurs = $this->assureurRepository->findAll();
-        $taxes = $this->taxeRepository->findAll();
+        
 
         $prime_ttc_grand_total = 0;
         $com_ht_grand_total = 0;
