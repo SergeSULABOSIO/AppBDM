@@ -99,11 +99,10 @@ class TableauDeBord
         $production_assureur['titres'][] = $this->ttr_ETIQUETTE;
         $production_assureur['titres'][] = $this->ttr_PRIMES_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_HT;
+        //On charge les taxes automatiquement depuis un tableau - Ici le contenu du tableau peut varier
         foreach ($taxes as $taxe) {
             $production_assureur['titres'][] = $taxe . " @" . ($taxe->getTaux()) . "%";
         }
-        // $production_assureur['titres'][] = $this->ttr_TVA;
-        // $production_assureur['titres'][] = $this->ttr_ARCA;
         $production_assureur['titres'][] = $this->ttr_COM_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_ENCAISSEE;
         $production_assureur['titres'][] = $this->ttr_SOLDE_DU;
