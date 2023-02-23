@@ -136,6 +136,7 @@ class DashboardController extends AbstractController
                 'appTitreRubrique' => $appTitreRubrique,
                 'search_form' => $search_Dashboard_Form->createView(),
                 //les primes par mois
+                'data_taxes' => $taxes,
                 'data_primes_ttc_mois' => $tableau_de_bord->dash_get_graphique_primes_ttc_mois(),
                 'data_primes_ht_mois' => $tableau_de_bord->dash_get_graphique_primes_ht_mois(),
                 'data_fronting_mois' => $tableau_de_bord->dash_get_graphique_fronting_mois(),

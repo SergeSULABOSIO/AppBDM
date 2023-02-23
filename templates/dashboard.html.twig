@@ -625,7 +625,7 @@
 										{% if compteur_sous_total == 0 %}
 											<td><span class="font-weight-bold">{{ sous_total }}</span></td>
 										{% else %}
-											{% if compteur_sous_total == 7 %}
+											{% if compteur_sous_total == (data_taxes|length) + 5 %}
 												<td class="text-right text-danger">
 												<span class="font-weight-bold">
 													{% if sous_total == 0 %}
@@ -668,7 +668,7 @@
 														</span>
 													</td>
 												{% else %}
-													{% if compteur_ligne == 7 %}
+													{% if compteur_ligne == (data_taxes|length) + 5 %}
 														<td class="text-right text-danger">
 															<span class="font-weight-bold">
 																{% if valeur == 0 %}
