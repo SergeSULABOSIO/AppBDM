@@ -68,7 +68,7 @@ class TableauDeBord
     {
         $assureurs = $this->assureurRepository->findAll();
         $taxes = $this->taxeRepository->findAll();
-        //on prévoit quand-même un tableau vide
+        //on prévoit quand-même un tableau vide pour servir d'exemple
         // $production_assureur = [
         //     'titres' => [],
         //     'donnees' => [
@@ -85,17 +85,6 @@ class TableauDeBord
 
         //dd($production_assureur);
 
-        //chargement des titres
-        // $production_assureur['titres'] = [
-        //     $this->ttr_ETIQUETTE,
-        //     $this->ttr_PRIMES_TTC,
-        //     $this->ttr_COM_HT,
-        //     $this->ttr_TVA,
-        //     $this->ttr_ARCA,
-        //     $this->ttr_COM_TTC,
-        //     $this->ttr_COM_ENCAISSEE,
-        //     $this->ttr_SOLDE_DU
-        // ];
         $production_assureur['titres'][] = $this->ttr_ETIQUETTE;
         $production_assureur['titres'][] = $this->ttr_PRIMES_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_HT;
@@ -103,25 +92,17 @@ class TableauDeBord
         foreach ($taxes as $taxe) {
             $production_assureur['titres'][] = $taxe . " @" . ($taxe->getTaux()) . "%";
         }
-
         $production_assureur['titres'][] = $this->ttr_COM_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_ENCAISSEE;
         $production_assureur['titres'][] = $this->ttr_SOLDE_DU;
-
         //dd($production_assureur);
-
-        
-
         $prime_ttc_grand_total = 0;
         $com_ht_grand_total = 0;
-        //$tva_grand_total = 0;
-        //$arca_grand_total = 0;
         $tab_taxes_grand_total = [];
         foreach ($taxes as $taxe) {
             $tab_taxes_grand_total[$taxe->getNom()] = 0;
         }
         //dd($tab_taxes_grand_total);
-
         $com_ttc_grand_total = 0;
         $com_encaissee_grand_total = 0;
         $solde_du_grand_total = 0;
@@ -130,14 +111,11 @@ class TableauDeBord
             $lignes = null;
             $primes_ttc_assureur = 0;
             $com_ht_assureur = 0;
-            //$tva_assureur = 0;
-            //$arca_assureur = 0;
             $tab_taxes_assureur = [];
             foreach ($taxes as $taxe) {
                 $tab_taxes_assureur[$taxe->getNom()] = 0;
             }
             //dd($tab_taxes_assureur);
-
             $com_ttc_assureur = 0;
             $com_encaissee_assureur = 0;
             $solde_du_assureur = 0;
@@ -145,12 +123,10 @@ class TableauDeBord
             for ($i=0; $i < 12; $i++) {
                 $prime_ttc_mois = 0;
                 $com_ht_mois = 0;
-                
                 $tab_taxes_mois = [];
                 foreach ($taxes as $taxe) {
                     $tab_taxes_mois[$taxe->getNom()] = 0;
                 }
-                
                 $com_ttc_mois = 0;
                 $com_encaissee_mois = 0;
                 $solde_du_mois = 0;
@@ -191,7 +167,6 @@ class TableauDeBord
                             foreach ($tab_com_encaissees as $encaissement) {
                                 $comReceived += $encaissement->getMontant();
                             }
-
                             $com_encaissee_mois += $comReceived;
                             $com_ttc_mois += $comTot;
                             $solde_du_mois += ($comTot - $comReceived);
@@ -219,9 +194,7 @@ class TableauDeBord
                     $data_ligne_mois[] = $com_ttc_mois;
                     $data_ligne_mois[] = $com_encaissee_mois;
                     $data_ligne_mois[] = $solde_du_mois;
-
                     $ligne_mois = $data_ligne_mois;
-                    
                     $lignes[] = $ligne_mois;
                 }
             }
@@ -239,26 +212,14 @@ class TableauDeBord
                 $data_sous_total[] = $com_ttc_assureur;
                 $data_sous_total[] = $com_encaissee_assureur;
                 $data_sous_total[] = $solde_du_assureur;
-
                 $sous_total = $data_sous_total;
-                //dd($sous_total);
                 //chargement des données - chargement des lignes
                 $production_assureur['donnees'][] = [
                     'sous_total' => $sous_total,
                     'lignes' => $lignes
                 ];
-
                 $prime_ttc_grand_total += $primes_ttc_assureur;
                 $com_ht_grand_total += $com_ht_assureur;
-                //$tva_grand_total += -10;
-                //$arca_grand_total += -11;
-                //$tva_grand_total += $tva_assureur;
-                //$arca_grand_total += $arca_assureur;
-                // foreach ($taxes as $taxe) {
-                //     $tab_taxes_grand_total[$taxe->getNom()] = $tab_taxes_grand_total[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
-                // }
-                // dd($tab_taxes_grand_total);
-
                 $com_ttc_grand_total += $com_ttc_assureur;
                 $com_encaissee_grand_total += $com_encaissee_assureur;
                 $solde_du_grand_total += $solde_du_assureur;
@@ -275,7 +236,6 @@ class TableauDeBord
         $data_production_assureur[] = $com_encaissee_grand_total;
         $data_production_assureur[] = $solde_du_grand_total;
         $production_assureur['totaux'] = $data_production_assureur;
-
         return $production_assureur;
     }
 
