@@ -69,19 +69,19 @@ class TableauDeBord
         $assureurs = $this->assureurRepository->findAll();
         $taxes = $this->taxeRepository->findAll();
         //on prévoit quand-même un tableau vide
-        $production_assureur = [
-            'titres' => [],
-            'donnees' => [
-                [
-                    'sous_total' => [],
-                    'lignes' => [
-                        [],
-                        []
-                    ]
-                ]
-            ],
-            'totaux' => []
-        ];
+        // $production_assureur = [
+        //     'titres' => [],
+        //     'donnees' => [
+        //         [
+        //             'sous_total' => [],
+        //             'lignes' => [
+        //                 [],
+        //                 []
+        //             ]
+        //         ]
+        //     ],
+        //     'totaux' => []
+        // ];
 
         //dd($production_assureur);
 
@@ -150,8 +150,7 @@ class TableauDeBord
                 foreach ($taxes as $taxe) {
                     $tab_taxes_mois[$taxe->getNom()] = 0;
                 }
-                //dd($tab_taxes_mois);
-
+                
                 $com_ttc_mois = 0;
                 $com_encaissee_mois = 0;
                 $solde_du_mois = 0;
@@ -163,8 +162,6 @@ class TableauDeBord
                         if($date_mois_police == ($i + 1)){
                             $prime_ttc_mois += $aggregat_police->getPrimeTotale();
                             $com_ht_mois += $aggregat_police->getCommissionNette();
-
-                            //dd($aggregat_police->getTab_Taxes());
                             foreach ($taxes as $taxe) {
                                 $montant_taxe_police = 0;
                                 foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
@@ -173,13 +170,11 @@ class TableauDeBord
                                         $montant_taxe_police = $taxes_polices['montant'];
                                     }
                                 }
+                                //dd($taxe->getNom(). " = ". $val_taxe_existant);
                                 $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
                                 $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
-                                //dd($taxe->getNom(). " = ". $val_taxe_existant);
                             }
-                            //$tva_mois += $aggregat_police->getImpotEtTaxeTotale();
-                            //$arca_mois += 0;
-
+                            
                             $comTot = $aggregat_police->getCommissionTotale();
                             //encaissements - recherche
                             $comReceived = 0;
@@ -207,55 +202,46 @@ class TableauDeBord
                 if($prime_ttc_mois != 0){
                     $primes_ttc_assureur += $prime_ttc_mois;
                     $com_ht_assureur += $com_ht_mois;
-
-                    //dd($tab_taxes_mois);
                     foreach ($taxes as $taxe) {
-                        //dd($taxe);
                         $tab_taxes_assureur[$taxe->getNom()] = $tab_taxes_assureur[$taxe->getNom()] + $tab_taxes_mois[$taxe->getNom()];
                     }
-                    //dd($tab_taxes_assureur);
-                    //$tva_assureur += $tva_mois;
-                    //$arca_assureur += $arca_mois;
                     $com_ttc_assureur += $com_ttc_mois;
                     $com_encaissee_assureur += $com_encaissee_mois;
                     $solde_du_assureur += $solde_du_mois;
 
-                    // $ligne_mois = [$this->tab_MOIS_ANNEE[$i], $prime_ttc_mois, $com_ht_mois, $tva_mois, $arca_mois, $com_ttc_mois, $com_encaissee_mois, $solde_du_mois];
-                    
-                    $ligne_mois[] = $this->tab_MOIS_ANNEE[$i];
-                    $ligne_mois[] = $prime_ttc_mois;
-                    $ligne_mois[] = $com_ht_mois;
+                    $data_ligne_mois = [];
+                    $data_ligne_mois[] = $this->tab_MOIS_ANNEE[$i];
+                    $data_ligne_mois[] = $prime_ttc_mois;
+                    $data_ligne_mois[] = $com_ht_mois;
                     foreach ($taxes as $taxe) {
-                        $ligne_mois[] = $tab_taxes_mois[$taxe->getNom()];
+                        $data_ligne_mois[] = $tab_taxes_mois[$taxe->getNom()];
                     }
-                    // $ligne_mois[] = -10;
-                    // $ligne_mois[] = -11;
-                    $ligne_mois[] = $com_ttc_mois;
-                    $ligne_mois[] = $com_encaissee_mois;
-                    $ligne_mois[] = $solde_du_mois;
+                    $data_ligne_mois[] = $com_ttc_mois;
+                    $data_ligne_mois[] = $com_encaissee_mois;
+                    $data_ligne_mois[] = $solde_du_mois;
 
-                    //dd($tab_taxes_mois);
-                    //dd($ligne_mois);
+                    $ligne_mois = $data_ligne_mois;
                     
                     $lignes[] = $ligne_mois;
                 }
             }
             //chargement des données - chargement des sous totaux
             if($primes_ttc_assureur != 0){
-                // $sous_total = [
-                //     $assureur->getNom(), $primes_ttc_assureur, $com_ht_assureur, $tva_assureur, $arca_assureur, $com_ttc_assureur, $com_encaissee_assureur, $solde_du_assureur
-                // ];
-                $sous_total[] = $assureur->getNom();
-                $sous_total[] = $primes_ttc_assureur;
-                $sous_total[] = $com_ht_assureur;
+                $data_sous_total = [];
+                $data_sous_total[] = $assureur->getNom();
+                $data_sous_total[] = $primes_ttc_assureur;
+                $data_sous_total[] = $com_ht_assureur;
                 //ici on doit cgarger les taxes
-                $sous_total[] = -10;
-                $sous_total[] = -11;
-                $sous_total[] = $com_ttc_assureur;
-                $sous_total[] = $com_encaissee_assureur;
-                $sous_total[] = $solde_du_assureur;
+                foreach ($taxes as $taxe) {
+                    $data_sous_total[] = $tab_taxes_assureur[$taxe->getNom()];
+                    $tab_taxes_grand_total[$taxe->getNom()] = $tab_taxes_grand_total[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
+                }
+                $data_sous_total[] = $com_ttc_assureur;
+                $data_sous_total[] = $com_encaissee_assureur;
+                $data_sous_total[] = $solde_du_assureur;
 
-                // dd($sous_total);
+                $sous_total = $data_sous_total;
+                //dd($sous_total);
                 //chargement des données - chargement des lignes
                 $production_assureur['donnees'][] = [
                     'sous_total' => $sous_total,
@@ -278,25 +264,17 @@ class TableauDeBord
                 $solde_du_grand_total += $solde_du_assureur;
             }
         }
-        
-        //chargement des grands totaux
-        $production_assureur['totaux'] = [
-            $this->ttr_GRAND_TOTAL, 
-            $prime_ttc_grand_total, 
-            $com_ht_grand_total, 
-            -10, 
-            -11, 
-            $com_ttc_grand_total, 
-            $com_encaissee_grand_total, 
-            $solde_du_grand_total
-        ];
-
-
-        // foreach ($taxes as $taxe) {
-        //     $production_assureur['totaux'][] = $taxe . " @" . ($taxe->getTaux()) . "%";
-        // }
-
-        //dd($production_assureur);
+        $data_production_assureur = [];
+        $data_production_assureur[] = $this->ttr_GRAND_TOTAL;
+        $data_production_assureur[] = $prime_ttc_grand_total;
+        $data_production_assureur[] = $com_ht_grand_total;
+        foreach ($taxes as $taxe) {
+            $data_production_assureur[] = $tab_taxes_grand_total[$taxe->getNom()];
+        }
+        $data_production_assureur[] = $com_ttc_grand_total;
+        $data_production_assureur[] = $com_encaissee_grand_total;
+        $data_production_assureur[] = $solde_du_grand_total;
+        $production_assureur['totaux'] = $data_production_assureur;
 
         return $production_assureur;
     }
