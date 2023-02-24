@@ -106,7 +106,7 @@ class TableauDeBord
         $com_ttc_grand_total = 0;
         $com_encaissee_grand_total = 0;
         $solde_du_grand_total = 0;
-        //filtre par assureur
+        //1 - filtre par assureur
         foreach ($assureurs as $assureur) {
             $lignes = null;
             $primes_ttc_assureur = 0;
@@ -115,11 +115,10 @@ class TableauDeBord
             foreach ($taxes as $taxe) {
                 $tab_taxes_assureur[$taxe->getNom()] = 0;
             }
-            //dd($tab_taxes_assureur);
             $com_ttc_assureur = 0;
             $com_encaissee_assureur = 0;
             $solde_du_assureur = 0;
-            //filtre pour chaque mois de l'année
+            //2 - filtre pour chaque mois de l'année
             for ($i=0; $i < 12; $i++) {
                 $prime_ttc_mois = 0;
                 $com_ht_mois = 0;
@@ -130,6 +129,7 @@ class TableauDeBord
                 $com_ttc_mois = 0;
                 $com_encaissee_mois = 0;
                 $solde_du_mois = 0;
+                //3 - filtre par police
                 foreach ($this->polices as $police) {
                     if($police->getAssureur() == $assureur){
                         $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
@@ -272,11 +272,7 @@ class TableauDeBord
         $production_mois['titres'][] = $this->ttr_COM_TTC;
         $production_mois['titres'][] = $this->ttr_COM_ENCAISSEE;
         $production_mois['titres'][] = $this->ttr_SOLDE_DU;
-
-        dd($production_mois);
-
-
-        //dd($production_assureur);
+        //dd($production_mois);
         $prime_ttc_grand_total = 0;
         $com_ht_grand_total = 0;
         $tab_taxes_grand_total = [];
@@ -287,6 +283,122 @@ class TableauDeBord
         $com_ttc_grand_total = 0;
         $com_encaissee_grand_total = 0;
         $solde_du_grand_total = 0;
+        //1- filtre par mois
+        for ($i=0; $i < 12; $i++) {
+            $lignes = null;
+            $prime_ttc_mois = 0;
+            $com_ht_mois = 0;
+            $tab_taxes_mois = [];
+            foreach ($taxes as $taxe) {
+                $tab_taxes_mois[$taxe->getNom()] = 0;
+            }
+            $com_ttc_mois = 0;
+            $com_encaissee_mois = 0;
+            $solde_du_mois = 0;
+            //2 - pour chaque assureur
+            foreach ($assureurs as $assureur) {
+                $primes_ttc_assureur = 0;
+                $com_ht_assureur = 0;
+                $tab_taxes_assureur = [];
+                foreach ($taxes as $taxe) {
+                    $tab_taxes_assureur[$taxe->getNom()] = 0;
+                }
+                $com_ttc_assureur = 0;
+                $com_encaissee_assureur = 0;
+                $solde_du_assureur = 0;
+                //3 - filtre par police
+                foreach ($this->polices as $police) {
+                    if($police->getAssureur() == $assureur){
+                        $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+                        $date_mois_police = $police->getDateEffet()->format("m");
+                        //dd($date_police);
+                        if($date_mois_police == ($i + 1)){
+                            $prime_ttc_mois += $aggregat_police->getPrimeTotale();
+                            $com_ht_mois += $aggregat_police->getCommissionNette();
+                            foreach ($taxes as $taxe) {
+                                $montant_taxe_police = 0;
+                                foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
+                                    if($taxes_polices['nom'] == $taxe->getNom()){
+                                        //dd($taxes_polices['nom'] . ", " . $taxes_polices['montant']);
+                                        $montant_taxe_police = $taxes_polices['montant'];
+                                    }
+                                }
+                                //dd($taxe->getNom(). " = ". $val_taxe_existant);
+                                $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
+                                $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
+                            }
+                            
+                            $comTot = $aggregat_police->getCommissionTotale();
+                            //encaissements - recherche
+                            $comReceived = 0;
+                            $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+                                'police' => $police,
+                                'client' => $police->getClient(),
+                                'assureur' => $assureur,
+                                'partenaire' => $police->getPartenaire(),
+                                'motcle' => "",
+                                'dateA' => null,
+                                'dateB' => null
+                            ], null);
+                            //dd($tab_com_encaissees);
+                            foreach ($tab_com_encaissees as $encaissement) {
+                                $comReceived += $encaissement->getMontant();
+                            }
+                            $com_encaissee_mois += $comReceived;
+                            $com_ttc_mois += $comTot;
+                            $solde_du_mois += ($comTot - $comReceived);
+                            //dd($aggregat_police->getTab_Taxes());
+                        }
+                    }
+                }
+                if($primes_ttc_assureur != 0){
+                    $prime_ttc_mois += $primes_ttc_assureur;
+                    $com_ht_mois += $com_ht_assureur;
+                    foreach ($taxes as $taxe) {
+                        $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
+                    }
+                    $com_ttc_mois += $com_ttc_assureur;
+                    $com_encaissee_mois += $com_encaissee_assureur;
+                    $solde_du_mois += $solde_du_assureur;
+    
+                    $data_ligne_assureur = [];
+                    $data_ligne_assureur[] = $this->tab_MOIS_ANNEE[$i];
+                    $data_ligne_assureur[] = $prime_ttc_mois;
+                    $data_ligne_assureur[] = $com_ht_mois;
+                    foreach ($taxes as $taxe) {
+                        $data_ligne_mois[] = $tab_taxes_mois[$taxe->getNom()];
+                    }
+                    $data_ligne_mois[] = $com_ttc_mois;
+                    $data_ligne_mois[] = $com_encaissee_mois;
+                    $data_ligne_mois[] = $solde_du_mois;
+                    $ligne_mois = $data_ligne_mois;
+                    $lignes[] = $ligne_mois;
+                }
+            }
+
+
+            
+
+
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //filtre par assureur
         foreach ($assureurs as $assureur) {
             $lignes = null;
