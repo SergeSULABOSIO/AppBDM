@@ -84,7 +84,6 @@ class TableauDeBord
         // ];
 
         //dd($production_assureur);
-
         $production_assureur['titres'][] = $this->ttr_ETIQUETTE;
         $production_assureur['titres'][] = $this->ttr_PRIMES_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_HT;
@@ -142,11 +141,9 @@ class TableauDeBord
                                 $montant_taxe_police = 0;
                                 foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
                                     if($taxes_polices['nom'] == $taxe->getNom()){
-                                        //dd($taxes_polices['nom'] . ", " . $taxes_polices['montant']);
                                         $montant_taxe_police = $taxes_polices['montant'];
                                     }
                                 }
-                                //dd($taxe->getNom(). " = ". $val_taxe_existant);
                                 $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
                                 $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
                             }
@@ -241,8 +238,6 @@ class TableauDeBord
 
     public function dash_get_synthse_production_mois()
     {
-        //$production_mois[] = null;
-
         $assureurs = $this->assureurRepository->findAll();
         $taxes = $this->taxeRepository->findAll();
         //on prévoit quand-même un tableau vide pour servir d'exemple
@@ -261,7 +256,6 @@ class TableauDeBord
         // ];
 
         // dd($production_mois);
-
         $production_mois['titres'][] = $this->ttr_ETIQUETTE;
         $production_mois['titres'][] = $this->ttr_PRIMES_TTC;
         $production_mois['titres'][] = $this->ttr_COM_HT;
@@ -295,9 +289,9 @@ class TableauDeBord
             $com_ttc_mois = 0;
             $com_encaissee_mois = 0;
             $solde_du_mois = 0;
-            //2 - pour chaque assureur
+            //2 - filtre pour chaque assureur
             foreach ($assureurs as $assureur) {
-                $primes_ttc_assureur = 0;
+                $prime_ttc_assureur = 0;
                 $com_ht_assureur = 0;
                 $tab_taxes_assureur = [];
                 foreach ($taxes as $taxe) {
@@ -313,19 +307,17 @@ class TableauDeBord
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            $prime_ttc_mois += $aggregat_police->getPrimeTotale();
-                            $com_ht_mois += $aggregat_police->getCommissionNette();
+                            $prime_ttc_assureur += $aggregat_police->getPrimeTotale();
+                            $com_ht_assureur += $aggregat_police->getCommissionNette();
                             foreach ($taxes as $taxe) {
                                 $montant_taxe_police = 0;
                                 foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
                                     if($taxes_polices['nom'] == $taxe->getNom()){
-                                        //dd($taxes_polices['nom'] . ", " . $taxes_polices['montant']);
                                         $montant_taxe_police = $taxes_polices['montant'];
                                     }
                                 }
-                                //dd($taxe->getNom(). " = ". $val_taxe_existant);
-                                $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
-                                $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
+                                $val_taxe_existant = $tab_taxes_assureur[$taxe->getNom()] + $montant_taxe_police;
+                                $tab_taxes_assureur[$taxe->getNom()] = $val_taxe_existant;
                             }
                             
                             $comTot = $aggregat_police->getCommissionTotale();
