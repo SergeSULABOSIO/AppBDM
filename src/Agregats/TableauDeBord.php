@@ -147,7 +147,6 @@ class TableauDeBord
                                 $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
                                 $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
                             }
-                            
                             $comTot = $aggregat_police->getCommissionTotale();
                             //encaissements - recherche
                             $comReceived = 0;
@@ -160,7 +159,6 @@ class TableauDeBord
                                 'dateA' => null,
                                 'dateB' => null
                             ], null);
-                            //dd($tab_com_encaissees);
                             foreach ($tab_com_encaissees as $encaissement) {
                                 $comReceived += $encaissement->getMontant();
                             }
@@ -201,7 +199,7 @@ class TableauDeBord
                 $data_sous_total[] = $assureur->getNom();
                 $data_sous_total[] = $primes_ttc_assureur;
                 $data_sous_total[] = $com_ht_assureur;
-                //ici on doit cgarger les taxes
+                //ici on doit charger les taxes
                 foreach ($taxes as $taxe) {
                     $data_sous_total[] = $tab_taxes_assureur[$taxe->getNom()];
                     $tab_taxes_grand_total[$taxe->getNom()] = $tab_taxes_grand_total[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
@@ -319,7 +317,6 @@ class TableauDeBord
                                 $val_taxe_existant = $tab_taxes_assureur[$taxe->getNom()] + $montant_taxe_police;
                                 $tab_taxes_assureur[$taxe->getNom()] = $val_taxe_existant;
                             }
-                            
                             $comTot = $aggregat_police->getCommissionTotale();
                             //encaissements - recherche
                             $comReceived = 0;
@@ -332,19 +329,18 @@ class TableauDeBord
                                 'dateA' => null,
                                 'dateB' => null
                             ], null);
-                            //dd($tab_com_encaissees);
                             foreach ($tab_com_encaissees as $encaissement) {
                                 $comReceived += $encaissement->getMontant();
                             }
-                            $com_encaissee_mois += $comReceived;
-                            $com_ttc_mois += $comTot;
-                            $solde_du_mois += ($comTot - $comReceived);
+                            $com_encaissee_assureur += $comReceived;
+                            $com_ttc_assureur += $comTot;
+                            $solde_du_assureur += ($comTot - $comReceived);
                             //dd($aggregat_police->getTab_Taxes());
                         }
                     }
                 }
-                if($primes_ttc_assureur != 0){
-                    $prime_ttc_mois += $primes_ttc_assureur;
+                if($prime_ttc_assureur != 0){
+                    $prime_ttc_mois += $prime_ttc_assureur;
                     $com_ht_mois += $com_ht_assureur;
                     foreach ($taxes as $taxe) {
                         $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
@@ -354,20 +350,45 @@ class TableauDeBord
                     $solde_du_mois += $solde_du_assureur;
     
                     $data_ligne_assureur = [];
-                    $data_ligne_assureur[] = $this->tab_MOIS_ANNEE[$i];
-                    $data_ligne_assureur[] = $prime_ttc_mois;
-                    $data_ligne_assureur[] = $com_ht_mois;
+                    $data_ligne_assureur[] = $assureur->getNom();
+                    $data_ligne_assureur[] = $prime_ttc_assureur;
+                    $data_ligne_assureur[] = $com_ht_assureur;
                     foreach ($taxes as $taxe) {
-                        $data_ligne_mois[] = $tab_taxes_mois[$taxe->getNom()];
+                        $data_ligne_assureur[] = $data_ligne_assureur[$taxe->getNom()];
                     }
-                    $data_ligne_mois[] = $com_ttc_mois;
-                    $data_ligne_mois[] = $com_encaissee_mois;
-                    $data_ligne_mois[] = $solde_du_mois;
-                    $ligne_mois = $data_ligne_mois;
-                    $lignes[] = $ligne_mois;
+                    $data_ligne_assureur[] = $com_ttc_assureur;
+                    $data_ligne_assureur[] = $com_encaissee_assureur;
+                    $data_ligne_assureur[] = $solde_du_assureur;
+                    $ligne_assureur = $data_ligne_assureur;
+                    $lignes[] = $ligne_assureur;
                 }
             }
-
+            //chargement des données - chargement des sous totaux
+            if($prime_ttc_mois != 0){
+                $data_sous_total = [];
+                $data_sous_total[] = $this->tab_MOIS_ANNEE[$i];
+                $data_sous_total[] = $prime_ttc_mois;
+                $data_sous_total[] = $com_ht_mois;
+                //ici on doit charger les taxes
+                foreach ($taxes as $taxe) {
+                    $data_sous_total[] = $tab_taxes_assureur[$taxe->getNom()];
+                    $tab_taxes_grand_total[$taxe->getNom()] = $tab_taxes_grand_total[$taxe->getNom()] + $tab_taxes_assureur[$taxe->getNom()];
+                }
+                $data_sous_total[] = $com_ttc_assureur;
+                $data_sous_total[] = $com_encaissee_assureur;
+                $data_sous_total[] = $solde_du_assureur;
+                $sous_total = $data_sous_total;
+                //chargement des données - chargement des lignes
+                $production_assureur['donnees'][] = [
+                    'sous_total' => $sous_total,
+                    'lignes' => $lignes
+                ];
+                $prime_ttc_grand_total += $primes_ttc_assureur;
+                $com_ht_grand_total += $com_ht_assureur;
+                $com_ttc_grand_total += $com_ttc_assureur;
+                $com_encaissee_grand_total += $com_encaissee_assureur;
+                $solde_du_grand_total += $solde_du_assureur;
+            }
 
             
 
