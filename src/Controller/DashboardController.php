@@ -4,13 +4,8 @@ namespace App\Controller;
 
 use DateTime;
 use PoliceSearchType;
-use App\Entity\Police;
-use App\Entity\Entreprise;
-use App\Form\PoliceFormType;
 use App\Agregats\PoliceAgregat;
-use App\Agregats\PoliceAgregats;
 use App\Agregats\TableauDeBord;
-use App\Entity\Monnaie;
 use App\Repository\ClientRepository;
 use App\Repository\PoliceRepository;
 use App\Repository\ProduitRepository;
@@ -23,8 +18,6 @@ use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\TaxeRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -126,7 +119,7 @@ class DashboardController extends AbstractController
         );
         //dd($tableau_de_bord);
 
-        //dd($tableau_de_bord->dash_get_synthse_production_mois());
+        //dd($tableau_de_bord->dash_get_synthse_retrocommissoins_mois());
 
         $appTitreRubrique = "Tableau de bord";
         return $this->render(
