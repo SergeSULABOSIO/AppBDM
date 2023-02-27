@@ -479,7 +479,7 @@ class TableauDeBord
                 $solde_du_mois = 0;
                 //3 - filtre par police
                 foreach ($this->polices as $police) {
-                    if($police->getAssureur() == $assureur){
+                    if($police->getPartenaire() == $partenaire){
                         $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
