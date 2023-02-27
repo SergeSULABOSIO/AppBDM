@@ -25,8 +25,6 @@ class TableauDeBord
     private $ttr_ETIQUETTE = "ETIQUETTE";
     private $ttr_PRIMES_TTC = "PRIMES TTC";
     private $ttr_COM_HT = "COM. HT";
-    private $ttr_TVA = "TVA @16%";
-    private $ttr_ARCA = "ARCA @2%";
     private $ttr_COM_TTC = "COM. TTC";
     private $ttr_COM_ENCAISSEE = "COM. ENCAISSEE";
     private $ttr_SOLDE_DU = "SOLDE DU";
