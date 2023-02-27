@@ -444,38 +444,38 @@ class TableauDeBord
         $production_assureur['titres'][] = $this->ttr_RETRO_COM_PAYEE;
         $production_assureur['titres'][] = $this->ttr_RETRO_SOLDE_DU;
         //dd($production_assureur);
-        $prime_ttc_grand_total = 0;
-        $com_ht_grand_total = 0;
+        $com_recue_grand_total = 0;
         $tab_taxes_grand_total = [];
         foreach ($taxes as $taxe) {
             $tab_taxes_grand_total[$taxe->getNom()] = 0;
         }
         //dd($tab_taxes_grand_total);
-        $com_ttc_grand_total = 0;
-        $com_encaissee_grand_total = 0;
+        $com_ht_grand_total = 0;
+        $com_due_grand_total = 0;
+        $com_payee_grand_total = 0;
         $solde_du_grand_total = 0;
-        //1 - filtre par assureur
-        foreach ($assureurs as $assureur) {
+        //1 - filtre par partenaire
+        foreach ($partenaires as $partenaire) {
             $lignes = null;
-            $primes_ttc_assureur = 0;
-            $com_ht_assureur = 0;
-            $tab_taxes_assureur = [];
+            $com_recue_partenaire = 0;
+            $tab_taxes_partenaire = [];
             foreach ($taxes as $taxe) {
-                $tab_taxes_assureur[$taxe->getNom()] = 0;
+                $tab_taxes_partenaire[$taxe->getNom()] = 0;
             }
-            $com_ttc_assureur = 0;
-            $com_encaissee_assureur = 0;
-            $solde_du_assureur = 0;
+            $com_ht_partenaire = 0;
+            $com_due_partenaire = 0;
+            $com_payee_partenaire = 0;
+            $solde_du_partenaire = 0;
             //2 - filtre pour chaque mois de l'année
             for ($i=0; $i < 12; $i++) {
-                $prime_ttc_mois = 0;
-                $com_ht_mois = 0;
+                $com_recue_mois = 0;
                 $tab_taxes_mois = [];
                 foreach ($taxes as $taxe) {
                     $tab_taxes_mois[$taxe->getNom()] = 0;
                 }
-                $com_ttc_mois = 0;
-                $com_encaissee_mois = 0;
+                $com_ht_mois = 0;
+                $com_due_mois = 0;
+                $com_payee_mois = 0;
                 $solde_du_mois = 0;
                 //3 - filtre par police
                 foreach ($this->polices as $police) {
