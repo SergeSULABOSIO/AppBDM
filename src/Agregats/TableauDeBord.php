@@ -484,8 +484,8 @@ class TableauDeBord
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            $prime_ttc_mois += $aggregat_police->getPrimeTotale();
-                            $com_ht_mois += $aggregat_police->getCommissionNette();
+                            //$prime_ttc_mois += $aggregat_police->getPrimeTotale();
+                            
                             foreach ($taxes as $taxe) {
                                 $montant_taxe_police = 0;
                                 foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
@@ -502,7 +502,7 @@ class TableauDeBord
                             $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
                                 'police' => $police,
                                 'client' => $police->getClient(),
-                                'assureur' => $assureur,
+                                'assureur' => $police->getAssureur(),
                                 'partenaire' => $police->getPartenaire(),
                                 'motcle' => "",
                                 'dateA' => null,
@@ -511,16 +511,18 @@ class TableauDeBord
                             foreach ($tab_com_encaissees as $encaissement) {
                                 $comReceived += $encaissement->getMontant();
                             }
-                            $com_encaissee_mois += $comReceived;
-                            $com_ttc_mois += $comTot;
-                            $solde_du_mois += ($comTot - $comReceived);
+
+                            $com_recue_mois += $comReceived;
+                            //$com_ht_mois += $aggregat_police->getCommissionNette();
+                            
+                            //$solde_du_mois += ($comTot - $comReceived);
                             //dd($aggregat_police->getTab_Taxes());
                         }
                     }
                 }
-                if($prime_ttc_mois != 0){
-                    $primes_ttc_assureur += $prime_ttc_mois;
-                    $com_ht_assureur += $com_ht_mois;
+                if($com_recue_mois != 0){
+                    $com_recue_partenaire += $com_recue_mois;
+                    $com_ht_partenaire += $com_ht_mois;
                     foreach ($taxes as $taxe) {
                         $tab_taxes_assureur[$taxe->getNom()] = $tab_taxes_assureur[$taxe->getNom()] + $tab_taxes_mois[$taxe->getNom()];
                     }
