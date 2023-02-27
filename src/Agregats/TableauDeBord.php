@@ -31,18 +31,18 @@ class TableauDeBord
     private $ttr_COM_ENCAISSEE = "COM. ENCAISSEE";
     private $ttr_SOLDE_DU = "SOLDE DU";
     private $tab_MOIS_ANNEE = [
-        "Janvier", 
-        "Févier", 
-        "Mars", 
-        "Avril", 
-        "Mai", 
-        "Juin", 
-        "Juillet", 
-        "Août", 
-        "Septembre", 
-        "Octobre", 
-        "Novembre", 
-        "Décembre"
+        "JANVIER", 
+        "FEVRIER", 
+        "MARS", 
+        "AVRIL", 
+        "MAI", 
+        "JUIN", 
+        "JUILLET", 
+        "AOUT", 
+        "SEPTEMBRE", 
+        "OCTOBRE", 
+        "NOVEMBRE", 
+        "DECEMBRE"
     ]; 
 
     public function __construct(
