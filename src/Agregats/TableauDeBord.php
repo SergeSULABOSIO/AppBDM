@@ -15,9 +15,10 @@ use App\Repository\EntrepriseRepository;
 use App\Repository\PartenaireRepository;
 use App\Agregats\PoliceAgregatCalculator;
 use App\Agregats\OutstandingCommissionAgregat;
-use App\Entity\Police;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
+use App\Repository\PaiementPartenaireRepository;
+use App\Outstanding\RetrocomOutstanding;
 
 class TableauDeBord
 {
@@ -67,6 +68,7 @@ class TableauDeBord
         private PoliceRepository $policeRepository,
         private ProduitRepository $produitRepository,
         private OutstandingCommissionRepository $outstandingCommissionRepository,
+        private PaiementPartenaireRepository $paiementPartenaireRepository,
         private $polices,
         private $criteres_dashboard
     ) {
@@ -413,10 +415,9 @@ class TableauDeBord
         return $production_mois;
     }
 
-    public function dash_get_synthse_retrocommissoins_mois()
+
+    private function _prod_part_getTitres($taxes)
     {
-        $partenaires = $this->partenaireRepository->findAll();
-        $taxes = $this->taxeRepository->findAll();
         //on prévoit quand-même un tableau vide pour servir d'exemple
         // $production_partenaire = [
         //     'titres' => [],
@@ -441,8 +442,90 @@ class TableauDeBord
         }
         $production_partenaire['titres'][] = $this->ttr_RETRO_COM_HT;
         $production_partenaire['titres'][] = $this->ttr_RETRO_COM_DUE;
-        $production_partenaire['titres'][] = $this->ttr_RETRO_COM_PAYEE;
+        $production_partenaire['titres'][] = "- " . $this->ttr_RETRO_COM_PAYEE;
         $production_partenaire['titres'][] = $this->ttr_RETRO_SOLDE_DU;
+
+        return $production_partenaire;
+    }
+
+    
+    private function _prod_partenaire_getCom_recue($police)
+    {
+        $comReceived = 0;
+        $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+            'police' => $police,
+            'client' => $police->getClient(),
+            'assureur' => $police->getAssureur(),
+            'partenaire' => $police->getPartenaire(),
+            'motcle' => "",
+            'dateA' => null,
+            'dateB' => null
+        ], null);
+        foreach ($tab_com_encaissees as $encaissement) {
+            $comReceived += $encaissement->getMontant();
+        }
+        return $comReceived;
+    }
+
+    private function _prod_partenaire_getRetroCom_solde_due($police)
+    {
+        //On va vérifier aussi les paiements possibles
+        $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
+            'dateA' => "",
+            'dateB' => "",
+            'motcle' => "",
+            'police' => $police,
+            'assureur' => null,
+            'client' => $police->getClient(),
+            'partenaire' => $police->getPartenaire()
+        ], null);
+        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+        return $retrocommOustanding->montantSolde;
+    }
+
+
+    private function _prod_partenaire_getRetroCom_partageable($police)
+    {
+        //On va vérifier aussi les paiements possibles
+        $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
+            'dateA' => "",
+            'dateB' => "",
+            'motcle' => "",
+            'police' => $police,
+            'assureur' => null,
+            'client' => $police->getClient(),
+            'partenaire' => $police->getPartenaire()
+        ], null);
+        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+        return $retrocommOustanding->montantDu;
+    }
+
+
+    private function _prod_partenaire_getCom_payee($police)
+    {
+        $comPayee = 0;
+        $tab_com_decaissees = $this->paiementPartenaireRepository->findByMotCle([
+            'police' => $police,
+            'client' => $police->getClient(),
+            'assureur' => $police->getAssureur(),
+            'partenaire' => $police->getPartenaire(),
+            'motcle' => "",
+            'dateA' => null,
+            'dateB' => null
+        ], null);
+        foreach ($tab_com_decaissees as $decaissement) {
+            $comPayee += $decaissement->getMontant();
+        }
+        return -$comPayee;
+    }
+    
+
+    public function dash_get_synthse_retrocommissoins_mois()
+    {
+        $partenaires = $this->partenaireRepository->findAll();
+        $taxes = $this->taxeRepository->findAll();
+        
+        $production_partenaire = $this->_prod_part_getTitres($taxes);
         //dd($production_assureur);
         $com_recue_grand_total = 0;
         $tab_taxes_grand_total = [];
@@ -484,28 +567,13 @@ class TableauDeBord
                         //ici il faut calculer la veleur réelle de la taxe puis l'ajouter dans la table
                         if($date_mois_police == ($i + 1)){
                             foreach ($taxes as $taxe) {
-                                $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + 1;
+                                $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + (-1);
                             }
-                            //encaissements - recherche
-                            $comReceived = 1;
-                            $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
-                                'police' => $police,
-                                'client' => $police->getClient(),
-                                'assureur' => $police->getAssureur(),
-                                'partenaire' => $police->getPartenaire(),
-                                'motcle' => "",
-                                'dateA' => null,
-                                'dateB' => null
-                            ], null);
-                            foreach ($tab_com_encaissees as $encaissement) {
-                                $comReceived += $encaissement->getMontant();
-                            }
-
-                            $com_recue_mois += $comReceived;
-                            $com_ht_mois += 1;
-                            $com_due_mois += 1;
-                            $com_payee_mois += 1;
-                            $solde_du_mois += 1;
+                            $com_recue_mois += $this->_prod_partenaire_getCom_recue($police);
+                            $com_ht_mois += -1;
+                            $com_due_mois += $this->_prod_partenaire_getRetroCom_partageable($police);
+                            $com_payee_mois += $this->_prod_partenaire_getCom_payee($police);
+                            $solde_du_mois += $this->_prod_partenaire_getRetroCom_solde_due($police);
                         }
                     }
                 }
