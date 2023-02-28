@@ -484,7 +484,7 @@ class TableauDeBord
     }
 
 
-    private function _prod_partenaire_getRetroCom_partageable($police)
+    private function _prod_partenaire_getRetroCom_due($police)
     {
         //On va vérifier aussi les paiements possibles
         $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
@@ -501,7 +501,7 @@ class TableauDeBord
     }
 
 
-    private function _prod_partenaire_getCom_payee($police)
+    private function _prod_partenaire_getRetroCom_payee($police)
     {
         $comPayee = 0;
         $tab_com_decaissees = $this->paiementPartenaireRepository->findByMotCle([
@@ -571,8 +571,8 @@ class TableauDeBord
                             }
                             $com_recue_mois += $this->_prod_partenaire_getCom_recue($police);
                             $com_ht_mois += -1;
-                            $com_due_mois += $this->_prod_partenaire_getRetroCom_partageable($police);
-                            $com_payee_mois += $this->_prod_partenaire_getCom_payee($police);
+                            $com_due_mois += $this->_prod_partenaire_getRetroCom_due($police);
+                            $com_payee_mois += $this->_prod_partenaire_getRetroCom_payee($police);
                             $solde_du_mois += $this->_prod_partenaire_getRetroCom_solde_due($police);
                         }
                     }
