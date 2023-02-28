@@ -500,6 +500,38 @@ class TableauDeBord
         return $retrocommOustanding->montantDu;
     }
 
+    
+
+
+    private function _prod_partenaire_get_details($police)
+    {
+        $tab_details = [
+            'com_recue_police' => 0,            //montant encaissé
+            'com_ht_police' => 0,               //montant hors taxes partageable
+            'retrocom_due_police' => 0,         //retrocommission dûe au partenaire selon sa part (%)
+            'retrocom_payee_police' => 0,       //retrocommission payée déjà au partenaire
+            'retrocom_solde_due_police' => 0,   //Solde dû au partenaire
+        ];
+        //On va vérifier aussi les paiements possibles
+        $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
+            'dateA' => "",
+            'dateB' => "",
+            'motcle' => "",
+            'police' => $police,
+            'assureur' => null,
+            'client' => $police->getClient(),
+            'partenaire' => $police->getPartenaire()
+        ], null);
+        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+        //return $retrocommOustanding->montantNetPartageable;
+        $tab_details['com_recue_police'] = -100;
+        $tab_details['com_ht_police'] = $retrocommOustanding->montantNetPartageable;
+        $tab_details['retrocom_due_police'] = $retrocommOustanding->montantDu;
+        $tab_details['retrocom_payee_police'] = -100;
+        $tab_details['retrocom_solde_due_police'] = -100;
+        return $tab_details;
+    }
+
 
     private function _prod_partenaire_getRetroCom_payee($police)
     {
@@ -569,11 +601,18 @@ class TableauDeBord
                             foreach ($taxes as $taxe) {
                                 $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + (-1);
                             }
-                            $com_recue_mois += $this->_prod_partenaire_getCom_recue($police);
-                            $com_ht_mois += -1;
-                            $com_due_mois += $this->_prod_partenaire_getRetroCom_due($police);
-                            $com_payee_mois += $this->_prod_partenaire_getRetroCom_payee($police);
-                            $solde_du_mois += $this->_prod_partenaire_getRetroCom_solde_due($police);
+                            $tab_details = $this->_prod_partenaire_get_details($police);
+                            // $com_recue_mois += $this->_prod_partenaire_getCom_recue($police);
+                            // $com_ht_mois += $this->_prod_partenaire_getRetroCom_partageable($police);
+                            // $com_due_mois += $this->_prod_partenaire_getRetroCom_due($police);
+                            // $com_payee_mois += $this->_prod_partenaire_getRetroCom_payee($police);
+                            // $solde_du_mois += $this->_prod_partenaire_getRetroCom_solde_due($police);
+
+                            $com_recue_mois += $tab_details['com_recue_police'];
+                            $com_ht_mois += $tab_details['com_ht_police'];
+                            $com_due_mois += $tab_details['retrocom_due_police'];
+                            $com_payee_mois += $tab_details['retrocom_payee_police'];
+                            $solde_du_mois += $tab_details['retrocom_solde_due_police'];
                         }
                     }
                 }

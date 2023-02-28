@@ -8,6 +8,7 @@ class RetrocomOutstanding
 {
     private ?Police $police = null;
     private $poppartenaires = [];
+    public $montantNetPartageable = 0;
     public $montantDu = 0;
     public $montantDecaisse = 0;
     public $montantSolde = 0;
@@ -49,14 +50,14 @@ class RetrocomOutstanding
 
             $arca = $net_including_arca * (2 / 100);
 
-            $net_partageable = $net_including_arca - $arca;
+            $this->montantNetPartageable = $net_including_arca - $arca;
             
 
             //si le partenaire était défini
             $this->montantDu = 0;
             if($this->police->getPartenaire()){
                 $part = ($this->police->getPartenaire()->getPart()) / 100;
-                $this->montantDu = $net_partageable * $part;
+                $this->montantDu = $this->montantNetPartageable * $part;
             }
             
 
