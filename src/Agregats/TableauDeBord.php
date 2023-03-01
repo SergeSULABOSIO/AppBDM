@@ -467,43 +467,9 @@ class TableauDeBord
         return $comReceived;
     }
 
-    private function _prod_partenaire_getRetroCom_solde_due($police)
-    {
-        //On va vérifier aussi les paiements possibles
-        $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
-            'dateA' => "",
-            'dateB' => "",
-            'motcle' => "",
-            'police' => $police,
-            'assureur' => null,
-            'client' => $police->getClient(),
-            'partenaire' => $police->getPartenaire()
-        ], null);
-        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
-        return $retrocommOustanding->montantSolde;
-    }
 
 
-    private function _prod_partenaire_getRetroCom_due($police)
-    {
-        //On va vérifier aussi les paiements possibles
-        $data_paiementsRetroCommissions = $this->paiementPartenaireRepository->findByMotCle([
-            'dateA' => "",
-            'dateB' => "",
-            'motcle' => "",
-            'police' => $police,
-            'assureur' => null,
-            'client' => $police->getClient(),
-            'partenaire' => $police->getPartenaire()
-        ], null);
-        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
-        return $retrocommOustanding->montantDu;
-    }
-
-    
-
-
-    private function _prod_partenaire_get_details($police)
+    private function _prod_partenaire_get_details($police, $taxes)
     {
         $tab_details = [
             'com_recue_police' => 0,            //montant encaissé
@@ -522,13 +488,14 @@ class TableauDeBord
             'client' => $police->getClient(),
             'partenaire' => $police->getPartenaire()
         ], null);
-        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+        $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions, $taxes);
         //return $retrocommOustanding->montantNetPartageable;
-        $tab_details['com_recue_police'] = -100;
-        $tab_details['com_ht_police'] = $retrocommOustanding->montantNetPartageable;
+        $tab_details['com_recue_police'] = $retrocommOustanding->montantNetPartageable_ttc;
+        $tab_details['com_ht_police'] = $retrocommOustanding->montantNetPartageable_ht;
         $tab_details['retrocom_due_police'] = $retrocommOustanding->montantDu;
-        $tab_details['retrocom_payee_police'] = -100;
-        $tab_details['retrocom_solde_due_police'] = -100;
+        $tab_details['retrocom_payee_police'] = $retrocommOustanding->montantDecaisse;
+        $tab_details['retrocom_solde_due_police'] = $retrocommOustanding->montantSolde;//tab_taxes_mois
+        $tab_details['com_tab_taxes'] = $retrocommOustanding->tab_montants_taxes;
         return $tab_details;
     }
 
@@ -601,13 +568,13 @@ class TableauDeBord
                             foreach ($taxes as $taxe) {
                                 $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + (-1);
                             }
-                            $tab_details = $this->_prod_partenaire_get_details($police);
+                            $tab_details = $this->_prod_partenaire_get_details($police, $taxes);
                             // $com_recue_mois += $this->_prod_partenaire_getCom_recue($police);
                             // $com_ht_mois += $this->_prod_partenaire_getRetroCom_partageable($police);
                             // $com_due_mois += $this->_prod_partenaire_getRetroCom_due($police);
                             // $com_payee_mois += $this->_prod_partenaire_getRetroCom_payee($police);
                             // $solde_du_mois += $this->_prod_partenaire_getRetroCom_solde_due($police);
-
+                            $tab_taxes_mois = $tab_details['com_tab_taxes'];
                             $com_recue_mois += $tab_details['com_recue_police'];
                             $com_ht_mois += $tab_details['com_ht_police'];
                             $com_due_mois += $tab_details['retrocom_due_police'];

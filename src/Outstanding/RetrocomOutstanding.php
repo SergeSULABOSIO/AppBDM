@@ -6,23 +6,27 @@ use App\Entity\Police;
 
 class RetrocomOutstanding
 {
-    private ?Police $police = null;
-    private $poppartenaires = [];
-    public $montantNetPartageable = 0;
+    //private ?Police $police = null;
+    //private $poppartenaires = [];
+    //private $taxes = [];
+    public $montantNetPartageable_ht = 0;
+    public $montantNetPartageable_ttc = 0;
     public $montantDu = 0;
+    public $tab_montants_taxes = [];
     public $montantDecaisse = 0;
     public $montantSolde = 0;
     public $codeMonnaie = "...";
     public $canPay = false;
 
-    public function __construct($police, $poppartenaires)
+    public function __construct(
+        private ?Police $police, 
+        private $poppartenaires,
+        private $taxes
+        )
     {
-        // $this->popcommissions = new ArrayCollection();
-        if ($police !== null) {
-            $this->police = $police;
-        }
-        if ($poppartenaires !== null) {
-            $this->poppartenaires = $poppartenaires;
+        //on initialise le tableau des taxes
+        foreach ($this->taxes as $taxe) {
+            $this->tab_montants_taxes[$taxe->getNom()] = 0;
         }
         $this->calculateMontantDu();
     }
@@ -48,16 +52,27 @@ class RetrocomOutstanding
 
             $net_including_arca = $net_ri_com + $net_local_com + $net_fronting_com;
 
-            $arca = $net_including_arca * (2 / 100);
+            $tot_taxes_payable_par_courtier = 0;
+            $tot_taxes_payable_par_assureur = 0;
+            foreach ($this->taxes as $taxe) {
+                $montant_taxe = $net_including_arca * ($taxe->getTaux() / 100);
+                if($taxe->isPayableparcourtier()){
+                    $tot_taxes_payable_par_courtier += $montant_taxe;
+                }else{
+                    $tot_taxes_payable_par_assureur += $montant_taxe;
+                }
+                $this->tab_montants_taxes[$taxe->getNom()] = $this->tab_montants_taxes[$taxe->getNom()] - $montant_taxe;
+            }
 
-            $this->montantNetPartageable = $net_including_arca - $arca;
+            $this->montantNetPartageable_ht = $net_including_arca - $tot_taxes_payable_par_courtier;
+            $this->montantNetPartageable_ttc = $net_including_arca + $tot_taxes_payable_par_assureur;
             
 
             //si le partenaire était défini
             $this->montantDu = 0;
             if($this->police->getPartenaire()){
                 $part = ($this->police->getPartenaire()->getPart()) / 100;
-                $this->montantDu = $this->montantNetPartageable * $part;
+                $this->montantDu = $this->montantNetPartageable_ht * $part;
             }
             
 
