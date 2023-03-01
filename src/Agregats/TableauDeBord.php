@@ -35,9 +35,9 @@ class TableauDeBord
     private $ttr_RETRO_ETIQUETTE = "ETIQUETTE";
     private $ttr_RETRO_COM_RECUE = "COM. RECUE";
     private $ttr_RETRO_COM_HT = "COM. HT";
-    private $ttr_RETRO_COM_DUE = "COM. DUE";
-    private $ttr_RETRO_COM_PAYEE = "COM. PAYEE";
-    private $ttr_RETRO_SOLDE_DU = "SOLDE DU";
+    private $ttr_RETRO_COM_DUE = "RETROCOM. DUE";
+    private $ttr_RETRO_COM_PAYEE = "RETROCOM. PAYEE";
+    private $ttr_RETRO_SOLDE_DU = "SOLDE RETROCOM DU";
 
 
     private $tab_MOIS_ANNEE = [
