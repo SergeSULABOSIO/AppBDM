@@ -42,7 +42,7 @@ class TableauDeBord
     //Titres pour Production taxes
     private $ttr_TAXES_ETIQUETTE = "ETIQUETTE";
     private $ttr_TAXES_COM_RECUE = "COM. ENCAISSEE";
-    private $ttr_TAXES_TAXE_DUE = "TAXE DUES";
+    private $ttr_TAXES_TAXE_DUE = "TAXE DUE";
     private $ttr_TAXES_PAYEE = "TAXE PAYEE";
     private $ttr_TAXES_SOLDE_A_PAYER = "SOLDE A PAYER";
 
@@ -457,13 +457,13 @@ class TableauDeBord
 
     private function _prod_taxes_getTitres()
     {
-        $production_partenaire['titres'][] = $this->ttr_TAXES_ETIQUETTE;
-        $production_partenaire['titres'][] = $this->ttr_TAXES_COM_RECUE;
-        $production_partenaire['titres'][] = $this->ttr_TAXES_TAXE_DUE;
-        $production_partenaire['titres'][] = "- " . $this->ttr_TAXES_PAYEE;
-        $production_partenaire['titres'][] = $this->ttr_TAXES_SOLDE_A_PAYER;
+        $production_taxes['titres'][] = $this->ttr_TAXES_ETIQUETTE;
+        $production_taxes['titres'][] = $this->ttr_TAXES_COM_RECUE;
+        $production_taxes['titres'][] = $this->ttr_TAXES_TAXE_DUE;
+        $production_taxes['titres'][] = "- " . $this->ttr_TAXES_PAYEE;
+        $production_taxes['titres'][] = $this->ttr_TAXES_SOLDE_A_PAYER;
 
-        return $production_partenaire;
+        return $production_taxes;
     }
 
 
@@ -629,14 +629,11 @@ class TableauDeBord
     {
         $taxes = $this->taxeRepository->findAll();
         
-        $production_taxe = $this->_prod_part_getTitres($taxes);
-        //dd($production_assureur);
+        $production_taxe = $this->_prod_taxes_getTitres();
+        dd($production_taxe);
+
         $com_recue_grand_total = 0;
         $tab_taxes_grand_total = [];
-        foreach ($taxes as $taxe) {
-            $tab_taxes_grand_total[$taxe->getNom()] = 0;
-        }
-        //dd($tab_taxes_grand_total);
         $com_ht_grand_total = 0;
         $com_due_grand_total = 0;
         $com_payee_grand_total = 0;
