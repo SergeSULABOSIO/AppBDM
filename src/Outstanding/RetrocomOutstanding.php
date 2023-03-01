@@ -3,6 +3,7 @@
 namespace App\Outstanding;
 
 use App\Entity\Police;
+use App\Entity\Taxe;
 
 class RetrocomOutstanding
 {

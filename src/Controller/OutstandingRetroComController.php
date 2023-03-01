@@ -50,7 +50,7 @@ class OutstandingRetroComController extends AbstractController
         $searchOutstandingForm->handleRequest($request);
         $session = $request->getSession();
         $criteres = $searchOutstandingForm->getData();
-        $taxes = $policeRepository->findAll();
+        $taxes = $taxeRepository->findAll();
 
         $data = [];
 
@@ -107,7 +107,7 @@ class OutstandingRetroComController extends AbstractController
                 'partenaire' => $police->getPartenaire()
             ], null);
 
-            $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions);
+            $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions, $taxes);
 
             //dd($retrocommOustanding);
             if ($retrocommOustanding->montantSolde != 0) {
