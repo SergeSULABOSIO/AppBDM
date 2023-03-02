@@ -17,6 +17,7 @@ use App\Repository\MonnaieRepository;
 use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PaiementCommissionRepository;
 use App\Repository\PaiementPartenaireRepository;
+use App\Repository\PaiementTaxeRepository;
 use App\Repository\PartenaireRepository;
 use App\Repository\TaxeRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +46,7 @@ class DashboardController extends AbstractController
         OutstandingCommissionRepository $outstandingCommissionRepository,
         PaiementCommissionRepository $paiementCommissionRepository,
         PaiementPartenaireRepository $paiementPartenaireRepository,
+        PaiementTaxeRepository $paiementTaxeRepository,
     ): Response {
         $agregats_dashboard = new PoliceAgregat();
         $session_name_dashboard = "criteres_liste_dashboard";
@@ -117,6 +119,7 @@ class DashboardController extends AbstractController
             $produitRepository,
             $outstandingCommissionRepository,
             $paiementPartenaireRepository,
+            $paiementTaxeRepository,
             $data_police,
             $criteres_dashboard
         );

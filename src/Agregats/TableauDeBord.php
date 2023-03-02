@@ -19,6 +19,7 @@ use App\Repository\PaiementCommissionRepository;
 use App\Repository\OutstandingCommissionRepository;
 use App\Repository\PaiementPartenaireRepository;
 use App\Outstanding\RetrocomOutstanding;
+use App\Repository\PaiementTaxeRepository;
 
 class TableauDeBord
 {
@@ -76,6 +77,7 @@ class TableauDeBord
         private ProduitRepository $produitRepository,
         private OutstandingCommissionRepository $outstandingCommissionRepository,
         private PaiementPartenaireRepository $paiementPartenaireRepository,
+        private PaiementTaxeRepository $paiementTaxeRepository,
         private $polices,
         private $criteres_dashboard
     ) {
@@ -498,6 +500,29 @@ class TableauDeBord
     }
 
 
+    private function _prod_taxes_get_details($police, $taxe, $montant_taxes_due)
+    {
+        $tab_details = [
+            'montant_taxe_payee' => 0,            //montant paye
+            'montant_taxe_solde_a_payer' => 0     //Solde à payer
+        ];
+
+        $agregat_popTaxe = new PopTaxeAgregat();
+        //On va vérifier aussi les paiements possibles
+        $data_popTaxes = $this->paiementTaxeRepository->findByMotCle([
+            'dateA' => "",
+            'dateB' => "",
+            'motcle' => "",
+            'police' => $police,
+            'taxe' => $taxe
+        ], $agregat_popTaxe);
+
+        $tab_details['montant_taxe_payee'] = $agregat_popTaxe->getMontant();
+        $tab_details['montant_taxe_solde_a_payer'] = ($montant_taxes_due - $agregat_popTaxe->getMontant());
+        return $tab_details;
+    }
+
+
 
     public function dash_get_synthse_retrocommissoins_mois()
     {
@@ -546,7 +571,7 @@ class TableauDeBord
                         //ici il faut calculer la veleur réelle de la taxe puis l'ajouter dans la table
                         if($date_mois_police == ($i + 1)){
                             foreach ($taxes as $taxe) {
-                                $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + (-1);
+                                $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()];
                             }
                             $tab_details = $this->_prod_partenaire_get_details($police, $taxes);
                             
@@ -628,123 +653,86 @@ class TableauDeBord
     public function dash_get_synthse_impots_et_taxes_mois()
     {
         $taxes = $this->taxeRepository->findAll();
-        
+        //dd($taxes);
         $production_taxe = $this->_prod_taxes_getTitres();
-        dd($production_taxe);
-
-        $com_recue_grand_total = 0;
-        $tab_taxes_grand_total = [];
-        $com_ht_grand_total = 0;
-        $com_due_grand_total = 0;
-        $com_payee_grand_total = 0;
-        $solde_du_grand_total = 0;
-        //1 - filtre par partenaire
-        foreach ($partenaires as $partenaire) {
-            $lignes = null;
-            $com_recue_partenaire = 0;
-            $tab_taxes_partenaire = [];
-            foreach ($taxes as $taxe) {
-                $tab_taxes_partenaire[$taxe->getNom()] = 0;
-            }
-            $com_ht_partenaire = 0;
-            $com_due_partenaire = 0;
-            $com_payee_partenaire = 0;
-            $solde_du_partenaire = 0;
+        //dd($production_taxe);
+        $grand_total_com_recue = 0;
+        $grand_total_taxe_due = 0;
+        $grand_total_taxe_payee = 0;
+        $grand_total_solde_a_payer = 0;
+        //1 - filtre par taxe
+        foreach ($taxes as $taxe) {
+            $tab_lignes_taxes = null;
+            $lignes_taxes_com_recue = 0;
+            $lignes_taxes_taxe_due = 0;
+            $lignes_taxes_taxe_payee = 0;
+            $lignes_taxes_solde_a_payer = 0;
             //2 - filtre pour chaque mois de l'année
-            for ($i=0; $i < 12; $i++) {
-                $com_recue_mois = 0;
-                $tab_taxes_mois = [];
-                foreach ($taxes as $taxe) {
-                    $tab_taxes_mois[$taxe->getNom()] = 0;
-                }
-                $com_ht_mois = 0;
-                $com_due_mois = 0;
-                $com_payee_mois = 0;
-                $solde_du_mois = 0;
+            for ($index_mois=0; $index_mois < 12; $index_mois++) {
+                $lignes_taxes_mois_com_recue = 0;
+                $lignes_taxes_mois_taxe_due = 0;
+                $lignes_taxes_mois_taxe_payee = 0;
+                $lignes_taxes_mois_solde_a_payer = 0;
                 //3 - filtre par police
                 foreach ($this->polices as $police) {
-                    if($police->getPartenaire() == $partenaire){
-                        $date_mois_police = $police->getDateEffet()->format("m");
-                        //ici il faut calculer la veleur réelle de la taxe puis l'ajouter dans la table
-                        if($date_mois_police == ($i + 1)){
-                            foreach ($taxes as $taxe) {
-                                $tab_taxes_mois[$taxe->getNom()] = $tab_taxes_mois[$taxe->getNom()] + (-1);
-                            }
-                            $tab_details = $this->_prod_partenaire_get_details($police, $taxes);
-                            
-                            $tab_taxes_mois = $tab_details['com_tab_taxes'];
-                            $com_recue_mois += $tab_details['com_recue_police'];
-                            $com_ht_mois += $tab_details['com_ht_police'];
-                            $com_due_mois += $tab_details['retrocom_due_police'];
-                            $com_payee_mois += $tab_details['retrocom_payee_police'];
-                            $solde_du_mois += $tab_details['retrocom_solde_due_police'];
-                        }
+                    $date_mois_police = $police->getDateEffet()->format("m");
+                    //ici il faut calculer la veleur réelle de la taxe puis l'ajouter dans la table
+                    if($date_mois_police == ($index_mois + 1)){
+                        $tab_details_dus = $this->_prod_partenaire_get_details($police, [0 => $taxe]);
+                        $tab_details_pop = $this->_prod_taxes_get_details($police, $taxe, $tab_details_dus['com_tab_taxes'][$taxe->getNom()]);
+                        
+                        $lignes_taxes_mois_com_recue += $tab_details_dus['com_recue_police'];
+                        $lignes_taxes_mois_taxe_due += $tab_details_dus['com_tab_taxes'][$taxe->getNom()];
+                        $lignes_taxes_mois_taxe_payee += $tab_details_pop['montant_taxe_payee'];
+                        $lignes_taxes_mois_solde_a_payer += $tab_details_pop['montant_taxe_solde_a_payer'];
                     }
                 }
-                if($com_recue_mois != 0){
-                    $com_recue_partenaire += $com_recue_mois;
-                    $com_ht_partenaire += $com_ht_mois;
-                    $com_due_partenaire += $com_due_mois;
-                    $com_payee_partenaire += $com_payee_mois;
-                    $solde_du_partenaire += $solde_du_mois;
-                    //on charge les taxes
-                    foreach ($taxes as $taxe) {
-                        $tab_taxes_partenaire[$taxe->getNom()] = $tab_taxes_partenaire[$taxe->getNom()] + $tab_taxes_mois[$taxe->getNom()];
-                    }
+                if($lignes_taxes_mois_com_recue != 0){
+                    $lignes_taxes_com_recue += $lignes_taxes_mois_com_recue;
+                    $lignes_taxes_taxe_due += $lignes_taxes_mois_taxe_due;
+                    $lignes_taxes_taxe_payee += $lignes_taxes_mois_taxe_payee;
+                    $lignes_taxes_solde_a_payer += $lignes_taxes_mois_solde_a_payer;
                     
                     $data_ligne_mois = [];
-                    $data_ligne_mois[] = $this->tab_MOIS_ANNEE[$i];
-                    $data_ligne_mois[] = $com_recue_mois;
-                    foreach ($taxes as $taxe) {
-                        $data_ligne_mois[] = $tab_taxes_mois[$taxe->getNom()];
-                    }
-                    $data_ligne_mois[] = $com_ht_mois;
-                    $data_ligne_mois[] = $com_due_mois;
-                    $data_ligne_mois[] = $com_payee_mois;
-                    $data_ligne_mois[] = $solde_du_mois;
-                    $ligne_mois = $data_ligne_mois;
-                    $lignes[] = $ligne_mois;
+                    $data_ligne_mois[] = $this->tab_MOIS_ANNEE[$index_mois];
+                    $data_ligne_mois[] = $lignes_taxes_mois_com_recue;
+                    $data_ligne_mois[] = $lignes_taxes_mois_taxe_due;
+                    $data_ligne_mois[] = $lignes_taxes_mois_taxe_payee;
+                    $data_ligne_mois[] = $lignes_taxes_mois_solde_a_payer;
+                    $tab_lignes_taxes[] = $data_ligne_mois;
                 }
             }
             //chargement des données - chargement des sous totaux
-            if($com_recue_partenaire != 0){
+            if($lignes_taxes_com_recue != 0){
                 $data_sous_total = [];
-                $data_sous_total[] = $partenaire->getNom() . " [@". $partenaire->getPart() ."%]";
-                $data_sous_total[] = $com_recue_partenaire;
-                //ici on doit charger les taxes
-                foreach ($taxes as $taxe) {
-                    $data_sous_total[] = $tab_taxes_partenaire[$taxe->getNom()];
-                    $tab_taxes_grand_total[$taxe->getNom()] = $tab_taxes_grand_total[$taxe->getNom()] + $tab_taxes_partenaire[$taxe->getNom()];
-                }
-                $data_sous_total[] = $com_ht_partenaire;
-                $data_sous_total[] = $com_due_partenaire;
-                $data_sous_total[] = $com_payee_partenaire;
-                $data_sous_total[] = $solde_du_partenaire;
+                $data_sous_total[] = $taxe->getNom(). ", " . $taxe->getOrganisation() . " [@". $taxe->getTaux() ."%]";
+                $data_sous_total[] = $lignes_taxes_com_recue;
+                $data_sous_total[] = $lignes_taxes_taxe_due;
+                $data_sous_total[] = $lignes_taxes_taxe_payee;
+                $data_sous_total[] = $lignes_taxes_solde_a_payer;
                 $sous_total = $data_sous_total;
                 //chargement des données - chargement des lignes
-                $production_partenaire['donnees'][] = [
+                $production_taxe['donnees'][] = [
                     'sous_total' => $sous_total,
-                    'lignes' => $lignes
+                    'lignes' => $tab_lignes_taxes
                 ];
-                $com_recue_grand_total += $com_recue_partenaire;
-                $com_ht_grand_total += $com_ht_partenaire;
-                $com_due_grand_total += $com_due_partenaire;
-                $com_payee_grand_total += $com_payee_partenaire;
-                $solde_du_grand_total += $solde_du_partenaire;
+
+                $grand_total_com_recue += $lignes_taxes_com_recue;
+                $grand_total_taxe_due += $lignes_taxes_taxe_due;
+                $grand_total_taxe_payee += $lignes_taxes_taxe_payee;
+                $grand_total_solde_a_payer += $lignes_taxes_solde_a_payer;
             }
         }
-        $data_production_partenaire = [];
-        $data_production_partenaire[] = $this->ttr_GRAND_TOTAL;
-        $data_production_partenaire[] = $com_recue_grand_total;
-        foreach ($taxes as $taxe) {
-            $data_production_partenaire[] = $tab_taxes_grand_total[$taxe->getNom()];
-        }
-        $data_production_partenaire[] = $com_ht_grand_total;
-        $data_production_partenaire[] = $com_due_grand_total;
-        $data_production_partenaire[] = $com_payee_grand_total;
-        $data_production_partenaire[] = $solde_du_grand_total;
-        $production_partenaire['totaux'] = $data_production_partenaire;
+        $data_production_taxe = [];
+        $data_production_taxe[] = $this->ttr_GRAND_TOTAL;
+        $data_production_taxe[] = $grand_total_com_recue;
+        $data_production_taxe[] = $grand_total_taxe_due;
+        $data_production_taxe[] = $grand_total_taxe_payee;
+        $data_production_taxe[] = $grand_total_solde_a_payer;
+        $production_taxe['totaux'] = $data_production_taxe;
         
+        dd($production_taxe);
+
         return $production_taxe;
     }
 
