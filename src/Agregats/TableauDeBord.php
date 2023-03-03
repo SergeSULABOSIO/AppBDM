@@ -152,41 +152,53 @@ class TableauDeBord
                 //3 - filtre par police
                 foreach ($this->polices as $police) {
                     if($police->getAssureur() == $assureur){
-                        $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+                        
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            $prime_ttc_mois += $aggregat_police->getPrimeTotale();
-                            $com_ht_mois += $aggregat_police->getCommissionNette();
-                            foreach ($taxes as $taxe) {
-                                $montant_taxe_police = 0;
-                                foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
-                                    if($taxes_polices['nom'] == $taxe->getNom()){
-                                        $montant_taxe_police = $taxes_polices['montant'];
-                                    }
-                                }
-                                $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
-                                $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
-                            }
-                            $comTot = $aggregat_police->getCommissionTotale();
-                            //encaissements - recherche
-                            $comReceived = 0;
-                            $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
-                                'police' => $police,
-                                'client' => $police->getClient(),
-                                'assureur' => $assureur,
-                                'partenaire' => $police->getPartenaire(),
-                                'motcle' => "",
-                                'dateA' => null,
-                                'dateB' => null
-                            ], null);
-                            foreach ($tab_com_encaissees as $encaissement) {
-                                $comReceived += $encaissement->getMontant();
-                            }
-                            $com_encaissee_mois += $comReceived;
-                            $com_ttc_mois += $comTot;
-                            $solde_du_mois += ($comTot - $comReceived);
+                            // ici
+                            // $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+                            // $prime_ttc_mois += $aggregat_police->getPrimeTotale();
+                            // $com_ht_mois += $aggregat_police->getCommissionNette();
+
+                            // foreach ($taxes as $taxe) {
+                            //     $montant_taxe_police = 0;
+                            //     foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
+                            //         if($taxes_polices['nom'] == $taxe->getNom()){
+                            //             $montant_taxe_police = $taxes_polices['montant'];
+                            //         }
+                            //     }
+                            //     $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
+                            //     $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
+                            // }
+                            // $comTot = $aggregat_police->getCommissionTotale();
+                            // //encaissements - recherche
+                            // $comReceived = 0;
+                            // $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+                            //     'police' => $police,
+                            //     'client' => $police->getClient(),
+                            //     'assureur' => $assureur,
+                            //     'partenaire' => $police->getPartenaire(),
+                            //     'motcle' => "",
+                            //     'dateA' => null,
+                            //     'dateB' => null
+                            // ], null);
+                            // foreach ($tab_com_encaissees as $encaissement) {
+                            //     $comReceived += $encaissement->getMontant();
+                            // }
+                            // $com_encaissee_mois += $comReceived;
+                            // $com_ttc_mois += $comTot;
+                            // $solde_du_mois += ($comTot - $comReceived);
+
                             //dd($aggregat_police->getTab_Taxes());
+                            
+                            $details_police = $this->_prod_production_get_details($police, $taxes);
+                            $prime_ttc_mois += $details_police["police_prime_ttc"];
+                            $com_ht_mois += $details_police["police_com_ht"];
+                            $tab_taxes_mois = $details_police["police_com_tab_taxes"];
+                            $com_encaissee_mois += $details_police["police_com_encaissee"];
+                            $com_ttc_mois += $details_police["police_com_ttc"];
+                            $solde_du_mois += $details_police["police_com_solde_due"];
                         }
                     }
                 }
@@ -322,41 +334,49 @@ class TableauDeBord
                 //3 - filtre par police
                 foreach ($this->polices as $police) {
                     if($police->getAssureur() == $assureur){
-                        $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            $prime_ttc_assureur += $aggregat_police->getPrimeTotale();
-                            $com_ht_assureur += $aggregat_police->getCommissionNette();
-                            foreach ($taxes as $taxe) {
-                                $montant_taxe_police = 0;
-                                foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
-                                    if($taxes_polices['nom'] == $taxe->getNom()){
-                                        $montant_taxe_police = $taxes_polices['montant'];
-                                    }
-                                }
-                                $val_taxe_existant = $tab_taxes_assureur[$taxe->getNom()] + $montant_taxe_police;
-                                $tab_taxes_assureur[$taxe->getNom()] = $val_taxe_existant;
-                            }
-                            $comTot = $aggregat_police->getCommissionTotale();
-                            //encaissements - recherche
-                            $comReceived = 0;
-                            $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
-                                'police' => $police,
-                                'client' => $police->getClient(),
-                                'assureur' => $assureur,
-                                'partenaire' => $police->getPartenaire(),
-                                'motcle' => "",
-                                'dateA' => null,
-                                'dateB' => null
-                            ], null);
-                            foreach ($tab_com_encaissees as $encaissement) {
-                                $comReceived += $encaissement->getMontant();
-                            }
-                            $com_encaissee_assureur += $comReceived;
-                            $com_ttc_assureur += $comTot;
-                            $solde_du_assureur += ($comTot - $comReceived);
+                            //$aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+                            // $prime_ttc_assureur += $aggregat_police->getPrimeTotale();
+                            // $com_ht_assureur += $aggregat_police->getCommissionNette();
+                            // foreach ($taxes as $taxe) {
+                            //     $montant_taxe_police = 0;
+                            //     foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
+                            //         if($taxes_polices['nom'] == $taxe->getNom()){
+                            //             $montant_taxe_police = $taxes_polices['montant'];
+                            //         }
+                            //     }
+                            //     $val_taxe_existant = $tab_taxes_assureur[$taxe->getNom()] + $montant_taxe_police;
+                            //     $tab_taxes_assureur[$taxe->getNom()] = $val_taxe_existant;
+                            // }
+                            // $comTot = $aggregat_police->getCommissionTotale();
+                            // //encaissements - recherche
+                            // $comReceived = 0;
+                            // $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+                            //     'police' => $police,
+                            //     'client' => $police->getClient(),
+                            //     'assureur' => $assureur,
+                            //     'partenaire' => $police->getPartenaire(),
+                            //     'motcle' => "",
+                            //     'dateA' => null,
+                            //     'dateB' => null
+                            // ], null);
+                            // foreach ($tab_com_encaissees as $encaissement) {
+                            //     $comReceived += $encaissement->getMontant();
+                            // }
+                            // $com_encaissee_assureur += $comReceived;
+                            // $com_ttc_assureur += $comTot;
+                            // $solde_du_assureur += ($comTot - $comReceived);
                             //dd($aggregat_police->getTab_Taxes());
+
+                            $details_police = $this->_prod_production_get_details($police, $taxes);
+                            $prime_ttc_assureur += $details_police["police_prime_ttc"];
+                            $com_ht_assureur += $details_police["police_com_ht"];
+                            $tab_taxes_assureur = $details_police["police_com_tab_taxes"];
+                            $com_encaissee_assureur += $details_police["police_com_encaissee"];
+                            $com_ttc_assureur += $details_police["police_com_ttc"];
+                            $solde_du_assureur += $details_police["police_com_solde_due"];
                         }
                     }
                 }
@@ -498,6 +518,62 @@ class TableauDeBord
         $tab_details['retrocom_payee_police'] = $retrocommOustanding->montantDecaisse;
         $tab_details['retrocom_solde_due_police'] = $retrocommOustanding->montantSolde;//tab_taxes_mois
         $tab_details['com_tab_taxes'] = $retrocommOustanding->tab_montants_taxes;
+        return $tab_details;
+    }
+
+
+
+    private function _prod_production_get_details($police, $taxes)
+    {
+        $tab_details = [
+            'police_prime_ttc' => 0,
+            'police_com_ttc' => 0,    
+            'police_com_ht' => 0, 
+            'police_com_tab_taxes' => [],           
+            'police_com_encaissee' => 0,
+            'police_com_solde_due' => 0
+        ];
+        
+        $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+        $tab_taxes_police = [];
+        
+        foreach ($taxes as $taxe) {
+            $montant_taxe_police = 0;
+            foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
+                if($taxes_polices['nom'] == $taxe->getNom()){
+                    $montant_taxe_police = $taxes_polices['montant'];
+                }
+            }
+            if (array_key_exists($taxe->getNom(), $tab_taxes_police)) {
+                $val_taxe_existant = $tab_taxes_police[$taxe->getNom()] + $montant_taxe_police;
+            }else{
+                $val_taxe_existant = $montant_taxe_police;
+            }
+            $tab_taxes_police[$taxe->getNom()] = $val_taxe_existant;
+        }
+        
+        //encaissements - recherche
+        $comReceived = 0;
+        $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
+            'police' => $police,
+            'client' => $police->getClient(),
+            'assureur' => $police->getAssureur(),
+            'partenaire' => $police->getPartenaire(),
+            'motcle' => "",
+            'dateA' => null,
+            'dateB' => null
+        ], null);
+        foreach ($tab_com_encaissees as $encaissement) {
+            $comReceived += $encaissement->getMontant();
+        }
+        
+        $tab_details['police_prime_ttc'] = $aggregat_police->getPrimeTotale();
+        $tab_details['police_com_ht'] = $aggregat_police->getCommissionNette();
+        $tab_details['police_com_ttc'] = $aggregat_police->getCommissionTotale();
+        $tab_details['police_com_tab_taxes'] = $tab_taxes_police;
+        $tab_details['police_com_encaissee'] = ($comReceived);
+        $tab_details['police_com_solde_due'] = ($aggregat_police->getCommissionTotale() - $comReceived);
+
         return $tab_details;
     }
 
