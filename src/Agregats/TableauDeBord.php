@@ -24,28 +24,29 @@ use App\Repository\PaiementTaxeRepository;
 class TableauDeBord
 {
     //titres pour production
-    private $ttr_GRAND_TOTAL = "GRAND TOTAL";
-    private $ttr_ETIQUETTE = "ETIQUETTE";
-    private $ttr_PRIMES_TTC = "PRIMES TTC";
-    private $ttr_COM_HT = "COM. HT";
-    private $ttr_COM_TTC = "COM. TTC";
-    private $ttr_COM_ENCAISSEE = "COM. ENCAISSEE";
-    private $ttr_SOLDE_DU = "SOLDE DU";
+    private $ttr_GRAND_TOTAL = "Grand Total";
+    private $ttr_ETIQUETTE = "Etiquettes";
+    private $ttr_PRIMES_TTC = "Primes Totale";
+    private $ttr_COM_HT = "Commission ht";
+    private $ttr_COM_TTC = "Commission ttc";
+    private $ttr_COM_ENCAISSEE = "Com. encaissées";
+    private $ttr_SOLDE_DU = "Solde dû";
 
     //Titres pour Retrocommissions
-    private $ttr_RETRO_ETIQUETTE = "ETIQUETTE";
-    private $ttr_RETRO_COM_RECUE = "COM. RECUE";
-    private $ttr_RETRO_COM_HT = "COM. HT";
-    private $ttr_RETRO_COM_DUE = "RETROCOM. DUE";
-    private $ttr_RETRO_COM_PAYEE = "RETROCOM. PAYEE";
-    private $ttr_RETRO_SOLDE_DU = "SOLDE RETROCOM DU";
+    private $ttr_RETRO_ETIQUETTE = "Partenaire";
+    private $ttr_RETRO_COM_RECUE = "Com. totale";
+    private $ttr_RETRO_COM_HT = "Com. hors taxes";
+    private $ttr_RETRO_COM_DUE = "Retrocom. dues";
+    private $ttr_RETRO_COM_PAYEE = "Retrocom. payée";
+    private $ttr_RETRO_SOLDE_DU = "Solde à payer";
 
     //Titres pour Production taxes
-    private $ttr_TAXES_ETIQUETTE = "ETIQUETTE";
-    private $ttr_TAXES_COM_RECUE = "COM. ENCAISSEE";
-    private $ttr_TAXES_TAXE_DUE = "TAXE DUE";
-    private $ttr_TAXES_PAYEE = "TAXE PAYEE";
-    private $ttr_TAXES_SOLDE_A_PAYER = "SOLDE A PAYER";
+    private $ttr_TAXES_ETIQUETTE = "Type des Taxes / Impôts";
+    private $ttr_TAXES_COM_TTC = "Commissions Totale";
+    private $ttr_TAXES_COM_HT = "Commissions hors taxe";
+    private $ttr_TAXES_TAXE_DUE = "Taxe due";
+    private $ttr_TAXES_PAYEE = "Taxe payée";
+    private $ttr_TAXES_SOLDE_A_PAYER = "Solde à payer";
 
 
     private $tab_MOIS_ANNEE = [
@@ -460,7 +461,8 @@ class TableauDeBord
     private function _prod_taxes_getTitres()
     {
         $production_taxes['titres'][] = $this->ttr_TAXES_ETIQUETTE;
-        $production_taxes['titres'][] = $this->ttr_TAXES_COM_RECUE;
+        $production_taxes['titres'][] = $this->ttr_TAXES_COM_TTC;
+        $production_taxes['titres'][] = $this->ttr_TAXES_COM_HT;
         $production_taxes['titres'][] = $this->ttr_TAXES_TAXE_DUE;
         $production_taxes['titres'][] = "- " . $this->ttr_TAXES_PAYEE;
         $production_taxes['titres'][] = $this->ttr_TAXES_SOLDE_A_PAYER;
@@ -472,7 +474,7 @@ class TableauDeBord
     private function _prod_partenaire_get_details($police, $taxes)
     {
         $tab_details = [
-            'com_recue_police' => 0,            //montant encaissé
+            'com_ttc_police' => 0,            //montant encaissé
             'com_ht_police' => 0,               //montant hors taxes partageable
             'retrocom_due_police' => 0,         //retrocommission dûe au partenaire selon sa part (%)
             'retrocom_payee_police' => 0,       //retrocommission payée déjà au partenaire
@@ -490,7 +492,7 @@ class TableauDeBord
         ], null);
         $retrocommOustanding = new RetrocomOutstanding($police, $data_paiementsRetroCommissions, $taxes);
         //return $retrocommOustanding->montantNetPartageable;
-        $tab_details['com_recue_police'] = $retrocommOustanding->montantNetPartageable_ttc;
+        $tab_details['com_ttc_police'] = $retrocommOustanding->montantNetPartageable_ttc;
         $tab_details['com_ht_police'] = $retrocommOustanding->montantNetPartageable_ht;
         $tab_details['retrocom_due_police'] = $retrocommOustanding->montantDu;
         $tab_details['retrocom_payee_police'] = $retrocommOustanding->montantDecaisse;
@@ -576,7 +578,7 @@ class TableauDeBord
                             $tab_details = $this->_prod_partenaire_get_details($police, $taxes);
                             
                             $tab_taxes_mois = $tab_details['com_tab_taxes'];
-                            $com_recue_mois += $tab_details['com_recue_police'];
+                            $com_recue_mois += $tab_details['com_ttc_police'];
                             $com_ht_mois += $tab_details['com_ht_police'];
                             $com_due_mois += $tab_details['retrocom_due_police'];
                             $com_payee_mois += $tab_details['retrocom_payee_police'];
@@ -656,20 +658,23 @@ class TableauDeBord
         //dd($taxes);
         $production_taxe = $this->_prod_taxes_getTitres();
         //dd($production_taxe);
-        $grand_total_com_recue = 0;
+        $grand_total_com_ttc = 0;
+        $grand_total_com_ht = 0;
         $grand_total_taxe_due = 0;
         $grand_total_taxe_payee = 0;
         $grand_total_solde_a_payer = 0;
         //1 - filtre par taxe
         foreach ($taxes as $taxe) {
             $tab_lignes_taxes = null;
-            $lignes_taxes_com_recue = 0;
+            $lignes_taxes_com_ttc = 0;
+            $lignes_taxes_com_ht = 0;
             $lignes_taxes_taxe_due = 0;
             $lignes_taxes_taxe_payee = 0;
             $lignes_taxes_solde_a_payer = 0;
             //2 - filtre pour chaque mois de l'année
             for ($index_mois=0; $index_mois < 12; $index_mois++) {
-                $lignes_taxes_mois_com_recue = 0;
+                $lignes_taxes_mois_com_ttc = 0;
+                $lignes_taxes_mois_com_ht = 0;
                 $lignes_taxes_mois_taxe_due = 0;
                 $lignes_taxes_mois_taxe_payee = 0;
                 $lignes_taxes_mois_solde_a_payer = 0;
@@ -681,21 +686,24 @@ class TableauDeBord
                         $tab_details_dus = $this->_prod_partenaire_get_details($police, [0 => $taxe]);
                         $tab_details_pop = $this->_prod_taxes_get_details($police, $taxe, $tab_details_dus['com_tab_taxes'][$taxe->getNom()]);
                         
-                        $lignes_taxes_mois_com_recue += $tab_details_dus['com_recue_police'];
+                        $lignes_taxes_mois_com_ttc += $tab_details_dus['com_ttc_police'];
+                        $lignes_taxes_mois_com_ht += $tab_details_dus['com_ht_police'];;
                         $lignes_taxes_mois_taxe_due += $tab_details_dus['com_tab_taxes'][$taxe->getNom()];
                         $lignes_taxes_mois_taxe_payee += $tab_details_pop['montant_taxe_payee'];
                         $lignes_taxes_mois_solde_a_payer += $tab_details_pop['montant_taxe_solde_a_payer'];
                     }
                 }
-                if($lignes_taxes_mois_com_recue != 0){
-                    $lignes_taxes_com_recue += $lignes_taxes_mois_com_recue;
+                if($lignes_taxes_mois_com_ttc != 0){
+                    $lignes_taxes_com_ttc += $lignes_taxes_mois_com_ttc;
+                    $lignes_taxes_com_ht += $lignes_taxes_mois_com_ht;
                     $lignes_taxes_taxe_due += $lignes_taxes_mois_taxe_due;
                     $lignes_taxes_taxe_payee += $lignes_taxes_mois_taxe_payee;
                     $lignes_taxes_solde_a_payer += $lignes_taxes_mois_solde_a_payer;
                     
                     $data_ligne_mois = [];
                     $data_ligne_mois[] = $this->tab_MOIS_ANNEE[$index_mois];
-                    $data_ligne_mois[] = $lignes_taxes_mois_com_recue;
+                    $data_ligne_mois[] = $lignes_taxes_mois_com_ttc;
+                    $data_ligne_mois[] = $lignes_taxes_mois_com_ht;
                     $data_ligne_mois[] = $lignes_taxes_mois_taxe_due;
                     $data_ligne_mois[] = $lignes_taxes_mois_taxe_payee;
                     $data_ligne_mois[] = $lignes_taxes_mois_solde_a_payer;
@@ -703,10 +711,11 @@ class TableauDeBord
                 }
             }
             //chargement des données - chargement des sous totaux
-            if($lignes_taxes_com_recue != 0){
+            if($lignes_taxes_com_ttc != 0){
                 $data_sous_total = [];
-                $data_sous_total[] = $taxe->getNom(). ", " . $taxe->getOrganisation() . " [@". $taxe->getTaux() ."%]";
-                $data_sous_total[] = $lignes_taxes_com_recue;
+                $data_sous_total[] = $taxe->getNom(). ", " . $taxe->getOrganisation() . " [taux d'imposition: ". $taxe->getTaux() ."%]";
+                $data_sous_total[] = $lignes_taxes_com_ttc;
+                $data_sous_total[] = $lignes_taxes_com_ht;
                 $data_sous_total[] = $lignes_taxes_taxe_due;
                 $data_sous_total[] = $lignes_taxes_taxe_payee;
                 $data_sous_total[] = $lignes_taxes_solde_a_payer;
@@ -717,7 +726,8 @@ class TableauDeBord
                     'lignes' => $tab_lignes_taxes
                 ];
 
-                $grand_total_com_recue += $lignes_taxes_com_recue;
+                $grand_total_com_ttc += $lignes_taxes_com_ttc;
+                $grand_total_com_ht += $lignes_taxes_com_ht;
                 $grand_total_taxe_due += $lignes_taxes_taxe_due;
                 $grand_total_taxe_payee += $lignes_taxes_taxe_payee;
                 $grand_total_solde_a_payer += $lignes_taxes_solde_a_payer;
@@ -725,13 +735,14 @@ class TableauDeBord
         }
         $data_production_taxe = [];
         $data_production_taxe[] = $this->ttr_GRAND_TOTAL;
-        $data_production_taxe[] = $grand_total_com_recue;
+        $data_production_taxe[] = $grand_total_com_ttc;
+        $data_production_taxe[] = $grand_total_com_ht;
         $data_production_taxe[] = $grand_total_taxe_due;
         $data_production_taxe[] = $grand_total_taxe_payee;
         $data_production_taxe[] = $grand_total_solde_a_payer;
         $production_taxe['totaux'] = $data_production_taxe;
         
-        dd($production_taxe);
+        //dd($production_taxe);
 
         return $production_taxe;
     }
