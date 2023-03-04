@@ -32,11 +32,13 @@ class PoliceAgregatCalculator
         $frontingcom = $this->police->getFrontingCom();
         $net_com_including_arca = ($ricom + $localcom + $frontingcom);
 
+
         //Commissions partageables
         $ricom_sharable = $this->police->isCansharericom() ? $this->police->getRiCom() : 0;
         $localcom_sharable = $this->police->isCansharelocalcom() ? $this->police->getLocalCom() : 0;
         $frontingcom_sharable = $this->police->isCansharefrontingcom() ? $this->police->getFrontingCom() : 0;
         $net_com_including_arca_sharable = ($ricom_sharable + $localcom_sharable + $frontingcom_sharable);
+
 
         //Taxes
         $taxe_charge_assureur = 0;
@@ -64,6 +66,8 @@ class PoliceAgregatCalculator
             ];
         }
 
+        
+
         $this->impotettaxetotale = $impot;
 
         $net_com_excluding_arca = $net_com_including_arca - $taxe_charge_courtier;
@@ -76,7 +80,13 @@ class PoliceAgregatCalculator
 
         $this->retrocommissiontotale += $net_com_excluding_arca_sharable * ($taux_retro_com / 100);
         
-        $this->commissionnette += $net_com_excluding_arca - $this->retrocommissiontotale;
+        $this->commissionnette += $net_com_excluding_arca;
+
+        //$this->commissionnette += $net_com_excluding_arca - $this->retrocommissiontotale;
+
+        
+
+        //dd($net_com_excluding_arca);
     }
 
     public function getTab_Taxes()

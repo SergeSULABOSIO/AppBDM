@@ -25,28 +25,18 @@ class TableauDeBord
 {
     //titres pour production
     private $ttr_GRAND_TOTAL = "Grand Total";
-    private $ttr_ETIQUETTE = "Etiquettes";
     private $ttr_PRIMES_TTC = "Primes Totale";
-    private $ttr_COM_HT = "Commission ht";
+    private $ttr_COM_HT = "Com. hors taxe";
     private $ttr_COM_TTC = "Commission ttc";
     private $ttr_COM_ENCAISSEE = "Com. encaissées";
-    private $ttr_SOLDE_DU = "Solde dû";
-
-    //Titres pour Retrocommissions
-    private $ttr_RETRO_ETIQUETTE = "Partenaire";
-    private $ttr_RETRO_COM_RECUE = "Com. totale";
-    private $ttr_RETRO_COM_HT = "Com. hors taxes";
+    private $ttr_SOLDE_DU = "Solde à recevoir/Com.";
     private $ttr_RETRO_COM_DUE = "Retrocom. dues";
     private $ttr_RETRO_COM_PAYEE = "Retrocom. payée";
-    private $ttr_RETRO_SOLDE_DU = "Solde à payer";
-
-    //Titres pour Production taxes
-    private $ttr_TAXES_ETIQUETTE = "Type des Taxes / Impôts";
-    private $ttr_TAXES_COM_TTC = "Commissions Totale";
-    private $ttr_TAXES_COM_HT = "Commissions hors taxe";
+    private $ttr_RETRO_SOLDE_DU = "Solde à payer/Retrocom";
+    private $ttr_TAXES_SOLDE_A_PAYER = "Solde à payer/Taxe";
     private $ttr_TAXES_TAXE_DUE = "Taxe due";
     private $ttr_TAXES_PAYEE = "Taxe payée";
-    private $ttr_TAXES_SOLDE_A_PAYER = "Solde à payer";
+    
 
 
     private $tab_MOIS_ANNEE = [
@@ -105,7 +95,7 @@ class TableauDeBord
         // ];
 
         //dd($production_assureur);
-        $production_assureur['titres'][] = $this->ttr_ETIQUETTE;
+        $production_assureur['titres'][] = "Assureurs";
         $production_assureur['titres'][] = $this->ttr_PRIMES_TTC;
         $production_assureur['titres'][] = $this->ttr_COM_HT;
         //On charge les taxes automatiquement depuis un tableau - Ici le contenu du tableau peut varier
@@ -155,43 +145,7 @@ class TableauDeBord
                         
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
-                        if($date_mois_police == ($i + 1)){
-                            // ici
-                            // $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
-                            // $prime_ttc_mois += $aggregat_police->getPrimeTotale();
-                            // $com_ht_mois += $aggregat_police->getCommissionNette();
-
-                            // foreach ($taxes as $taxe) {
-                            //     $montant_taxe_police = 0;
-                            //     foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
-                            //         if($taxes_polices['nom'] == $taxe->getNom()){
-                            //             $montant_taxe_police = $taxes_polices['montant'];
-                            //         }
-                            //     }
-                            //     $val_taxe_existant = $tab_taxes_mois[$taxe->getNom()] + $montant_taxe_police;
-                            //     $tab_taxes_mois[$taxe->getNom()] = $val_taxe_existant;
-                            // }
-                            // $comTot = $aggregat_police->getCommissionTotale();
-                            // //encaissements - recherche
-                            // $comReceived = 0;
-                            // $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
-                            //     'police' => $police,
-                            //     'client' => $police->getClient(),
-                            //     'assureur' => $assureur,
-                            //     'partenaire' => $police->getPartenaire(),
-                            //     'motcle' => "",
-                            //     'dateA' => null,
-                            //     'dateB' => null
-                            // ], null);
-                            // foreach ($tab_com_encaissees as $encaissement) {
-                            //     $comReceived += $encaissement->getMontant();
-                            // }
-                            // $com_encaissee_mois += $comReceived;
-                            // $com_ttc_mois += $comTot;
-                            // $solde_du_mois += ($comTot - $comReceived);
-
-                            //dd($aggregat_police->getTab_Taxes());
-                            
+                        if($date_mois_police == ($i + 1)){                            
                             $details_police = $this->_prod_production_get_details($police, $taxes);
                             $prime_ttc_mois += $details_police["police_prime_ttc"];
                             $com_ht_mois += $details_police["police_com_ht"];
@@ -287,7 +241,7 @@ class TableauDeBord
         // ];
 
         // dd($production_mois);
-        $production_mois['titres'][] = $this->ttr_ETIQUETTE;
+        $production_mois['titres'][] = "Mois";
         $production_mois['titres'][] = $this->ttr_PRIMES_TTC;
         $production_mois['titres'][] = $this->ttr_COM_HT;
         //On charge les taxes automatiquement depuis un tableau - Ici le contenu du tableau peut varier
@@ -337,39 +291,6 @@ class TableauDeBord
                         $date_mois_police = $police->getDateEffet()->format("m");
                         //dd($date_police);
                         if($date_mois_police == ($i + 1)){
-                            //$aggregat_police = new PoliceAgregatCalculator($police, $taxes);
-                            // $prime_ttc_assureur += $aggregat_police->getPrimeTotale();
-                            // $com_ht_assureur += $aggregat_police->getCommissionNette();
-                            // foreach ($taxes as $taxe) {
-                            //     $montant_taxe_police = 0;
-                            //     foreach ($aggregat_police->getTab_Taxes() as $taxes_polices) {
-                            //         if($taxes_polices['nom'] == $taxe->getNom()){
-                            //             $montant_taxe_police = $taxes_polices['montant'];
-                            //         }
-                            //     }
-                            //     $val_taxe_existant = $tab_taxes_assureur[$taxe->getNom()] + $montant_taxe_police;
-                            //     $tab_taxes_assureur[$taxe->getNom()] = $val_taxe_existant;
-                            // }
-                            // $comTot = $aggregat_police->getCommissionTotale();
-                            // //encaissements - recherche
-                            // $comReceived = 0;
-                            // $tab_com_encaissees = $this->paiementCommissionRepository->findByMotCle([
-                            //     'police' => $police,
-                            //     'client' => $police->getClient(),
-                            //     'assureur' => $assureur,
-                            //     'partenaire' => $police->getPartenaire(),
-                            //     'motcle' => "",
-                            //     'dateA' => null,
-                            //     'dateB' => null
-                            // ], null);
-                            // foreach ($tab_com_encaissees as $encaissement) {
-                            //     $comReceived += $encaissement->getMontant();
-                            // }
-                            // $com_encaissee_assureur += $comReceived;
-                            // $com_ttc_assureur += $comTot;
-                            // $solde_du_assureur += ($comTot - $comReceived);
-                            //dd($aggregat_police->getTab_Taxes());
-
                             $details_police = $this->_prod_production_get_details($police, $taxes);
                             $prime_ttc_assureur += $details_police["police_prime_ttc"];
                             $com_ht_assureur += $details_police["police_com_ht"];
@@ -448,29 +369,14 @@ class TableauDeBord
 
     private function _prod_part_getTitres($taxes)
     {
-        //on prévoit quand-même un tableau vide pour servir d'exemple
-        // $production_partenaire = [
-        //     'titres' => [],
-        //     'donnees' => [
-        //         [
-        //             'sous_total' => [],
-        //             'lignes' => [
-        //                 [],
-        //                 []
-        //             ]
-        //         ]
-        //     ],
-        //     'totaux' => []
-        // ];
-
         //dd($production_assureur);
-        $production_partenaire['titres'][] = $this->ttr_RETRO_ETIQUETTE;
-        $production_partenaire['titres'][] = $this->ttr_RETRO_COM_RECUE;
+        $production_partenaire['titres'][] = "Partenaires";
+        $production_partenaire['titres'][] = $this->ttr_COM_TTC;
         //On charge les taxes automatiquement depuis un tableau - Ici le contenu du tableau peut varier
         foreach ($taxes as $taxe) {
             $production_partenaire['titres'][] = "- " . $taxe . " @" . ($taxe->getTaux()) . "%";
         }
-        $production_partenaire['titres'][] = $this->ttr_RETRO_COM_HT;
+        $production_partenaire['titres'][] = $this->ttr_COM_HT;
         $production_partenaire['titres'][] = $this->ttr_RETRO_COM_DUE;
         $production_partenaire['titres'][] = "- " . $this->ttr_RETRO_COM_PAYEE;
         $production_partenaire['titres'][] = $this->ttr_RETRO_SOLDE_DU;
@@ -480,9 +386,9 @@ class TableauDeBord
 
     private function _prod_taxes_getTitres()
     {
-        $production_taxes['titres'][] = $this->ttr_TAXES_ETIQUETTE;
-        $production_taxes['titres'][] = $this->ttr_TAXES_COM_TTC;
-        $production_taxes['titres'][] = $this->ttr_TAXES_COM_HT;
+        $production_taxes['titres'][] = "Type des Taxes / Impôts";
+        //$production_taxes['titres'][] = $this->ttr_COM_TTC;
+        //$production_taxes['titres'][] = $this->ttr_COM_HT;
         $production_taxes['titres'][] = $this->ttr_TAXES_TAXE_DUE;
         $production_taxes['titres'][] = "- " . $this->ttr_TAXES_PAYEE;
         $production_taxes['titres'][] = $this->ttr_TAXES_SOLDE_A_PAYER;
@@ -535,6 +441,9 @@ class TableauDeBord
         ];
         
         $aggregat_police = new PoliceAgregatCalculator($police, $taxes);
+
+        //dd($aggregat_police);
+
         $tab_taxes_police = [];
         
         foreach ($taxes as $taxe) {
@@ -734,23 +643,17 @@ class TableauDeBord
         //dd($taxes);
         $production_taxe = $this->_prod_taxes_getTitres();
         //dd($production_taxe);
-        $grand_total_com_ttc = 0;
-        $grand_total_com_ht = 0;
         $grand_total_taxe_due = 0;
         $grand_total_taxe_payee = 0;
         $grand_total_solde_a_payer = 0;
         //1 - filtre par taxe
         foreach ($taxes as $taxe) {
             $tab_lignes_taxes = null;
-            $lignes_taxes_com_ttc = 0;
-            $lignes_taxes_com_ht = 0;
             $lignes_taxes_taxe_due = 0;
             $lignes_taxes_taxe_payee = 0;
             $lignes_taxes_solde_a_payer = 0;
             //2 - filtre pour chaque mois de l'année
             for ($index_mois=0; $index_mois < 12; $index_mois++) {
-                $lignes_taxes_mois_com_ttc = 0;
-                $lignes_taxes_mois_com_ht = 0;
                 $lignes_taxes_mois_taxe_due = 0;
                 $lignes_taxes_mois_taxe_payee = 0;
                 $lignes_taxes_mois_solde_a_payer = 0;
@@ -759,27 +662,21 @@ class TableauDeBord
                     $date_mois_police = $police->getDateEffet()->format("m");
                     //ici il faut calculer la veleur réelle de la taxe puis l'ajouter dans la table
                     if($date_mois_police == ($index_mois + 1)){
-                        $tab_details_dus = $this->_prod_partenaire_get_details($police, [0 => $taxe]);
-                        $tab_details_pop = $this->_prod_taxes_get_details($police, $taxe, $tab_details_dus['com_tab_taxes'][$taxe->getNom()]);
-                        
-                        $lignes_taxes_mois_com_ttc += $tab_details_dus['com_ttc_police'];
-                        $lignes_taxes_mois_com_ht += $tab_details_dus['com_ht_police'];;
-                        $lignes_taxes_mois_taxe_due += $tab_details_dus['com_tab_taxes'][$taxe->getNom()];
+                        //$tab_details_dus = $this->_prod_partenaire_get_details($police, [0 => $taxe]);
+                        $tab_details_dus = $this->_prod_production_get_details($police, [0 => $taxe]);
+                        $tab_details_pop = $this->_prod_taxes_get_details($police, $taxe, $tab_details_dus['police_com_tab_taxes'][$taxe->getNom()]);
+                        $lignes_taxes_mois_taxe_due += $tab_details_dus['police_com_tab_taxes'][$taxe->getNom()];
                         $lignes_taxes_mois_taxe_payee += $tab_details_pop['montant_taxe_payee'];
                         $lignes_taxes_mois_solde_a_payer += $tab_details_pop['montant_taxe_solde_a_payer'];
                     }
                 }
-                if($lignes_taxes_mois_com_ttc != 0){
-                    $lignes_taxes_com_ttc += $lignes_taxes_mois_com_ttc;
-                    $lignes_taxes_com_ht += $lignes_taxes_mois_com_ht;
+                if($lignes_taxes_mois_taxe_due != 0){
                     $lignes_taxes_taxe_due += $lignes_taxes_mois_taxe_due;
                     $lignes_taxes_taxe_payee += $lignes_taxes_mois_taxe_payee;
                     $lignes_taxes_solde_a_payer += $lignes_taxes_mois_solde_a_payer;
                     
                     $data_ligne_mois = [];
                     $data_ligne_mois[] = $this->tab_MOIS_ANNEE[$index_mois];
-                    $data_ligne_mois[] = $lignes_taxes_mois_com_ttc;
-                    $data_ligne_mois[] = $lignes_taxes_mois_com_ht;
                     $data_ligne_mois[] = $lignes_taxes_mois_taxe_due;
                     $data_ligne_mois[] = $lignes_taxes_mois_taxe_payee;
                     $data_ligne_mois[] = $lignes_taxes_mois_solde_a_payer;
@@ -787,11 +684,9 @@ class TableauDeBord
                 }
             }
             //chargement des données - chargement des sous totaux
-            if($lignes_taxes_com_ttc != 0){
+            if($lignes_taxes_taxe_due != 0){
                 $data_sous_total = [];
                 $data_sous_total[] = $taxe->getNom(). ", " . $taxe->getOrganisation() . " [taux d'imposition: ". $taxe->getTaux() ."%]";
-                $data_sous_total[] = $lignes_taxes_com_ttc;
-                $data_sous_total[] = $lignes_taxes_com_ht;
                 $data_sous_total[] = $lignes_taxes_taxe_due;
                 $data_sous_total[] = $lignes_taxes_taxe_payee;
                 $data_sous_total[] = $lignes_taxes_solde_a_payer;
@@ -802,8 +697,6 @@ class TableauDeBord
                     'lignes' => $tab_lignes_taxes
                 ];
 
-                $grand_total_com_ttc += $lignes_taxes_com_ttc;
-                $grand_total_com_ht += $lignes_taxes_com_ht;
                 $grand_total_taxe_due += $lignes_taxes_taxe_due;
                 $grand_total_taxe_payee += $lignes_taxes_taxe_payee;
                 $grand_total_solde_a_payer += $lignes_taxes_solde_a_payer;
@@ -811,8 +704,6 @@ class TableauDeBord
         }
         $data_production_taxe = [];
         $data_production_taxe[] = $this->ttr_GRAND_TOTAL;
-        $data_production_taxe[] = $grand_total_com_ttc;
-        $data_production_taxe[] = $grand_total_com_ht;
         $data_production_taxe[] = $grand_total_taxe_due;
         $data_production_taxe[] = $grand_total_taxe_payee;
         $data_production_taxe[] = $grand_total_solde_a_payer;
